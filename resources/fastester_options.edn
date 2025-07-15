@@ -1,0 +1,31 @@
+{:project-formatted-name "Fastester"
+ 
+ :responsible {:name "Brad Losavio"
+               :email "blosavio@sagevisuals.com"}
+ 
+ :copyright-holder "Brad Losavio"
+
+ :perflog-UUID #uuid "50c7eada-f96d-41bf-aed0-47d386e61136"
+
+ ;; source directories and filenames
+ :perflog-tests-directory "test/fastester/performance/"
+ :perflog-tests-filename "tests.clj"
+
+ ;; output directories and filenames
+ :perflog-html-directory "doc/"
+ :perflog-html-filename "performance.html"
+
+ :perflog-markdown-directory "doc/"
+ :perflog-markdown-filename "performance.md"
+
+ :perflog-results-directory "resources/performance_entries/"
+ ;; :perflog-data-file "perflog.edn"
+
+ :excludes #{"test-name to skip"
+             "mapping --- stuff"
+             "custom `conj`"}
+ :verbose? true
+ :testing-thoroughness :quick
+
+ :tidy-html? true}
+

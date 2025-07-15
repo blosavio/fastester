@@ -1,0 +1,37 @@
+{:sections [{:section-name "Quick summary" :section-href "quick"}
+            {:section-name "Setup"}
+            {:section-name "API" :section-href "https://blosavio.github.io/fastester/index.html" :skip-section-load? true}
+            {:section-name "Changelog" :section-href "https://github.com/blosavio/fastester/blob/main/changelog.md" :skip-section-load? true}
+            {:section-name "Introduction" :section-href "intro"}
+            {:section-name "Ideas" :section-href "ideas"}
+            {:section-name "Usage" :section-href "usage"}
+            {:section-name "Possibilities" :section-href "possibilities"}
+            {:section-name "Critique" :section-href "critique"}
+            {:section-name "Alternatives" :section-href "alternatives"}
+            {:section-name "Examples" :section-href "examples"}
+            {:section-name "Glossary" :section-href "glossary"}
+            {:section-name "Contact" :section-href "https://github.com/blosavio" :skip-section-load? true}]
+
+ :clojars-badge? true
+ :copyright-holder "Brad Losavio"
+
+ ;; special directives to zprint on how to handle these functions
+ :fn-map-additions {}
+
+ :project-description "A Clojure library for reporting performance changes"
+ :project-name-formatted "Fastester"
+
+ :readme-UUID 
+
+ :readme-html-directory "doc/"
+ :readme-html-filename "readme.html"
+
+ :readme-markdown-directory ""
+ :readme-markdown-filename "README.md"
+
+ :sections-directory "resources/readme_sections/"
+
+ :separator " => "
+ :wrap-at 80
+
+ :tidy-html? true}

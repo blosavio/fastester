@@ -1,0 +1,233 @@
+(ns fastester.measure
+  "Execute performance tests."
+  (:require
+   [clojure.math :as math]
+   [clojure.java.io :as io]
+   [criterium.core :as crit]))
+
+
+(def project-metadata (read-string (slurp "project.clj")))
+
+
+(def project-version (nth project-metadata 2))
+
+
+(def options (load-file "resources/fastester_options.edn"))
+
+
+(def perf-test-registry (atom #{}))
+
+
+(defn clear-perf-test-registry!
+  "Remove all entries from [[perf-test-registry]]."
+  {:UUIDv4 #uuid "d615da84-0b3b-42e3-acdb-9cec175df53e"}
+  []
+  (swap! perf-test-registry empty))
+
+
+(defmacro defperf
+  "Define and register a performance test.
+
+  * `name` is a string that labels the performance test. It need not be unique.
+    **Note:** `name` ought to be a valid directory name in the local filesystem.
+
+  * `f` is a 1-arity function, represented as an S-expression, that exercises
+  some performance aspect. It's single argument is the \"n\" in *big-O*
+  notation.
+
+  * `n` is a sequence of arguments to be supplied to `f`.
+
+  During performace testing, elements of `n` will be individually supplied to
+  the benchmarking utility.
+
+  Example:
+  ```clojure
+  (defperf \"my-plus\" (fn [n] (+ n n)) [1 10 100 1000])
+  ```"
+  {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
+  [name f n]
+  (let [fun (nth &form 2)]
+    `(swap! perf-test-registry conj {:name ~name
+                                     :fexpr '~fun
+                                     :f ~f
+                                     :n ~n})))
+
+
+(defn create-results-directories
+  "Create directories to contain benchmarking results, location declared by
+  options key `:perflog-results-directory`. Consults names contained in set
+  `excludes` any directory to skip.
+
+  Creates `<options-results-dir>/<version>/<test-name(s)>`."
+  {:UUIDv4 #uuid "a75a0d12-150b-43e6-b3b7-6a758528a3b2"}
+  [excludes]
+  (let [mkdir #(.mkdir (io/file %))
+        results-dirname (options :perflog-results-directory)
+        version-dirname (str results-dirname
+                             "/version "
+                             project-version)
+        unique-test-names (distinct (map :name @perf-test-registry))
+        non-excluded-names (remove
+                            excludes
+                            unique-test-names)]
+    (mkdir results-dirname)
+    (mkdir version-dirname)
+    (doseq [t non-excluded-names]
+      (mkdir (str version-dirname "/" t)))))
+
+
+(def ^{:no-doc true}
+  *performance-testing-options*-docstring
+  "Hashmap containing Criterium benchmarking options. Defaults to
+  `criterium.core/*default-quick-bench-opts*`. Create a new binding evironment
+  with `binding`.
+
+  ```clojure
+  (binding [*performance-testing-options* criterium.core/*default-benchmark-opts*]
+    (do-one-performance-test (+ 1 2)))
+  ```
+
+  See also `criterium.core/*default-benchmark-opts*` for alternate values.")
+
+
+(def ^{:dynamic true
+       :doc *performance-testing-options*-docstring}
+  *performance-testing-options* crit/*default-quick-bench-opts*)
+
+
+(def ^:dynamic
+  *lightning-benchmark-opts*
+  (reduce (fn [m k] (update m k #(/ % 2)))
+          crit/*default-quick-bench-opts*
+          [:max-gc-attempts
+           :samples
+           :target-execution-time
+           :warmup-jit-period]))
+
+
+(defmacro run-one-test-subroutine
+  "Given 1-arity function S-expression `fexpr` and argument `arg`, run one
+  benchmark test using \"lightning\" thoroughness, sending result to *out*.
+
+  Example:
+  ```clojure
+  (run-one-test-subroutine '(fn [n] (+ n n)) 9)
+  ```"
+  {:UUIDv4 #uuid "f7d36987-4451-4115-99e3-2fc57bee6a91"}
+  [fexpr arg]
+  `(binding [*performance-testing-options*
+             *lightning-benchmark-opts*]
+     (crit/benchmark (~(eval fexpr) ~arg) *performance-testing-options*)))
+
+
+(defn date
+  "Returns hashmap of `{:year YYYY :month M... :day DD}`.
+
+  Example:
+  ```clojure
+  (date) ;;
+  ```"
+  {:UUIDv4 #uuid "a9d4df42-9cb8-4812-a996-0f080535183e"}
+  []
+  (let [instant (java.util.Date.)
+        formatted-instant (.format
+                           (java.text.SimpleDateFormat. "yyyy LLLL dd") instant)
+        [year month day] (clojure.string/split formatted-instant #" ")]
+    {:year (read-string year)
+     :month month
+     :day (read-string day)}))
+
+
+(defn run-one-test
+  "Given version string `ver`, test name string `test-name`, function
+  S-expression `f`, test argument `arg`, option hashmap `opts`, and index
+  integer `idx`, executes the benchmark under the current settings and saves
+  results to filesystem.
+
+  Example:
+  ```clojure
+  (run-one-test \"77-SNAPSHOT7\"
+                \"mapping --- stuff\"
+                '(fn [n] (* n n))
+                22
+                5
+                options)
+
+  See [[run-one-test-subroutine]].
+  ```"
+  {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
+  [ver test-name f fexpr arg sub-test-idx idx opts]
+  (let [dirname (opts :perflog-results-directory)
+        filepath (str dirname
+                      "version "
+                      ver
+                      "/"
+                      test-name
+                      "/"
+                      "sub-test-"
+                      sub-test-idx
+                      "-index-"
+                      idx
+                      ".edn")
+        benchmark-options ({:lightning *lightning-benchmark-opts*
+                            :quick crit/*default-quick-bench-opts*
+                            :standard crit/*default-benchmark-opts*}
+                           (opts :testing-thoroughness))
+        results (binding [*performance-testing-options*
+                          benchmark-options]
+                  (crit/benchmark (f arg) *performance-testing-options*))
+        test-metadata {:version ver
+                       :test-name test-name
+                       :fexper fexpr
+                       :arg arg
+                       :sub-test-idx sub-test-idx
+                       :date (date)
+                       :UUIDv4 (random-uuid)}
+        results (assoc results :fastester/metadata test-metadata)]
+    (spit filepath results)))
+
+
+(defn do-tests
+  "Execute non-excluded performance tests, as governed by test names in set
+  `excludes`."
+  {:UUIDv4 #uuid "68d16e2e-2ab2-4dcd-9609-e237d6991594"
+   :no-doc true}
+  [excludes]
+  (let [reg (vec @perf-test-registry)
+        reg (remove #(excludes (% :name)) reg)
+        num-tests (count reg)
+        verbose (options :verbose?)]
+    (create-results-directories excludes)
+    (doseq [perf-test reg
+            :let [perf-test-index(inc (.indexOf reg perf-test))
+                  n-args (count (perf-test :n))]]
+      (if verbose
+        (println (str "Performance test " perf-test-index"/" num-tests ":")))
+      (doseq [n (perf-test :n)
+              :let [argument-index (inc (.indexOf (perf-test :n) n))]]
+        (if verbose (println (str "  arg " argument-index"/" n-args)))
+        (run-one-test project-version
+                      (perf-test :name)
+                      (perf-test :f)
+                      (perf-test :fexpr)
+                      n
+                      perf-test-index
+                      (.indexOf (perf-test :n) n)
+                      options)))
+    (if verbose (println "Performace testing complete."))))
+
+
+(defn do-all-performance-tests
+  "Execute all performance tests, ignoring options key `:excludes`."
+  {:UUIDv4 #uuid "50b19eef-32f1-4586-a317-21e1f20235cf"}
+  []
+  (do-tests #{}))
+
+
+(defn do-selected-performance-tests
+  "Execute performance tests, skipping any tests with name contained in option
+  `:excludes`."
+  {:UUIDv4 #uuid "ed3dd772-08d5-47cc-85b9-608892f8c96a"}
+  []
+  (do-tests (options :excludes)))
+
