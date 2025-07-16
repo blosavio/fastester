@@ -191,7 +191,8 @@
                        :fexper fexpr
                        :arg arg
                        :date (date)
-                       :UUIDv4 (random-uuid)}
+                       :UUIDv4 (random-uuid)
+                       :parallel? (opts :parallel?)}
         results (assoc results :fastester/metadata test-metadata)]
     (spit filepath results)))
 
@@ -230,6 +231,8 @@
                 (options :parallel?))]
     (create-results-directories excludes)
     (doall (runner runner-fn expanded-reg))
+    (if (and (options :parallel?)
+             (not *repl*)) (shutdown-agents))
     (if verbose (println "Performance testing complete."))))
 
 
