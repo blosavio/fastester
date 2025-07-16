@@ -1,8 +1,8 @@
 {:project-formatted-name "Fastester"
- 
+
  :responsible {:name "Brad Losavio"
                :email "blosavio@sagevisuals.com"}
- 
+
  :copyright-holder "Brad Losavio"
 
  :perflog-UUID #uuid "50c7eada-f96d-41bf-aed0-47d386e61136"
@@ -23,9 +23,12 @@
 
  :excludes #{"test-name to skip"
              "mapping --- stuff"
-             "custom `conj`"}
+             "custom `conj`"
+             "plus, vary number of digits in args"
+             "plus (vary number of operands)"}
  :verbose? true
  :testing-thoroughness :quick
+ :parallel? true
 
  :tidy-html? true}
 

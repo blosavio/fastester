@@ -12,3 +12,4 @@ pom.xml.asc
 .gitignore
 .git/**
 .nrepl-port
+.lein-repl-history

@@ -12,6 +12,7 @@
 
 
 (def log-range-5 (log-range-fn 5))
+(def log-range-4 (log-range-fn 4))
 (def log-range-3 (log-range-fn 3))
 
 (def dly 75)
@@ -49,7 +50,7 @@
 (def mapping-test-name "mapping --- stuff")
 
 
-(defperf mapping-test-name (fn [n] (map inc (range n))) log-range-3)
+(defperf mapping-test-name (fn [n] (map inc (range n))) log-range-4)
 
 
 (defperf
@@ -71,10 +72,10 @@
 
 #_(do-all-performance-tests)
 #_(do-selected-performance-tests)
-
 #_(fastester.measure/clear-perf-test-registry!)
-
+#_(fastester.measure/create-results-directories #{})
+#_ @fastester.measure/perf-test-registry
+#_ fastester.measure/options
 #_(println "\n\n\n\n\n")
-
-#_(fastester.measure/create-results-directories)
+#_*clojure-version*
 

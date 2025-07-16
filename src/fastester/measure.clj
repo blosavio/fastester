@@ -1,5 +1,7 @@
 (ns fastester.measure
-  "Execute performance tests."
+  "Execute performance tests.
+
+  Concept: Run performace test suite once per version."
   (:require
    [clojure.math :as math]
    [clojure.java.io :as io]
@@ -28,26 +30,38 @@
 (defmacro defperf
   "Define and register a performance test.
 
-  * `name` is a string that labels the performance test. It need not be unique.
-    **Note:** `name` ought to be a valid directory name in the local filesystem.
+  * `group` is a string that links conceptually-related performance tests.
 
-  * `f` is a 1-arity function, represented as an S-expression, that exercises
-  some performance aspect. It's single argument is the \"n\" in *big-O*
-  notation.
+  * `f` is a 1-arity function that exercises some performance aspect. It's
+  single argument is the \"n\" in *big-O* notation. `f` may be supplied as an
+  S-expression or a function object. Supplying `f` as an S-expression has the
+  advantage that the definition will be later convey some meaning, e.g.,
+  `(fn [x] (+ x x))`, whereas a function object will render less meaningfully,
+  e.g., `#function[fastester.measure/eval11540/fn--11541]`.
 
-  * `n` is a sequence of arguments to be supplied to `f`.
+  * `n` is a sequence of one or more arguments. During performace testing,
+  elements of `n` will be individually supplied to the benchmarking utility.
 
-  During performace testing, elements of `n` will be individually supplied to
-  the benchmarking utility.
-
-  Example:
+  Example, supplying `f` as an S-expression:
   ```clojure
-  (defperf \"my-plus\" (fn [n] (+ n n)) [1 10 100 1000])
-  ```"
+  (defperf \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
+  ```
+
+  Example, supplying `f` as a function object:
+  ```clojure
+  (defn my-fn-obj [q] (+ q q q))
+
+  (defperf \"benchmarking additon\" my-fn-obj [2 20 200 2000])
+  ```
+
+  Both examples above share the same `group` label, \"benchmarking addition\",
+  therefore the benchmarking results may be later conceptually associated, in
+  this example both involving measuring the performance of `+`. Also note that
+  the `n` sequences need not be identical."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
-  [name f n]
+  [group f n]
   (let [fun (nth &form 2)]
-    `(swap! perf-test-registry conj {:name ~name
+    `(swap! perf-test-registry conj {:group ~group
                                      :fexpr '~fun
                                      :f ~f
                                      :n ~n})))
@@ -56,9 +70,10 @@
 (defn create-results-directories
   "Create directories to contain benchmarking results, location declared by
   options key `:perflog-results-directory`. Consults names contained in set
-  `excludes` any directory to skip.
+  `excludes`. If zero performance tests are to be executed (i.e., all tests are
+  excluded), directories are not created.
 
-  Creates `<options-results-dir>/<version>/<test-name(s)>`."
+  Creates `<options-results-dir>/` then `<options-results-dir>/<version>/`."
   {:UUIDv4 #uuid "a75a0d12-150b-43e6-b3b7-6a758528a3b2"}
   [excludes]
   (let [mkdir #(.mkdir (io/file %))
@@ -66,14 +81,14 @@
         version-dirname (str results-dirname
                              "/version "
                              project-version)
-        unique-test-names (distinct (map :name @perf-test-registry))
+        unique-test-names (distinct (map :group @perf-test-registry))
         non-excluded-names (remove
                             excludes
                             unique-test-names)]
-    (mkdir results-dirname)
-    (mkdir version-dirname)
-    (doseq [t non-excluded-names]
-      (mkdir (str version-dirname "/" t)))))
+    (if (seq non-excluded-names)
+      (do
+        (mkdir results-dirname)
+        (mkdir version-dirname)))))
 
 
 (def ^{:no-doc true}
@@ -139,7 +154,7 @@
 
 
 (defn run-one-test
-  "Given version string `ver`, test name string `test-name`, function
+  "Given version string `ver`, test group string `group`, function
   S-expression `f`, test argument `arg`, option hashmap `opts`, and index
   integer `idx`, executes the benchmark under the current settings and saves
   results to filesystem.
@@ -156,17 +171,12 @@
   See [[run-one-test-subroutine]].
   ```"
   {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
-  [ver test-name f fexpr arg sub-test-idx idx opts]
+  [ver group f fexpr arg idx opts]
   (let [dirname (opts :perflog-results-directory)
         filepath (str dirname
                       "version "
                       ver
-                      "/"
-                      test-name
-                      "/"
-                      "sub-test-"
-                      sub-test-idx
-                      "-index-"
+                      "/test-"
                       idx
                       ".edn")
         benchmark-options ({:lightning *lightning-benchmark-opts*
@@ -177,10 +187,9 @@
                           benchmark-options]
                   (crit/benchmark (f arg) *performance-testing-options*))
         test-metadata {:version ver
-                       :test-name test-name
+                       :group group
                        :fexper fexpr
                        :arg arg
-                       :sub-test-idx sub-test-idx
                        :date (date)
                        :UUIDv4 (random-uuid)}
         results (assoc results :fastester/metadata test-metadata)]
@@ -189,32 +198,39 @@
 
 (defn do-tests
   "Execute non-excluded performance tests, as governed by test names in set
-  `excludes`."
+  `excludes`. If option `:parallel?` is `true`, runs tests in parallel."
   {:UUIDv4 #uuid "68d16e2e-2ab2-4dcd-9609-e237d6991594"
-   :no-doc true}
+   :no-doc true
+   :implementation-notes
+   "See
+   https://clojuredocs.org/clojure.core/future#example-542692c9c026201cdc326a7b
+   and
+   https://clojure.atlassian.net/browse/CLJ-124
+   for discussion of cleanly shutting down agents, relevant when using `pmap`."}
   [excludes]
-  (let [reg (vec @perf-test-registry)
-        reg (remove #(excludes (% :name)) reg)
-        num-tests (count reg)
-        verbose (options :verbose?)]
+  (let [reg (sort-by :group (vec @perf-test-registry))
+        reg (remove #(excludes (% :group)) reg)
+        get-idx #(.indexOf %1 %2)
+        r-fn (fn [v m] (concat v (map #(assoc m :n %1) (m :n))))
+        expanded-reg (reduce r-fn [] reg)
+        num-reg (dec (count expanded-reg))
+        runner-fn (fn [t]
+                    (let [idx (get-idx expanded-reg t)]
+                      (println (str "Test " idx "/" num-reg))
+                      (run-one-test project-version
+                                    (t :group)
+                                    (t :f)
+                                    (t :fexpr)
+                                    (t :n)
+                                    idx
+                                    options)))
+        verbose (options :verbose?)
+        runner ({true pmap
+                 false map}
+                (options :parallel?))]
     (create-results-directories excludes)
-    (doseq [perf-test reg
-            :let [perf-test-index(inc (.indexOf reg perf-test))
-                  n-args (count (perf-test :n))]]
-      (if verbose
-        (println (str "Performance test " perf-test-index"/" num-tests ":")))
-      (doseq [n (perf-test :n)
-              :let [argument-index (inc (.indexOf (perf-test :n) n))]]
-        (if verbose (println (str "  arg " argument-index"/" n-args)))
-        (run-one-test project-version
-                      (perf-test :name)
-                      (perf-test :f)
-                      (perf-test :fexpr)
-                      n
-                      perf-test-index
-                      (.indexOf (perf-test :n) n)
-                      options)))
-    (if verbose (println "Performace testing complete."))))
+    (doall (runner runner-fn expanded-reg))
+    (if verbose (println "Performance testing complete."))))
 
 
 (defn do-all-performance-tests
