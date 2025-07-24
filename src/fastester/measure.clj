@@ -63,7 +63,7 @@
   initial registration.
 
   Note 2: Invoking `defperf` with one sequence of arguments, then editing the
-  expression and invoking `defperf` again registers two uniques performance
+  expression and invoking `defperf` again registers two unique performance
   tests. When developing at the REPL, be aware that the registry may become
   'stale' with outdated tests. See [[clear-perf-test-registry!]] or edit with,
   e.g., `disj`."

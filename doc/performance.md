@@ -27,7 +27,7 @@
       <div>
         <h4 id="group-0-fexpr-0">
           (fn [n] (delayed-+ n n n))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>
@@ -145,7 +145,7 @@
         </div>
         <h4 id="group-0-fexpr-1">
           (fn [n] (delayed-+ n n))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>
@@ -263,7 +263,7 @@
         </div>
         <h4 id="group-0-fexpr-2">
           (fn [n] (delayed-+ n))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>
@@ -389,7 +389,7 @@
       <div>
         <h4 id="group-1-fexpr-0">
           (fn [n] (apply + (take n (repeat 64))))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>
@@ -495,7 +495,7 @@
       <div>
         <h4 id="group-2-fexpr-0">
           (fn [n] (my-conj (vec (repeatedly n (fn* [] (rand-int 99)))) :tail-value))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>
@@ -581,7 +581,7 @@
       <div>
         <h4 id="group-3-fexpr-0">
           (fn [n] (map inc (range n)))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>
@@ -650,7 +650,7 @@
         </div>
         <h4 id="group-3-fexpr-1">
           (fn [n] (map str/upper-case (take n (cycle [&quot;a&quot; &quot;b&quot; &quot;c&quot;]))))
-        </h4>
+        </h4><button class="collapser" type="button">Show details</button>
         <div class="collapsable">
           <table>
             <caption>

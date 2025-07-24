@@ -279,9 +279,9 @@
                                      fexpr-idx
                                      ky
                                      (arg-index ky))))]
-    (into [:div.collapsable]
-          #_(reduce-kv red-fn [] o-data) ;; generate flat listing
-          [(arg-vs-version-table o-data options)])))
+    (into [:div.collapsable]      
+          [#_(reduce-kv red-fn [] o-data) ;; generate flat listing
+           (arg-vs-version-table o-data options)])))
 
 
 (defn fexpr-divs
@@ -299,6 +299,7 @@
         red-fn (fn [acc ky vl]
                  (conj acc
                        [(h4-fn ky) ky]
+                       [:button.collapser {:type "button"} "Show details"]
                        (arg-divs vl
                                  options
                                  group
@@ -352,23 +353,40 @@
    [:span#uuid [:br] (opt :perflog-UUID)]])
 
 
+(defn inject-js
+  "Given string 'html' representing html, inject javascript loading declaration
+  `js-filepath` into the document immediately after the `<head>` element."
+  {:UUIDv4 #uuid "52521fc7-6048-4985-b12e-59c215cc5d32"
+   :no-doc true}
+  [html js-filepath]
+  (let [split-at #"<head>"
+        [left right] (clojure.string/split html split-at)
+        js-includer (-> js-filepath
+                        page/include-js
+                        h2/html
+                        str)]
+    (str left (str split-at) js-includer right)))
+
+
 (defn generate-perflog-html
   "foobar"
   {:UUIDv4 #uuid "e1063a97-77e9-420e-b321-e0f31a729a7d"
    :no-doc true}
   [opt o-data]
   (spit (str (opt :perflog-html-directory) (opt :perflog-html-filename))
-        (page-template
-         (str (opt :project-formatted-name) " library performance log")
-         (opt :perflog-UUID)
-         (conj [:body
-                [:h1 (str (opt :project-formatted-name)
-                          " library performance log")]
-                (toc o-data)
-                (opt :perflog-preamble)
-                (main-section o-data opt)])
-         (opt :copyright-holder)
-         [:a {:href "https://github.com/blosavio/fastester"} "Fastester"])))
+        (-> (page-template
+             (str (opt :project-formatted-name) " library performance log")
+             (opt :perflog-UUID)
+             (conj [:body
+                    [:h1 (str (opt :project-formatted-name)
+                              " library performance log")]
+                    (toc o-data)
+                    (opt :perflog-preamble)
+                    (main-section o-data opt)])
+             (opt :copyright-holder)
+             [:a {:href "https://github.com/blosavio/fastester"} "Fastester"])
+            (inject-js "fastester.js")
+            (inject-js "jquery-3.7.1.min.js"))))
 
 
 (defn generate-perflog-markdown
