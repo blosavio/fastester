@@ -15,7 +15,8 @@
 (def log-range-4 (log-range-fn 4))
 (def log-range-3 (log-range-fn 3))
 
-(def dly 75)
+
+(def dly 0)
 
 
 (defn delayed-+
@@ -27,31 +28,25 @@
 
 (defn my-conj
   [coll x]
-  (conj coll x))
+  #_(conj coll x)
+  (persistent! (conj! (transient coll) x)))
 
 
-;; test comma in pathname
 (def plus-test-name "plus, vary number of digits in args")
 
+(defperf plus-test-name (fn [n] (delayed-+ n))     log-range-5)
+(defperf plus-test-name (fn [n] (delayed-+ n n))   log-range-5)
+(defperf plus-test-name (fn [n] (delayed-+ n n n)) log-range-5)
 
-(defperf plus-test-name (fn [n] (+ n))     log-range-5)
-(defperf plus-test-name (fn [n] (+ n n))   log-range-5)
-(defperf plus-test-name (fn [n] (+ n n n)) log-range-5)
 
-
-;; test parens in pathname
-(def plus-test-name-2 "plus (vary number of operands)")
-
+(def plus-test-name-2 "plus, vary number of operands")
 
 (defperf plus-test-name-2 (fn [n] (apply + (take n (repeat 64)))) log-range-5)
 
 
-;; test hyphens in pathname
-(def mapping-test-name "mapping --- stuff")
-
+(def mapping-test-name "mapping stuff")
 
 (defperf mapping-test-name (fn [n] (map inc (range n))) log-range-4)
-
 
 (defperf
   mapping-test-name
@@ -61,11 +56,10 @@
   log-range-3)
 
 
-;; test backticks in pathname
 (defperf
   "custom `conj`"
   (fn [n] (my-conj
-           (repeatedly n #(rand-int 99))
+           (vec (repeatedly n #(rand-int 99)))
            :tail-value))
   log-range-5)
 

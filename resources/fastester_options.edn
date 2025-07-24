@@ -19,16 +19,36 @@
  :perflog-markdown-filename "performance.md"
 
  :perflog-results-directory "resources/performance_entries/"
- ;; :perflog-data-file "perflog.edn"
 
  :excludes #{"test-name to skip"
-             "mapping --- stuff"
-             "custom `conj`"
-             "plus, vary number of digits in args"
-             "plus (vary number of operands)"}
+             #_"mapping stuff"
+             #_"custom `conj`"
+             #_"plus, vary number of digits in args"
+             #_"plus, vary number of operands"}
+
  :verbose? true
  :testing-thoroughness :quick
  :parallel? true
 
- :tidy-html? true}
+ :tidy-html? true
+
+ :perflog-preamble [:div
+                    [:p "Perflog preamble comments..."]
+
+                    [:pre [:code "(+ 1 2) ;; => 3"]]
+
+                    [:p "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."]]
+
+ :display-comments
+ {"mapping stuff"
+  [:p "Note: Skipped version 5..."]
+  
+  "plus, vary number of digits in args"
+  [:p "Plus vary args comments..."]
+  
+  "plus, vary number of operands"
+  [:p "Note: Added this test starting with version 4"]
+  
+  "custom `conj`"
+  [:p "Version 6 implemented `conj` with transients, so should be faster..."]}}
 

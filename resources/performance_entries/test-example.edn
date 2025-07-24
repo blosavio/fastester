@@ -1,0 +1,65 @@
+{:overhead 7.221471146079679E-8,
+ :samples (114789146
+            71310106
+           117364521
+            81951888
+            66664389
+           282925855),
+ :runtime-details {:spec-vendor "Oracle Corporation",
+                   :spec-name "Java Virtual Machine Specification",
+                   :clojure-version-string "1.12.1",
+                   :java-version "11.0.27",
+                   :vm-name "OpenJDK 64-Bit Server VM",
+                   :vm-vendor "Ubuntu",
+                   :clojure-version {:major 1,
+                                     :minor 12,
+                                     :incremental 1,
+                                     :qualifier nil},
+                   :spec-version "11",
+                   :sun-arch-data-model "64"},
+ :mean [1.53046753483894E-6 (1.048959774408008E-6 2.724776431114763E-6)],
+ :final-gc-time 170737857,
+ :execution-count 80322,
+ :variance [1.0293363989354895E-12 (5.4285008981284765E-14 2.078304476762454E-12)],
+ :os-details {:arch "amd64",
+              :available-processors 4,
+              :name "Linux",
+              :version "5.15.0-143-generic"},
+ :tail-quantile 0.025,
+ :outlier-variance 0.8292180741170032,
+ :outliers #criterium.core.OutlierCount{:low-severe 0,
+                                        :low-mild 0,
+                                        :high-mild 0,
+                                        :high-severe 1},
+ :warmup-time 5306357755,
+ :lower-q [8.299642563681184E-7 (8.299642563681184E-7 8.53755214947337E-7)],
+ :warmup-executions 3425134,
+ :sample-count 6,
+ :upper-q [3.260735120826175E-6 (1.389503736522995E-6 3.522395545429646E-6)],
+ :fastester/metadata {:version "0-SNAPSHOT0",
+                      :index "3"
+                      :group "custom `conj`",
+                      :fexpr "(fn [n] (my-conj (vec (repeatedly n (fn* [] (rand-int 99)))) :tail-value))",
+                      :arg 10,
+                      :date {:year 2025,
+                             :month "July",
+                             :day 17},
+                      :UUIDv4 #uuid "ce9257ad-27e6-4736-9d43-34cb6862437e",
+                      :testing-thoroughness :quick,
+                      :parallel? true},
+ :total-time 0.735005905,
+ :sample-variance [1.0293363989354895E-12 (0.0 0.0)],
+ :options {:max-gc-attempts 100,
+           :samples 6,
+           :target-execution-time 100000000,
+           :warmup-jit-period 5000000000,
+           :tail-quantile 0.025,
+           :bootstrap-size 500,
+           :overhead 7.221471146079679E-8},
+ :sample-mean [1.5251236792742547E-6 (-1.5185628338902345E-6 4.5688101924387435E-6)],
+ :results ((:tail-value 27 47 19 2 78 97 34 60 7 98)
+           (:tail-value 78 48 83 12 41 48 15 77 61 55)
+           (:tail-value 94 25 98 27 45 19 66 73 43 87)
+           (:tail-value 41 88 2 24 80 6 8 55 96 49)
+           (:tail-value 82 89 64 23 34 77 47 37 98 87)
+           (:tail-value 24 26 54 92 18 96 79 62 29 55))}
