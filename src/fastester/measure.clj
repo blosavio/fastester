@@ -198,7 +198,8 @@
   [filepath content]
   (binding [clojure.pprint/*print-pretty* true
             clojure.pprint/*print-miser-width* 40
-            clojure.pprint/*print-right-margin* 72]
+            clojure.pprint/*print-right-margin* 72
+            *print-length* nil]
     (with-open [writer (clojure.java.io/writer filepath)]
       (clojure.pprint/pprint content writer))))
 
