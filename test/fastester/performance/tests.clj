@@ -1,9 +1,10 @@
 (ns fastester.performance.tests
   (:require
+   [clojure.math :refer :all]
    [clojure.string :as str]
    [fastester.measure :refer [defperf
-                              do-selected-performance-tests
-                              do-all-performance-tests]]))
+                              #_do-selected-performance-tests
+                              #_do-all-performance-tests]]))
 
 
 (defn log-range-fn

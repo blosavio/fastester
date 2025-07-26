@@ -6,14 +6,23 @@
    [hiccup2.core :as h2]
    [fastester.core :refer [do-tests-and-create-displays]]
    [fastester.display :refer [generate-all-perflogs]]
-   [fastester.measure :refer [do-all-performance-tests
-                              do-selected-performance-tests]]))
+   [fastester.measure :refer [clear-perf-test-registry!
+                              do-all-performance-tests
+                              do-selected-performance-tests
+                              load-tests-ns]]))
 
 
 (def options (load-file "resources/fastester_options.edn"))
 
 
-(generate-all-perflogs options)
+(load-tests-ns options)
+
+#_ @fastester.measure/perf-test-registry
+#_(do-all-performance-tests)
+#_(do-selected-performance-tests)
+
+
+#_(generate-all-perflogs options)
 
 
 (defn -main

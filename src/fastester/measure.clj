@@ -7,13 +7,27 @@
    [criterium.core :as crit]))
 
 
-(def project-metadata (read-string (slurp "project.clj")))
+(defn project-version
+  "Queries the Leiningen 'project.clj' file's `defproject` expression and
+  returns a string."
+  {:UUIDv4 #uuid "9d8409a9-89ad-4567-9572-65c1e456cbb0"
+   :no-doc true
+   :implementation-note "Would prefer to use `clojure.edn/read-string` to
+ minimize security issues with reading strings, but Leiningen 'project.clj'
+ files are open-ended collections, and may contain, e.g., regular expressions
+ `#\"...\"` in codox's section or backslahses, which are not members of edn.
+ Must presume that a user's local 'project.clj' is trustworthy."}
+  []
+  (let [project-metadata (read-string (slurp "project.clj"))]
+    (nth project-metadata 2)))
 
 
-(def project-version (nth project-metadata 2))
-
-
-(def options (load-file "resources/fastester_options.edn"))
+(defn get-options
+  "Reads Fastester options hashmap from file 'resources/fastester_options.edn'."
+  {:UUIDv4 #uuid "3fe666a0-2aa4-4777-a88f-056824bbed2f"
+   :no-doc true}
+  []
+  (load-file "resources/fastester_options.edn"))
 
 
 (def perf-test-registry (atom #{}))
@@ -85,11 +99,12 @@
   Creates `<options-results-dir>/` then `<options-results-dir>/<version>/`."
   {:UUIDv4 #uuid "a75a0d12-150b-43e6-b3b7-6a758528a3b2"}
   [excludes]
-  (let [mkdir #(.mkdir (io/file %))
+  (let [options (get-options)
+        mkdir #(.mkdir (io/file %))
         results-dirname (options :perflog-results-directory)
         version-dirname (str results-dirname
                              "/version "
-                             project-version)
+                             (project-version))
         unique-test-names (distinct (map :group @perf-test-registry))
         non-excluded-names (remove
                             excludes
@@ -157,9 +172,9 @@
         formatted-instant (.format
                            (java.text.SimpleDateFormat. "yyyy LLLL dd") instant)
         [year month day] (clojure.string/split formatted-instant #" ")]
-    {:year (read-string year)
+    {:year (clojure.edn/read-string year)
      :month month
-     :day (read-string day)}))
+     :day (clojure.edn/read-string day)}))
 
 
 (defn dissoc-identifying-metadata
@@ -174,6 +189,18 @@
                       [:runtime-details :input-arguments]]
         dissoc-in (fn [m p] (update-in m (butlast p) dissoc (last p)))]
     (reduce dissoc-in metadata remove-paths)))
+
+
+(defn pretty-print-to-file
+  "Writes `content` to file `filepath` with Clojure's pretty-printer."
+  {:UUIDv4 #uuid "c205183a-fa6b-4581-bd58-3e22a66d44b0"
+   :no-doc true}
+  [filepath content]
+  (binding [clojure.pprint/*print-pretty* true
+            clojure.pprint/*print-miser-width* 40
+            clojure.pprint/*print-right-margin* 72]
+    (with-open [writer (clojure.java.io/writer filepath)]
+      (clojure.pprint/pprint content writer))))
 
 
 (defn run-one-test
@@ -220,7 +247,7 @@
                        :parallel? (opts :parallel?)}
         results (assoc results :fastester/metadata test-metadata)
         results (dissoc-identifying-metadata results)]
-    (spit filepath results)))
+    (pretty-print-to-file filepath results)))
 
 
 (defn do-tests
@@ -235,7 +262,8 @@
    https://clojure.atlassian.net/browse/CLJ-124
    for discussion of cleanly shutting down agents, relevant when using `pmap`."}
   [excludes]
-  (let [reg (sort-by :group (vec @perf-test-registry))
+  (let [options (get-options)
+        reg (sort-by :group (vec @perf-test-registry))
         reg (remove #(excludes (% :group)) reg)
         get-idx #(.indexOf %1 %2)
         r-fn (fn [v m] (concat v (map #(assoc m :n %1) (m :n))))
@@ -244,7 +272,7 @@
         runner-fn (fn [t]
                     (let [idx (get-idx expanded-reg t)]
                       (println (str "Test " idx "/" num-reg))
-                      (run-one-test project-version
+                      (run-one-test (project-version)
                                     (t :group)
                                     (t :f)
                                     (t :fexpr)
@@ -274,5 +302,20 @@
   `:excludes`."
   {:UUIDv4 #uuid "ed3dd772-08d5-47cc-85b9-608892f8c96a"}
   []
-  (do-tests (options :excludes)))
+  (do-tests ((get-options) :excludes)))
+
+
+(defn load-tests-ns
+  "Given options hashmap `opt`, `require`s the testing namespace declared by the
+  Fastester options `:perflog-tests-directory` and `:perflog-tests-filename`."
+  {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
+   :no-doc true
+   :implementation-note "Don't feel great about abusing `require` like this, but
+  it appears to work okay, and it seems how Leiningen gets tasks done, too. See
+  `leiningen.core.utils/require-resolve`."}
+  [opt]
+  (let [filepath (str (opt :perflog-tests-directory)
+                      (opt :perflog-tests-filename))
+        tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
+    (require (symbol tests-file) :reload)))
 

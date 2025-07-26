@@ -21,10 +21,10 @@
  :perflog-results-directory "resources/performance_entries/"
 
  :excludes #{"test-name to skip"
-             #_"mapping stuff"
+             "mapping stuff"
              #_"custom `conj`"
-             #_"plus, vary number of digits in args"
-             #_"plus, vary number of operands"}
+             "plus, vary number of digits in args"
+             "plus, vary number of operands"}
 
  :verbose? true
  :testing-thoroughness :quick
