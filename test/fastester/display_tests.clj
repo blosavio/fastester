@@ -53,6 +53,35 @@
       4 0.444)))
 
 
+(deftest integer-keyed-map->vector-tests
+  (testing "valid, empty map"
+    (is (= [] (integer-keyed-map->vector {}))))
+  (testing "valid, in-order"
+    (is (= ["foo" "bar" "baz"]
+           (integer-keyed-map->vector {0 "foo"
+                                       1 "bar"
+                                       2 "baz"}))))
+  (testing "valid, out-of-order"
+    (is (= ["foo" "bar" "baz"]
+           (integer-keyed-map->vector {1 "bar"
+                                       2 "baz"
+                                       0 "foo"}))))
+  (testing "invalid, no zero"
+    (is (thrown? Exception
+                 (integer-keyed-map->vector {1 "bar"
+                                             2 "baz"}))))
+  (testing "invalid, keys not all integers"
+    (is (thrown? Exception 
+                 (integer-keyed-map->vector {0 "foo"
+                                             1 "bar"
+                                             "two" "baz"}))))
+  (testing "invalide, keys not incremental"
+    (is (thrown? Exception 
+                 (integer-keyed-map->vector {0 "foo"
+                                             1 "bar"
+                                             3 "baz"})))))
+
+
 (deftest transpose-tests
   (testing "empty matrix"
     (is (= [] (transpose [[]]))))
@@ -72,14 +101,14 @@
       [[:a :b :c :d]
        [:e :f :g :h]
        [:i :j :k :l]] [[:a :e :i]
-                       [:b :f :j]
-                       [:c :g :k]
-                       [:d :h :l]]
+       [:b :f :j]
+       [:c :g :k]
+       [:d :h :l]]
 
       [[:a :b :c]
        [:d :e :f]] [[:a :d]
-                    [:b :e]
-                    [:c :f]]))
+       [:b :e]
+       [:c :f]]))
   (testing "round-tripping"
     (are [x] (= x (transpose (transpose x)))
       [[:a :b :c]

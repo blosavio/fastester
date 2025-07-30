@@ -2,9 +2,7 @@
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
-   [fastester.measure :refer [defperf
-                              #_do-selected-performance-tests
-                              #_do-all-performance-tests]]))
+   [fastester.measure :refer [defperf]]))
 
 
 (defn log-range-fn
@@ -65,12 +63,16 @@
   log-range-5)
 
 
-#_(do-all-performance-tests)
-#_(do-selected-performance-tests)
-#_(fastester.measure/clear-perf-test-registry!)
-#_(fastester.measure/create-results-directories #{})
-#_ @fastester.measure/perf-test-registry
-#_ fastester.measure/options
-#_(println "\n\n\n\n\n")
-#_*clojure-version*
+(comment
+  (require '[fastester.measure :refer [clear-perf-test-registry!
+                                       do-all-performance-tests
+                                       do-selected-performance-tests
+                                       perf-test-registry]])
+
+  #_(do-all-performance-tests)
+  #_(do-selected-performance-tests)
+  #_(fastester.measure/clear-perf-test-registry!)
+  #_ @fastester.measure/perf-test-registry
+  #_(println "\n\n\n\n\n")
+  )
 

@@ -5,6 +5,7 @@
             :url "https://opensource.org/license/mit"
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.12.1"]
+                 [com.hypirion/clj-xchart "0.2.0"]
                  [criterium "0.4.6"]]
   :repl-options {:init-ns fastester.core}
   :plugins []

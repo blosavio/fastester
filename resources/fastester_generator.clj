@@ -22,7 +22,7 @@
 #_(do-selected-performance-tests)
 
 
-#_(generate-all-perflogs options)
+(generate-all-perflogs options)
 
 
 (defn -main

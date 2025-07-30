@@ -1,6 +1,7 @@
 (ns fastester.display
   "Create html displays of library performance across versions."
   (:require
+   [com.hypirion.clj-xchart :as xc]
    [hiccup2.core :as h2]
    [hiccup.page :as page]
    [hiccup.element :as element]
@@ -299,6 +300,179 @@
            (arg-vs-version-table o-data opt)])))
 
 
+(defn create-img-directory
+  "Create directory to contain chart images, location declared by options keys
+  `:perflog-html-directory` and `:img-subdirectory`."
+  {:UUIDv4 #uuid "ec828323-9f42-4e40-a5e2-b040982a19df"
+   :no-doc true}
+  [opt]
+  (.mkdir (io/file (opt :perflog-html-directory) (opt :img-subdirectory))))
+
+
+(defn img-filepath
+  "Given integers `group-idx` & `fexper-idx`, and options hashmap `opt`, returns
+  a filepath string."
+  {:UUIDv4 #uuid "91c71ff4-3486-4469-b79f-6a45bb1f1ba2"
+   :no-doc true}
+  [group-idx fexpr-idx opt]
+  (str (opt :perflog-html-directory)
+       (opt :img-subdirectory)
+       "group-"
+       group-idx
+       "-fexpr-"
+       fexpr-idx
+       ".svg"))
+
+
+(defn integer-keyed-map->vector
+  "Given hashmap `m` with integer keys, returns a vector of `m`'s values. Throws
+  if any of the following conditions are not satisfied:
+
+  * All keys are integers.
+  * Keys incrementally increase.
+  * Zero must be a key, if any.
+
+  Returns an empty vector if `m` is empty."
+  {:UUIDv4 #uuid "e183849b-696f-4842-a46b-1ec05e6d9d68"
+   :no-doc true}
+  [m]
+  (if (= m {})
+    []
+    (let [all-ints? (if (every? integer? (keys m))
+                      true
+                      (throw (Exception. "All keys must be integers.")))
+          sorted (into (sorted-map) m)
+          incremental? (if (->> (keys sorted)
+                                (#(map - (next %) %))
+                                (every? #(= % 1)))
+                         true
+                         (throw (Exception.
+                                 "Integer keys must incrementally increase.")))
+          contains-zero? (if (contains? sorted 0)
+                           true
+                           (throw (Exception. "One key must be integer zero.")))]
+      (vec (vals (into (sorted-map) m))))))
+
+
+(defn nested-maps->vecs
+  "Convert nested maps of rearranged chart data `data` from this:
+
+  ```clojure
+  {5 {:x {0 :datum-0
+          1 :datum-1
+          2 :datum-2}
+      :y {0 :datum-3
+          1 :datum-4
+          2 :datum-5}}}
+  ```
+
+  to nested vectors like this:
+
+  ```clojure
+  {5 {:x [:datum-0
+          :datum-1
+          :datum-2]
+      :y [:datum-3
+          :datum-4
+          :datum-5]}}
+  ```
+
+  So that `clj-xchart` can consume the data."
+  {:UUIDv4 #uuid "98581e3f-360b-4105-aea0-34a2ddfb3b04"
+   :no-doc true}
+  [data]
+  (update-vals data #(update-vals % integer-keyed-map->vector)))
+
+
+(defn rearrange-chart-data
+  "Given fexpr organized data `o-data`, returns the mean±std with the following
+  arrangement:
+
+  ```clojure
+  {\"version N\" {:x-data     [n values]
+                  :y-data     [mean values]
+                  :error-bars [std values]}
+   \"version N+1\" ...
+  }
+  ```"
+  {:UUIDv4 #uuid "724d4c77-bde4-40b2-8498-0df1021147f3"
+   :no-doc true}
+  [o-data]
+  (let [flattened (for [n-arg o-data
+                        version (second n-arg)]
+                    (let [datums (second version)]
+                      {:version (first version)
+                       :n (first n-arg)
+                       :mean (first (datums :mean))
+                       :var (first (datums :variance))}))
+        get-all #(->> flattened (map %) distinct sort)
+        all-args (get-all :n)
+        all-versions (get-all :version)
+        get-idx #(.indexOf %1 %2)]
+    (reduce (fn [acc x]
+              (-> acc
+                  (assoc-in [(x :version)
+                             :y (get-idx all-args (x :n))]
+                            (x :mean))
+                  (assoc-in [(x :version)
+                             :x (get-idx all-args (x :n))]
+                            (x :n))
+                  (assoc-in [(x :version)
+                             :error-bars-SKIP! (get-idx all-args (x :n))]
+                            (Math/sqrt (x :var)))))
+            {}
+            flattened)))
+
+
+(def default-chart-style
+  {:theme :xchart
+   :chart {:background-color :white
+           :title {:box {:visible? false}}}
+   :legend {:position :outside-e
+            :border-color :white}
+   :plot {:border-visible? false
+          :border-color :white}})
+
+
+(defn chart
+  "Given organized data `o-data` for an fexpr, options hashmap `opt`, group/idx
+  and fexpr/idx, uses clj-xchart wrapper lib to generate an svg chart of
+  mean±std time versus `n` args for all the available versions in that fexpr.
+
+  1. Writes svg to file
+  `(options :html-directory)/(options :img-subdirectory)/`.
+
+  2. Returns a hiccup/html image element."
+  {:UUIDv4 #uuid "a0313ab9-1cf1-4fcf-aaa9-612f13409583"
+   :no-doc true}
+  [o-data opt group group-idx fexpr fexpr-idx]
+  (let [file-path (img-filepath group-idx fexpr-idx opt)
+        short-path (clojure.string/replace file-path  #"doc/" "")
+        this-chart-style {:title "Benchmark times"
+                          :x-axis {:title "argument, n"
+                                   :logarithmic?
+                                   (get-in opt [:chart-settings
+                                                fexpr
+                                                :x-axis-logarithmic?])}
+                          :y-axis {:title "time (sec)"
+                                   :logarithmic?
+                                   (get-in opt [:chart-settings
+                                                fexpr
+                                                :y-axis-logarithmic?])}}
+        chart-style (merge default-chart-style
+                           this-chart-style)
+        chrt (-> o-data
+                 rearrange-chart-data
+                 nested-maps->vecs
+                 (xc/xy-chart chart-style))
+        img-alt-text (str "Benchmark measurements for expression `"
+                          fexpr
+                          "`, time versus 'n' arguments, comparing different versions.")]
+    (do
+      (xc/spit chrt file-path)
+      (element/image short-path img-alt-text))))
+
+
 (defn fexpr-divs
   "Given organized data `o-data` for one fexpr, `opt` options hashmap, `group`
   string, and the group index `group-idx` as an integer, returns a hiccup/html
@@ -311,9 +485,11 @@
         fexpr-index #(.indexOf fexprs %)
         h4-fn #(keyword (str "h4#group-" group-idx
                              "-fexpr-" (fexpr-index %)))
+        _ (create-img-directory opt)
         red-fn (fn [acc ky vl]
                  (conj acc
                        [(h4-fn ky) ky]
+                       (chart vl opt group group-idx ky (fexpr-index ky))
                        [:button.collapser {:type "button"} "Show details"]
                        (arg-divs vl
                                  opt
@@ -337,7 +513,7 @@
         h3-fn #(keyword (str "h3#group-" (group-index %)))]
     (reduce-kv (fn [acc ky vl] (conj acc [(h3-fn ky) ky]
                                      (fexpr-divs vl opt ky (group-index ky))
-                                     ((opt :display-comments) ky)))
+                                     ((opt :comments) ky)))
                [:section]
                organized-data)))
 
