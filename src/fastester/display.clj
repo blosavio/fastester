@@ -15,14 +15,14 @@
 
 (defn get-result-filenames
   "Given options hashmap `opt`, returns a sequence of filepath strings of all
-  preformance results in `:perflog-results-directory`."
+  preformance results in `:results-directory`."
   {:UUIDv4 #uuid "2bb3732e-6749-4506-9cb5-4a62ffa95b25"
    :no-doc true}
   [opt]
-  (let [prefix (str (opt :perflog-results-directory)
+  (let [prefix (str (opt :results-directory)
                     "version ")
         suffix ".edn"]
-    (->> (opt :perflog-results-directory)
+    (->> (opt :results-directory)
          io/file
          file-seq
          (map #(.toString %))
@@ -78,7 +78,7 @@
   [data opt s]
   (let [test-idx (-> data :fastester/metadata :index)
         version (-> data :fastester/metadata :version)
-        filepath (opt :perflog-results-directory)
+        filepath (opt :results-directory)
         href (str "../" filepath "version " version "/test-" test-idx ".edn")]
     [:a {:href href} s]))
 
@@ -302,11 +302,11 @@
 
 (defn create-img-directory
   "Create directory to contain chart images, location declared by options keys
-  `:perflog-html-directory` and `:img-subdirectory`."
+  `:html-directory` and `:img-subdirectory`."
   {:UUIDv4 #uuid "ec828323-9f42-4e40-a5e2-b040982a19df"
    :no-doc true}
   [opt]
-  (.mkdir (io/file (opt :perflog-html-directory) (opt :img-subdirectory))))
+  (.mkdir (io/file (opt :html-directory) (opt :img-subdirectory))))
 
 
 (defn img-filepath
@@ -315,7 +315,7 @@
   {:UUIDv4 #uuid "91c71ff4-3486-4469-b79f-6a45bb1f1ba2"
    :no-doc true}
   [group-idx fexpr-idx opt]
-  (str (opt :perflog-html-directory)
+  (str (opt :html-directory)
        (opt :img-subdirectory)
        "group-"
        group-idx
@@ -396,19 +396,25 @@
   }
   ```"
   {:UUIDv4 #uuid "724d4c77-bde4-40b2-8498-0df1021147f3"
-   :no-doc true}
-  [o-data]
+   :no-doc true
+   :implementation-note "If an axis is logarithmic, it cannot display negative
+  values, but a datum±std *may* be negative. In that case, assoc error bar data
+  to `:ignored` so that clj-xchart ignores the error bars. See [[chart]]."}
+  [o-data opt fexpr]
   (let [flattened (for [n-arg o-data
                         version (second n-arg)]
                     (let [datums (second version)]
-                      {:version (first version)
+                      {:version (str "version "(first version))
                        :n (first n-arg)
                        :mean (first (datums :mean))
                        :var (first (datums :variance))}))
         get-all #(->> flattened (map %) distinct sort)
         all-args (get-all :n)
         all-versions (get-all :version)
-        get-idx #(.indexOf %1 %2)]
+        get-idx #(.indexOf %1 %2)
+        error-bars? (not (get-in
+                          opt
+                          [:chart-settings fexpr :y-axis-logarithmic?]))]
     (reduce (fn [acc x]
               (-> acc
                   (assoc-in [(x :version)
@@ -418,9 +424,12 @@
                              :x (get-idx all-args (x :n))]
                             (x :n))
                   (assoc-in [(x :version)
-                             :error-bars-SKIP! (get-idx all-args (x :n))]
+                             (if error-bars?
+                               :error-bars
+                               :ignored)
+                             (get-idx all-args (x :n))]
                             (Math/sqrt (x :var)))))
-            {}
+            (sorted-map)
             flattened)))
 
 
@@ -431,7 +440,8 @@
    :legend {:position :outside-e
             :border-color :white}
    :plot {:border-visible? false
-          :border-color :white}})
+          :border-color :white}
+   :error-bars-color :match-series})
 
 
 (defn chart
@@ -444,25 +454,31 @@
 
   2. Returns a hiccup/html image element."
   {:UUIDv4 #uuid "a0313ab9-1cf1-4fcf-aaa9-612f13409583"
-   :no-doc true}
+   :no-doc true
+   :implementation-note "If an axis is logarithmic, inhibit error bars because
+  they may cross over to negative values, which cannot be displayed on a log
+  scale. If an axis is not logarithmic, display error bars and set the mininum
+  value to zero. See [[rearrange-chart-data]]."}
   [o-data opt group group-idx fexpr fexpr-idx]
   (let [file-path (img-filepath group-idx fexpr-idx opt)
         short-path (clojure.string/replace file-path  #"doc/" "")
+        x-log? (get-in opt [:chart-settings fexpr :x-axis-logarithmic?])
+        y-log? (get-in opt [:chart-settings fexpr :y-axis-logarithmic?])
         this-chart-style {:title "Benchmark times"
                           :x-axis {:title "argument, n"
-                                   :logarithmic?
-                                   (get-in opt [:chart-settings
-                                                fexpr
-                                                :x-axis-logarithmic?])}
+                                   :logarithmic? x-log?}
                           :y-axis {:title "time (sec)"
-                                   :logarithmic?
-                                   (get-in opt [:chart-settings
-                                                fexpr
-                                                :y-axis-logarithmic?])}}
+                                   :logarithmic? y-log?}}
+        this-chart-style (if (not x-log?)
+                           (assoc-in this-chart-style [:x-axis :min] 0)
+                           this-chart-style)
+        this-chart-style (if (not y-log?)
+                           (assoc-in this-chart-style [:y-axis :min] 0)
+                           this-chart-style)
         chart-style (merge default-chart-style
                            this-chart-style)
         chrt (-> o-data
-                 rearrange-chart-data
+                 (rearrange-chart-data opt fexpr)
                  nested-maps->vecs
                  (xc/xy-chart chart-style))
         img-alt-text (str "Benchmark measurements for expression `"
@@ -511,9 +527,10 @@
         group-names (keys organized-data)
         group-index #(.indexOf group-names %)
         h3-fn #(keyword (str "h3#group-" (group-index %)))]
-    (reduce-kv (fn [acc ky vl] (conj acc [(h3-fn ky) ky]
-                                     (fexpr-divs vl opt ky (group-index ky))
-                                     ((opt :comments) ky)))
+    (reduce-kv (fn [acc ky vl] (conj acc
+                                     [(h3-fn ky) ky]
+                                     ((opt :comments) ky)
+                                     (fexpr-divs vl opt ky (group-index ky))))
                [:section]
                organized-data)))
 
@@ -566,7 +583,7 @@
   {:UUIDv4 #uuid "e1063a97-77e9-420e-b321-e0f31a729a7d"
    :no-doc true}
   [opt o-data]
-  (spit (str (opt :perflog-html-directory) (opt :perflog-html-filename))
+  (spit (str (opt :html-directory) (opt :html-filename))
         (-> (page-template
              (str (opt :project-formatted-name) " library performance log")
              (opt :perflog-UUID)
@@ -574,7 +591,7 @@
                     [:h1 (str (opt :project-formatted-name)
                               " library performance log")]
                     (toc o-data)
-                    (opt :perflog-preamble)
+                    (opt :preamble)
                     (main-section o-data opt)])
              (opt :copyright-holder)
              [:a {:href "https://github.com/blosavio/fastester"} "Fastester"])
@@ -587,13 +604,13 @@
   {:UUIDv4 #uuid "3c43eb12-0ad8-44b5-919c-fc117b6cd1bf"
    :no-doc true}
   [opt o-data]
-  (spit (str (opt :perflog-markdown-directory) (opt :perflog-markdown-filename))
+  (spit (str (opt :markdown-directory) (opt :markdown-filename))
         (h2/html
          (vec (-> [:body
                    [:h1 (str (opt :project-formatted-name)
                              " library performance log")]
                    (toc o-data)
-                   (opt :perflog-preamble)
+                   (opt :preamble)
                    (main-section o-data opt)]
                   (conj (perflog-md-footer opt)))))))
 
@@ -608,7 +625,7 @@
   See project documentation for details on the structure of the options map.
 
   Performance log data will be read from `resources/performance_entries/`
-  unless superseded by `:perflog-tests-directory` or `:perflog-data-file` values
+  unless superseded by `:tests-directory` or `:data-file` values
   in the options map.
 
   Defaults supplied by `src/perflog_defaults.edn`"
@@ -621,9 +638,9 @@
         (generate-perflog-markdown options-n-defaults organized-data)
         (if (options-n-defaults :tidy-html?)
           (do (tidy-html-document
-               (str (options-n-defaults :perflog-html-directory)
-                    (options-n-defaults :perflog-html-filename)))
+               (str (options-n-defaults :html-directory)
+                    (options-n-defaults :html-filename)))
               (tidy-html-body
-               (str (options-n-defaults :perflog-markdown-directory)
-                    (options-n-defaults :perflog-markdown-filename))))))))
+               (str (options-n-defaults :markdown-directory)
+                    (options-n-defaults :markdown-filename))))))))
 

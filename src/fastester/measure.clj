@@ -92,7 +92,7 @@
 
 (defn create-results-directories
   "Create directories to contain benchmarking results, location declared by
-  options key `:perflog-results-directory`. Consults names contained in set
+  options key `:results-directory`. Consults names contained in set
   `excludes`. If zero performance tests are to be executed (i.e., all tests are
   excluded), directories are not created.
 
@@ -101,7 +101,7 @@
   [excludes]
   (let [options (get-options)
         mkdir #(.mkdir (io/file %))
-        results-dirname (options :perflog-results-directory)
+        results-dirname (options :results-directory)
         version-dirname (str results-dirname
                              "/version "
                              (project-version))
@@ -223,7 +223,7 @@
   ```"
   {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
   [ver group f fexpr arg idx opts]
-  (let [dirname (opts :perflog-results-directory)
+  (let [dirname (opts :results-directory)
         filepath (str dirname
                       "version "
                       ver
@@ -308,15 +308,15 @@
 
 (defn load-tests-ns
   "Given options hashmap `opt`, `require`s the testing namespace declared by the
-  Fastester options `:perflog-tests-directory` and `:perflog-tests-filename`."
+  Fastester options `:tests-directory` and `:tests-filename`."
   {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
    :no-doc true
    :implementation-note "Don't feel great about abusing `require` like this, but
   it appears to work okay, and it seems how Leiningen gets tasks done, too. See
   `leiningen.core.utils/require-resolve`."}
   [opt]
-  (let [filepath (str (opt :perflog-tests-directory)
-                      (opt :perflog-tests-filename))
+  (let [filepath (str (opt :tests-directory)
+                      (opt :tests-filename))
         tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
     (require (symbol tests-file) :reload)))
 

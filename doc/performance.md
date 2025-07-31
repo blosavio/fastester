@@ -11,7 +11,7 @@
     </div>
     <div>
       <p>
-        Perflog preamble comments...
+        Preamble comments...
       </p>
       <pre><code>(+ 1 2) ;; =&gt; 3</code></pre>
       <p>
@@ -24,6 +24,9 @@
       <h3 id="group-0">
         plus, vary number of digits in args
       </h3>
+      <p>
+        Plus vary args comments...
+      </p>
       <div>
         <h4 id="group-0-fexpr-0">
           (fn [n] (delayed-+ n n n))
@@ -383,12 +386,12 @@
           </table>
         </div>
       </div>
-      <p>
-        Plus vary args comments...
-      </p>
       <h3 id="group-1">
         plus, vary number of operands
       </h3>
+      <p>
+        Note: Added this test starting with version 4
+      </p>
       <div>
         <h4 id="group-1-fexpr-0">
           (fn [n] (apply + (take n (repeat 64))))
@@ -491,12 +494,12 @@
           </table>
         </div>
       </div>
-      <p>
-        Note: Added this test starting with version 4
-      </p>
       <h3 id="group-2">
         custom `conj`
       </h3>
+      <p>
+        Version 6 implemented `conj` with transients, so should be faster...
+      </p>
       <div>
         <h4 id="group-2-fexpr-0">
           (fn [n] (my-conj (vec (repeatedly n (fn* [] (rand-int 99)))) :tail-value))
@@ -579,12 +582,12 @@
           </table>
         </div>
       </div>
-      <p>
-        Version 6 implemented `conj` with transients, so should be faster...
-      </p>
       <h3 id="group-3">
         mapping stuff
       </h3>
+      <p>
+        Note: Skipped version 5...
+      </p>
       <div>
         <h4 id="group-3-fexpr-0">
           (fn [n] (map inc (range n)))
@@ -720,13 +723,10 @@
           </table>
         </div>
       </div>
-      <p>
-        Note: Skipped version 5...
-      </p>
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 July 30.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 July 31.<span id="uuid"><br>
       50c7eada-f96d-41bf-aed0-47d386e61136</span>
     </p>
   </body>
