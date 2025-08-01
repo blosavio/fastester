@@ -1,0 +1,60 @@
+{:overhead 6.499734422006207E-8,
+ :samples
+ (100673524 100542741 101759478 100888930 100483007 100492070),
+ :runtime-details
+ {:spec-vendor "Oracle Corporation",
+  :spec-name "Java Virtual Machine Specification",
+  :clojure-version-string "1.12.1",
+  :java-version "11.0.28",
+  :vm-name "OpenJDK 64-Bit Server VM",
+  :vm-vendor "Ubuntu",
+  :clojure-version
+  {:major 1, :minor 12, :incremental 1, :qualifier nil},
+  :spec-version "11",
+  :sun-arch-data-model "64"},
+ :mean
+ [9.601579111111113E-4 (9.577094222222223E-4 9.651804126984127E-4)],
+ :final-gc-time 164614760,
+ :execution-count 105,
+ :variance
+ [2.1977272099365207E-11
+  (6.627811795283726E-13 4.279567158696321E-11)],
+ :os-details
+ {:arch "amd64",
+  :available-processors 4,
+  :name "Linux",
+  :version "5.15.0-144-generic"},
+ :tail-quantile 0.025,
+ :outlier-variance 0.13888888888888876,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 1, :high-severe 0},
+ :warmup-time 5789725109,
+ :lower-q
+ [9.569810190476191E-4 (9.569810190476191E-4 9.570673333333334E-4)],
+ :warmup-executions 5995,
+ :sample-count 6,
+ :upper-q
+ [9.678450833333335E-4 (9.586397726190477E-4 9.691378857142858E-4)],
+ :fastester/metadata
+ {:fexpr "(fn [n] (apply + (seq-of-n-repeats n)))",
+  :date {:year 2025, :month "August", :day 1},
+  :group "plus, vary number of operands",
+  :index 92,
+  :UUIDv4 #uuid "5a868986-886b-4339-98a2-736e4d952cfc",
+  :testing-thoroughness :quick,
+  :arg 10000,
+  :n-threads 3,
+  :version "6",
+  :parallel? false},
+ :total-time 0.60483975,
+ :sample-variance [2.187259958712017E-11 (0.0 0.0)],
+ :options
+ {:max-gc-attempts 100,
+  :samples 6,
+  :target-execution-time 100000000,
+  :warmup-jit-period 5000000000,
+  :tail-quantile 0.025,
+  :bootstrap-size 500,
+  :overhead 6.499734422006207E-8},
+ :sample-mean
+ [9.600630952380953E-4 (9.460326499036065E-4 9.740935405725842E-4)],
+ :results :fastester/benchmark-fn-results-elided}

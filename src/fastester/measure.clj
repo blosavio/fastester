@@ -4,6 +4,7 @@
   Concept: Run performace test suite once per version."
   (:require
    [clojure.java.io :as io]
+   [clojure.math :as math]
    [criterium.core :as crit]))
 
 
@@ -380,5 +381,5 @@
   ```"
   {:UUIDv4 #uuid "8f0b944e-0381-4dd3-961f-4eddd19cc73b"}
   [i]
-  (map #(long (clojure.math/pow 10 %)) (range 0 (inc i))))
+  (map #(long (math/pow 10 %)) (range 0 (inc i))))
 
