@@ -217,6 +217,37 @@
   (mapv #(col (second %) opt) (into (sorted-map) m)))
 
 
+(defn version-sort-by-comparator
+  "Given options hashmap `opt`, returns a comparator for sorting 'version ABC'
+  and 'version XYZ'. Comparator associated to `:sort-comparator` in `opt` should
+  return `true` if `ABC` comes before `XYZ`.
+
+  Consult Clojure's [comparator guide](https://clojure.org/guides/comparators)."
+  {:UUIDv4 #uuid "e1b08f92-7e05-47b9-a7cb-295431e35b17"
+   :no-doc true}
+  [opt]
+  (let [trim #(second (clojure.string/split %  #"version "))]
+    (fn [a b] ((opt :sort-comparator) (trim a) (trim b)))))
+
+
+(defn sort-table-rows-by-version
+  "Given version-prepended table rows of the form
+
+  ```clojure
+  [[[:td 4] ...]
+   [[:td 5] ...]
+   [[:td 6] ...]
+  ]```
+
+  sort according to comparator supplied by `opt` key `:sort-comparator`."
+  {:UUIDv4 #uuid "9ca5ac8f-f2ce-430b-8215-6b70315062d1"
+   :no-doc true}
+  [t opt]
+  (let [keyfn #(str "version " (-> % first second))
+        cmp (version-sort-by-comparator opt)]
+    (sort-by keyfn cmp t)))
+
+
 (defn table-rows
   "Given organized data `o-data` and options hashmap `opt`, returns a
   hiccup/html table row for a single version of a single fexpr from a single
@@ -234,7 +265,10 @@
                            sort))
         transposed-rows (transpose raw-rows)
         version-prepended-rows (mapv #(prepend %1 %2) versions transposed-rows)
-        attribute-prepeneded-rows (mapv #(prepend :tr %) version-prepended-rows)]
+        sorted-prepended-rows (sort-table-rows-by-version
+                               version-prepended-rows
+                               opt)
+        attribute-prepeneded-rows (mapv #(prepend :tr %) sorted-prepended-rows)]
     attribute-prepeneded-rows))
 
 
@@ -478,8 +512,12 @@
                            this-chart-style)
         chart-style (merge default-chart-style
                            this-chart-style)
+        sort-versions-by-comparator #(into
+                                      (sorted-map-by
+                                       (version-sort-by-comparator opt)) %)
         chrt (-> o-data
                  (rearrange-chart-data opt fexpr)
+                 sort-versions-by-comparator
                  nested-maps->vecs
                  (xc/xy-chart chart-style))
         img-alt-text (str "Benchmark measurements for expression `"
