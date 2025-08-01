@@ -22,14 +22,17 @@
  :results-directory "resources/performance_entries/"
 
  :excludes #{"test-name to skip"
-             "mapping stuff"
-             "custom `conj`"
-             "plus, vary number of digits in args"
-             "plus, vary number of operands"}
+             #_"plus, vary number of digits in args"
+             #_"plus, vary number of operands"
+             #_"mapping stuff"
+             #_"custom `conj`"}
 
  :verbose? true
  :testing-thoroughness :quick
  :parallel? true
+ :n-threads 3
+
+ :save-benchmark-fn-results? false
 
  :tidy-html? true
 
@@ -66,19 +69,19 @@
   {:x-axis-logarithmic? true
    :y-axis-logarithmic? false}
 
-  "(fn [n] (apply + (take n (repeat 64))))"
+  "(fn [n] (apply + (seq-of-n-repeats n)))"
+  {:x-axis-logarithmic? true
+   :y-axis-logarithmic? true}
+
+  "(fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))"
+  {:x-axis-logarithmic? true
+   :y-axis-logarithmic? true}
+
+  "(fn [n] (map inc (range-of-length-n n)))"
   {:x-axis-logarithmic? true
    :y-axis-logarithmic? false}
 
-  "(fn [n] (my-conj (vec (repeatedly n (fn* [] (rand-int 99)))) :tail-value))"
-  {:x-axis-logarithmic? true
-   :y-axis-logarithmic? false}
-
-  "(fn [n] (map inc (range n)))"
-  {:x-axis-logarithmic? true
-   :y-axis-logarithmic? false}
-
-  "(fn [n] (map str/upper-case (take n (cycle [\"a\" \"b\" \"c\"]))))"
+  "(fn [n] (map str/upper-case (abc-cycle-of-length-n n)))"
   {:x-axis-logarithmic? true
    :y-axis-logarithmic? false}}}
 

@@ -61,7 +61,7 @@
                                (-> v :fastester/metadata :arg)
                                (-> v :fastester/metadata :version)]
                               v))
-          {}
+          (sorted-map)
           flat-data))
 
 
