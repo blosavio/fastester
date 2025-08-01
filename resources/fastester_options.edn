@@ -29,7 +29,7 @@
 
  :verbose? true
  :testing-thoroughness :quick
- :parallel? true
+ :parallel? false
  :n-threads 3
 
  :save-benchmark-fn-results? false
