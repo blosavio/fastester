@@ -67,19 +67,20 @@
 
 (defn link-to-original-data
   "Given benchmark result `data`, `opt` options hashmap, and link text string
-  `s`, returns a hiccup/html link to the original data file.
+  `s`, returns a hiccup/html link to the original data file, hosted somewhere
+  accessible by a url or directory path.
 
-  Note: Implementation assumes rendered html is in the `doc` directory and
-  the results are rooted in the `resources` directory. TODO: Upgrade
-  implementation to be more generic so that links 'know' how to navigate from
-  the html page to the results directory."
+  The link href is constructed by concatenating options `:results-url` and
+  `:results-directory`. To link to a local resource, set `:results-url` to
+  something like `../`."
   {:UUIDv4 #uuid "32909a01-7b21-4633-8515-9d939a448d53"
    :no-doc true}
   [data opt s]
   (let [test-idx (-> data :fastester/metadata :index)
         version (-> data :fastester/metadata :version)
+        url (opt :results-url)
         filepath (opt :results-directory)
-        href (str "../" filepath "version " version "/test-" test-idx ".edn")]
+        href (str url filepath "version " version "/test-" test-idx ".edn")]
     [:a {:href href} s]))
 
 

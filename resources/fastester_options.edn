@@ -19,6 +19,7 @@
  :markdown-directory "doc/"
  :markdown-filename "performance.md"
 
+ :results-url "https://github.com/blosavio/fastester/blob/main/"
  :results-directory "resources/performance_entries/"
 
  :excludes #{"test-name to skip"

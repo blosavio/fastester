@@ -19,7 +19,7 @@
 
 #_ @fastester.measure/perf-test-registry
 #_(do-all-performance-tests)
-(do-selected-performance-tests)
+#_(do-selected-performance-tests)
 
 #_(generate-all-perflogs options)
 
