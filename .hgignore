@@ -13,4 +13,5 @@ pom.xml.asc
 .git/**
 .nrepl-port
 .lein-repl-history
+.lein-failures
 resources/compare_example_benchmark_outputs.clj

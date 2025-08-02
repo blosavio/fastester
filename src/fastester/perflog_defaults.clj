@@ -1,20 +1,24 @@
 (def ^{:no-doc true}
   perflog-defaults-docstring
-  "A hash-map residing in `perflog_defaults.clj` that supplies the default
- values for the following options keys:
+  "A hash-map residing in `src/perflog_defaults.clj` that supplies the default
+ values for the following option keys:
 
-  * `:perflog-tests-directory`
-  * `:preflog-tests-filename`
-  * `:perflog-html-directory`
-  * `:perflog-html-filename`
-  * `:perflog-markdown-directory`
-  * `:perflog-markdown-filename`
-  * `:perflog-results-directory`
+  * `:tests-directory`
+  * `:tests-filename`
+  * `:html-directory`
+  * `:html-filename`
+  * `:img-subdirectory`
+  * `:markdown-directory`
+  * `:markdown-filename`
+  * `:results-url`
+  * `:results-directory`
   * `:verbose?`
   * `:testing-thoroughness`
   * `:parallel?`
+  * `:n-threads`
+  * `:save-benchmark-fn-results?`
   * `:tidy-html?`
-  * `:perflog-preamble`
+  * `:preamble`
 
 
   Override default values by associating new values into the Fastester _options_
@@ -23,32 +27,39 @@
 
 (def ^{:doc perflog-defaults-docstring
        :UUIDv4 #uuid "9e50c897-a734-4fb9-b671-b924bc209a81"}
-  perflog-defaults {:perflog-tests-directory "test/fastester/performance/"
-                    :preflog-tests-filename "tests.clj"
+  perflog-defaults
+  {:tests-directory "test/fastester/performance/"
+   :tests-filename "tests.clj"
 
-                    :perflog-html-directory "doc/"
-                    :perflog-html-filename "performance.html"
+   :html-directory "doc/"
+   :html-filename "performance.html"
+   :img-subdirectory "img/"
 
-                    :perflog-markdown-directory "doc/"
-                    :perflog-markdown-filename "perfornamce.md"
+   :markdown-directory "doc/"
+   :markdown-filename "performance.md"
 
-                    :perflog-results-directory "resources/performance_entries/"
+   :results-url "https://example.com"
+   :results-directory "resources/performance_entries/"
 
-                    :verbose? false
-                    :testing-thoroughness :quick
-                    :parallel? false
+   :excludes #{}
 
-                    :tidy-html? false
+   :verbose? false
+   :testing-thoroughness :quick
+   :parallel? false
+   :n-threads 1
+   :save-benchmark-fn-results? true
 
-                    :perflog-preamble [:div
-                                       [:p "Perflog preamble..."]
+   :tidy-html? false
 
-                                       [:a
-                                        {:href
-                                         "https://example.com"}
-                                        "An example link."]
+   :preamble [:div
+              [:p "Perflog preamble..."]
 
-                                       [:p "Example code:"]
+              [:a
+               {:href
+                "https://example.com"}
+               "An example link."]
 
-                                       [:pre [:code "(map inc [1 2 3])"]]]})
+              [:p "Example code:"]
+
+              [:pre [:code "(map inc [1 2 3])"]]]})
 

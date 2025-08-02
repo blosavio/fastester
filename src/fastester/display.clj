@@ -1,5 +1,9 @@
 (ns fastester.display
-  "Create html displays of library performance across versions."
+  "Create html displays with charts and tables of library performance,
+  communicating objective performance changes across versions .
+
+  See [[fastester.measure]] for utilities that produce the raw benchmarking
+  data."
   (:require
    [com.hypirion.clj-xchart :as xc]
    [hiccup2.core :as h2]
@@ -471,7 +475,14 @@
             flattened)))
 
 
-(def default-chart-style
+(def ^{:no-doc true}
+  default-chart-style-dosctring
+  "A hashmap containing `clj-xchart` chart options, governing theme, legend
+position, plot border, etc.")
+
+
+(def ^{:doc default-chart-style-dosctring}
+  default-chart-style
   {:theme :xchart
    :chart {:background-color :white
            :title {:box {:visible? false}}}
@@ -663,16 +674,18 @@
 
 
 (defn generate-all-perflogs
-  "Given Fastester options `opt` hashmap, write-to-file html and markdown
-  performance logs.
+  "Given Fastester options hashmap `opt`, write-to-file html and markdown
+  performance documents.
 
-  See project documentation for details on the structure of the options map.
+  See [[perflog-defaults]]
+  and
+  [Fastester project documentation](https://github.com/blosavio/fastester) for
+  details on the structure of the options map.
 
-  Performance log data will be read from `resources/performance_entries/`
-  unless superseded by `:tests-directory` or `:data-file` values
-  in the options map.
+  Performance data will be read from `resources/performance_entries/` unless
+  superseded by `:tests-directory` value in the options map.
 
-  Defaults supplied by `src/perflog_defaults.edn`"
+  Defaults supplied by `src/perflog_defaults.clj`"
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
   [opt]
   (let [options-n-defaults (merge perflog-defaults opt)

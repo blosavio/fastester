@@ -1,7 +1,11 @@
 (ns fastester.measure
-  "Execute performance tests.
+  "Execute benchmarking tests to objectively measure a function's performance.
 
-  Concept: Run performace test suite once per version."
+  The general idea is to run the performance test suite once per version. Any
+  performance improvement/regression is objectively measured.
+
+  See [[fastester.display]] for utilities that generate html charts and tables
+  to communicate those results."
   (:require
    [clojure.java.io :as io]
    [clojure.math :as math]
@@ -31,11 +35,21 @@
   (load-file "resources/fastester_options.edn"))
 
 
-(def perf-test-registry (atom #{}))
+(def ^{:no-doc true}
+  perf-test-registry-docstring
+  "An atom containing a set of benchmark tests to run. Typically populated with
+  [[defperf]], not manipulated directly.
+
+  See also [[clear-perf-test-registry!]].")
+
+
+(def ^{:doc perf-test-registry-docstring}
+  perf-test-registry (atom #{}))
 
 
 (defn clear-perf-test-registry!
-  "Remove all entries from [[perf-test-registry]]."
+  "Remove all entries from [[perf-test-registry]], thereby eliminating all
+  defined benchmarking tests."
   {:UUIDv4 #uuid "d615da84-0b3b-42e3-acdb-9cec175df53e"}
   []
   (swap! perf-test-registry empty))
@@ -46,14 +60,15 @@
 
   * `group` is a string that links conceptually-related performance tests.
 
-  * `f` is a 1-arity function that exercises some performance aspect. It's
+  * `f` is a 1-arity function that exercises some performance aspect. Its
   single argument is the \"n\" in *big-O* notation. `f` may be supplied as an
   S-expression or a function object. Supplying `f` as an S-expression has the
-  advantage that the definition will be later convey some meaning, e.g.,
-  `(fn [x] (+ x x))`, whereas a function object will render less meaningfully,
-  e.g., `#function[fastester.measure/eval11540/fn--11541]`.
+  advantage that the definition may later convey some meaning, e.g.,
+  `(fn [x] (+ x x))`, in the html charts and tables, whereas a function object
+  will render less meaningfully, e.g.,
+  `#function[fastester.measure/eval11540/fn--11541]`.
 
-  * `n` is a sequence of one or more arguments. During performace testing,
+  * `n` is a sequence of one or more arguments. During performance testing,
   elements of `n` will be individually supplied to the benchmarking utility.
 
   Example, supplying `f` as an S-expression:
@@ -77,7 +92,7 @@
   invocations with identical arguments have no additional affect beyond the
   initial registration.
 
-  Note 2: Invoking `defperf` with one sequence of arguments, then editing the
+  Note 2: Invoking `defperf` with one sequence of arguments, *then editing* the
   expression and invoking `defperf` again registers two unique performance
   tests. When developing at the REPL, be aware that the registry may become
   'stale' with outdated tests. See [[clear-perf-test-registry!]] or edit with,
@@ -118,16 +133,20 @@
 
 (def ^{:no-doc true}
   *performance-testing-options*-docstring
-  "Hashmap containing Criterium benchmarking options. Defaults to
-  `criterium.core/*default-quick-bench-opts*`. Create a new binding evironment
-  with `binding`.
+  "Hashmap containing Criterium benchmarking options used during benchmarking.
+  Defaults to
+  [`criterium.core/*default-quick-bench-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92).
+ Create a new binding evironment with `binding`.
 
+  Example:
   ```clojure
   (binding [*performance-testing-options* criterium.core/*default-benchmark-opts*]
     (do-one-performance-test (+ 1 2)))
   ```
 
-  See also `criterium.core/*default-benchmark-opts*` for alternate values.")
+  See also [`criterium.core/*default-benchmark-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83)
+  and
+  [[*lightning-benchmark-opts*]] for alternate values.")
 
 
 (def ^{:dynamic true
@@ -135,7 +154,18 @@
   *performance-testing-options* crit/*default-quick-bench-opts*)
 
 
-(def ^:dynamic
+(def ^{:no-doc true}
+  *lightning-benchmark-opts*-docstring
+  "Criterium benchmark options with extremely minimal samples, etc. Use only for
+ quick, proof-of-concept runs.
+
+ See [`criterium.core/*default-benchmark-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83)
+ and
+ [`criterium.core/*default-quick-bench-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92).")
+
+
+(def ^{:dynamic true
+       :doc *lightning-benchmark-opts*-docstring}
   *lightning-benchmark-opts*
   (reduce (fn [m k] (update m k #(/ % 2)))
           crit/*default-quick-bench-opts*
@@ -147,7 +177,8 @@
 
 (defmacro run-one-test-subroutine
   "Given 1-arity function S-expression `fexpr` and argument `arg`, run one
-  benchmark test using \"lightning\" thoroughness, sending result to *out*.
+  benchmark test using \"lightning\" thoroughness, sending result to
+  &ast;`out`&ast;.
 
   Example:
   ```clojure
@@ -182,7 +213,8 @@
   "Given `metadata` hashmap  generated by Criterium benchmarking, dissociate
   key-vals from metadata that might be personally identifying information or
   enable fingerprinting, etc."
-  {:UUIDv4 #uuid "eb6de892-6749-4092-8f0a-5e0d0852e94f"}
+  {:UUIDv4 #uuid "eb6de892-6749-4092-8f0a-5e0d0852e94f"
+   :no-doc true}
   [metadata]
   (let [remove-paths [[:runtime-details :vm-version]
                       [:runtime-details :name]
@@ -219,9 +251,8 @@
                 22
                 5
                 options)
-
-  See [[run-one-test-subroutine]].
-  ```"
+  ```
+  See [[run-one-test-subroutine]]."
   {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
   [ver group f fexpr arg idx opts]
   (let [dirname (opts :results-directory)
@@ -286,6 +317,7 @@
   result unless required. Only useful for computationally intensive functions
   where the time of `f` dominates the coordination overhead."
   {:UUIDv4 #uuid "65bdd065-4ca7-4730-afad-0d76527459a8"
+   :no-doc true
    :original-source "https://github.com/clojure/clojure/blob/ce55092f2b2f5481d25cff6205470c1335760ef6/src/clj/clojure/core.clj#L7079"
    :original-author "Rich Hickey"
    :license "Eclipse Public License 1.0"}
