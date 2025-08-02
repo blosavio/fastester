@@ -370,16 +370,41 @@
     (require (symbol tests-file) :reload)))
 
 
-(defn log-range
+(defn range-pow-n
+  "Subfunction to generate a sequence of numbers raised to a power `n`."
+  {:UUIDv4 #uuid "700ac8f2-2bda-4692-9136-c985b3fa4f77"
+   :no-doc true}
+  [n]
+  (fn [i] (map #(long (math/pow n %)) (range 0 (inc i)))))
+
+
+(defn range-pow-10
   "Given integer `i`, returns a sequence of `[10^0...10^i]`, inclusive. Useful
   for supplying to benchmarking functions.
 
-  Examples
+  Examples:
   ```clojure
-  (log-range 3) ;; => (1 10 100 1000)
-  (log-range 6) ;; => (1 10 100 1000 10000 100000 1000000)
-  ```"
+  (range-pow-10 3) ;; => (1 10 100 1000)
+  (range-pow-10 6) ;; => (1 10 100 1000 10000 100000 1000000)
+  ```
+
+  See also [[range-pow-2]]."
   {:UUIDv4 #uuid "8f0b944e-0381-4dd3-961f-4eddd19cc73b"}
   [i]
-  (map #(long (math/pow 10 %)) (range 0 (inc i))))
+  ((range-pow-n 10) i))
+
+
+(defn range-pow-2
+  "Given integer `i`, returns a sequence of `[2^0...2^i]`, inclusive. Useful
+  for supplying to benchmarking functions.
+
+  Example:
+  ```clojure
+  (range-pow-2 8) ;; (1 2 4 8 16 32 64 128 256)
+  ```
+
+  See also [[range-pow-10]]."
+  {:UUIDv4 #uuid "15a59bb1-9e00-459b-b40d-8b8f0d0011c9"}
+  [i]
+  ((range-pow-n 2) i))
 
