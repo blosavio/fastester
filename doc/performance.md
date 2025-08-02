@@ -77,35 +77,6 @@
             </thead>
             <tr>
               <td>
-                5
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-0.edn">8.1e-08±1.7e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-1.edn">1.4e-07±2.3e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-10.edn">1.8e-07±1.8e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-3.edn">2.4e-07±4.7e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-4.edn">3.0e-07±4.5e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-5.edn">7.0e-07±6.9e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-6.edn">7.6e-07±1.3e-08</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-7.edn">9.2e-07±1.9e-08</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
                 6
               </td>
               <td>
@@ -131,6 +102,35 @@
               </td>
               <td>
                 <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-7.edn">1.1e-06±2.9e-08</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                5
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-0.edn">8.1e-08±1.7e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-1.edn">1.4e-07±2.3e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-10.edn">1.8e-07±1.8e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-3.edn">2.4e-07±4.7e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-4.edn">3.0e-07±4.5e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-5.edn">7.0e-07±6.9e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-6.edn">7.6e-07±1.3e-08</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 5/test-7.edn">9.2e-07±1.9e-08</a>
               </td>
             </tr>
           </table>
@@ -186,29 +186,6 @@
             </thead>
             <tr>
               <td>
-                4
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-6.edn">4.2e-08±1.7e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-7.edn">9.1e-08±1.3e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-8.edn">1.4e-07±2.5e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-15.edn">2.0e-07±1.1e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-10.edn">2.5e-07±2.2e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-17.edn">3.0e-07±1.6e-09</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
                 6
               </td>
               <td>
@@ -228,6 +205,29 @@
               </td>
               <td>
                 <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-33.edn">2.9e-07±7.7e-10</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                4
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-6.edn">4.2e-08±1.7e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-7.edn">9.1e-08±1.3e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-8.edn">1.4e-07±2.5e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-15.edn">2.0e-07±1.1e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-10.edn">2.5e-07±2.2e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-17.edn">3.0e-07±1.6e-09</a>
               </td>
             </tr>
           </table>
@@ -275,29 +275,6 @@
             </thead>
             <tr>
               <td>
-                4
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-18.edn">4.0e-08±1.1e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-19.edn">9.5e-08±2.4e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-20.edn">1.5e-07±2.3e-09</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-21.edn">1.9e-07±5.4e-10</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-4.edn">2.6e-07±9.1e-10</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-5.edn">2.9e-07±7.4e-10</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
                 6
               </td>
               <td>
@@ -317,6 +294,29 @@
               </td>
               <td>
                 <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-27.edn">3.0e-07±4.0e-09</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                4
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-18.edn">4.0e-08±1.1e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-19.edn">9.5e-08±2.4e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-20.edn">1.5e-07±2.3e-09</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-21.edn">1.9e-07±5.4e-10</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-4.edn">2.6e-07±9.1e-10</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-5.edn">2.9e-07±7.4e-10</a>
               </td>
             </tr>
           </table>
@@ -374,54 +374,28 @@
             </thead>
             <tr>
               <td>
-                3
+                6
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-28.edn">8.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-75.edn">2.0e-02±8.6e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-1.edn">8.0e-02±2.4e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-69.edn">2.0e-02±1.2e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-30.edn">8.0e-02±1.5e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-70.edn">2.0e-02±8.0e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-3.edn">8.0e-02±5.5e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-78.edn">2.0e-02±8.3e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-4.edn">8.0e-02±9.0e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-72.edn">2.0e-02±1.2e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-33.edn">8.0e-02±1.3e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-73.edn">2.0e-02±1.3e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-34.edn">8.0e-02±1.9e-05</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                4
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-59.edn">6.0e-02±2.1e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-60.edn">6.0e-02±2.7e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-61.edn">6.0e-02±7.7e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-62.edn">6.0e-02±1.3e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-42.edn">6.0e-02±8.8e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-64.edn">6.0e-02±1.0e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-44.edn">6.0e-02±1.1e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-74.edn">2.0e-02±1.4e-05</a>
               </td>
             </tr>
             <tr>
@@ -452,28 +426,54 @@
             </tr>
             <tr>
               <td>
-                6
+                4
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-75.edn">2.0e-02±8.6e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-59.edn">6.0e-02±2.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-69.edn">2.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-60.edn">6.0e-02±2.7e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-70.edn">2.0e-02±8.0e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-61.edn">6.0e-02±7.7e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-78.edn">2.0e-02±8.3e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-62.edn">6.0e-02±1.3e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-72.edn">2.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-42.edn">6.0e-02±8.8e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-73.edn">2.0e-02±1.3e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-64.edn">6.0e-02±1.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-74.edn">2.0e-02±1.4e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-44.edn">6.0e-02±1.1e-05</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                3
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-28.edn">8.0e-02±1.2e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-1.edn">8.0e-02±2.4e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-30.edn">8.0e-02±1.5e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-3.edn">8.0e-02±5.5e-06</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-4.edn">8.0e-02±9.0e-06</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-33.edn">8.0e-02±1.3e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-34.edn">8.0e-02±1.9e-05</a>
               </td>
             </tr>
           </table>
@@ -523,54 +523,28 @@
             </thead>
             <tr>
               <td>
-                3
+                6
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-35.edn">8.0e-02±1.4e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-61.edn">2.0e-02±1.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-36.edn">8.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-62.edn">2.0e-02±1.2e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-37.edn">8.0e-02±1.6e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-42.edn">2.0e-02±1.9e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-24.edn">8.0e-02±1.5e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-64.edn">2.0e-02±1.4e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-25.edn">8.0e-02±1.1e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-44.edn">2.0e-02±1.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-40.edn">8.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-66.edn">2.0e-02±8.9e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-27.edn">8.0e-02±1.2e-05</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                4
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-52.edn">6.0e-02±7.2e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-53.edn">6.0e-02±6.9e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-54.edn">6.0e-02±8.6e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-55.edn">6.0e-02±1.1e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-49.edn">6.0e-02±2.0e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-57.edn">6.0e-02±8.0e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-58.edn">6.0e-02±1.7e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-46.edn">2.0e-02±2.6e-06</a>
               </td>
             </tr>
             <tr>
@@ -601,28 +575,54 @@
             </tr>
             <tr>
               <td>
-                6
+                4
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-61.edn">2.0e-02±1.0e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-52.edn">6.0e-02±7.2e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-62.edn">2.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-53.edn">6.0e-02±6.9e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-42.edn">2.0e-02±1.9e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-54.edn">6.0e-02±8.6e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-64.edn">2.0e-02±1.4e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-55.edn">6.0e-02±1.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-44.edn">2.0e-02±1.0e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-49.edn">6.0e-02±2.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-66.edn">2.0e-02±8.9e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-57.edn">6.0e-02±8.0e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-46.edn">2.0e-02±2.6e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-58.edn">6.0e-02±1.7e-05</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                3
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-35.edn">8.0e-02±1.4e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-36.edn">8.0e-02±1.2e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-37.edn">8.0e-02±1.6e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-24.edn">8.0e-02±1.5e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-25.edn">8.0e-02±1.1e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-40.edn">8.0e-02±1.2e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-27.edn">8.0e-02±1.2e-05</a>
               </td>
             </tr>
           </table>
@@ -672,54 +672,28 @@
             </thead>
             <tr>
               <td>
-                3
+                6
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-7.edn">8.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-54.edn">2.0e-02±1.3e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-15.edn">8.0e-02±1.4e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-55.edn">2.0e-02±8.3e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-9.edn">8.0e-02±2.0e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-49.edn">2.0e-02±6.9e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-17.edn">8.0e-02±2.1e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-57.edn">2.0e-02±1.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-18.edn">8.0e-02±3.4e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-58.edn">2.0e-02±1.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-12.edn">8.0e-02±1.1e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-59.edn">2.0e-02±1.8e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-20.edn">8.0e-02±1.1e-05</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                4
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-24.edn">6.0e-02±1.1e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-25.edn">6.0e-02±6.8e-06</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-33.edn">6.0e-02±1.2e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-34.edn">6.0e-02±1.1e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-28.edn">6.0e-02±1.1e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-36.edn">6.0e-02±1.7e-05</a>
-              </td>
-              <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-37.edn">6.0e-02±2.3e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-53.edn">2.0e-02±1.2e-05</a>
               </td>
             </tr>
             <tr>
@@ -750,28 +724,54 @@
             </tr>
             <tr>
               <td>
-                6
+                4
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-54.edn">2.0e-02±1.3e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-24.edn">6.0e-02±1.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-55.edn">2.0e-02±8.3e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-25.edn">6.0e-02±6.8e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-49.edn">2.0e-02±6.9e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-33.edn">6.0e-02±1.2e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-57.edn">2.0e-02±1.0e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-34.edn">6.0e-02±1.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-58.edn">2.0e-02±1.1e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-28.edn">6.0e-02±1.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-59.edn">2.0e-02±1.8e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-36.edn">6.0e-02±1.7e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-53.edn">2.0e-02±1.2e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-37.edn">6.0e-02±2.3e-05</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                3
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-7.edn">8.0e-02±1.2e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-15.edn">8.0e-02±1.4e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-9.edn">8.0e-02±2.0e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-17.edn">8.0e-02±2.1e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-18.edn">8.0e-02±3.4e-06</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-12.edn">8.0e-02±1.1e-05</a>
+              </td>
+              <td>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 3/test-20.edn">8.0e-02±1.1e-05</a>
               </td>
             </tr>
           </table>
@@ -827,25 +827,25 @@
             </thead>
             <tr>
               <td>
-                4
+                6
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-72.edn">1.1e-07±6.9e-10</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-82.edn">1.1e-07±9.4e-10</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-73.edn">1.1e-06±2.5e-09</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-89.edn">1.1e-06±3.1e-09</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-74.edn">9.7e-06±3.3e-08</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-90.edn">9.8e-06±3.4e-08</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-69.edn">9.6e-05±3.0e-07</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-91.edn">9.7e-05±6.2e-07</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-70.edn">9.6e-04±4.1e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-86.edn">9.7e-04±9.5e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-71.edn">9.6e-03±4.7e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-93.edn">9.7e-03±1.1e-04</a>
               </td>
             </tr>
             <tr>
@@ -873,25 +873,25 @@
             </tr>
             <tr>
               <td>
-                6
+                4
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-82.edn">1.1e-07±9.4e-10</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-72.edn">1.1e-07±6.9e-10</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-89.edn">1.1e-06±3.1e-09</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-73.edn">1.1e-06±2.5e-09</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-90.edn">9.8e-06±3.4e-08</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-74.edn">9.7e-06±3.3e-08</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-91.edn">9.7e-05±6.2e-07</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-69.edn">9.6e-05±3.0e-07</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-86.edn">9.7e-04±9.5e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-70.edn">9.6e-04±4.1e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 6/test-93.edn">9.7e-03±1.1e-04</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/performance_entries/version 4/test-71.edn">9.6e-03±4.7e-05</a>
               </td>
             </tr>
           </table>
@@ -900,7 +900,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 01.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 02.<span id="uuid"><br>
       50c7eada-f96d-41bf-aed0-47d386e61136</span>
     </p>
   </body>

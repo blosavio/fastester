@@ -265,10 +265,13 @@
                            sort))
         transposed-rows (transpose raw-rows)
         version-prepended-rows (mapv #(prepend %1 %2) versions transposed-rows)
-        sorted-prepended-rows (sort-table-rows-by-version
-                               version-prepended-rows
-                               opt)
-        attribute-prepeneded-rows (mapv #(prepend :tr %) sorted-prepended-rows)]
+        sorted-prepended-rows (when (opt :sort-comparator)
+                                (sort-table-rows-by-version
+                                 version-prepended-rows
+                                 opt))
+        attribute-prepeneded-rows (mapv #(prepend :tr %)
+                                        (or sorted-prepended-rows
+                                            version-prepended-rows))]
     attribute-prepeneded-rows))
 
 
@@ -512,9 +515,11 @@
                            this-chart-style)
         chart-style (merge default-chart-style
                            this-chart-style)
-        sort-versions-by-comparator #(into
-                                      (sorted-map-by
-                                       (version-sort-by-comparator opt)) %)
+        sort-versions-by-comparator #(if (opt :sort-comparator)
+                                       (into
+                                        (sorted-map-by
+                                         (version-sort-by-comparator opt)) %)
+                                       %)
         chrt (-> o-data
                  (rearrange-chart-data opt fexpr)
                  sort-versions-by-comparator
