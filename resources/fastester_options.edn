@@ -5,7 +5,7 @@
 
  :copyright-holder "Brad Losavio"
 
- :perflog-UUID #uuid "50c7eada-f96d-41bf-aed0-47d386e61136"
+ :fastester-UUID #uuid "50c7eada-f96d-41bf-aed0-47d386e61136"
 
  ;; source directories and filenames
  :tests-directory "test/fastester/performance/"

@@ -1,7 +1,7 @@
 
   <body>
     <h1>
-      Fastester library performance log
+      Fastester library performance
     </h1>
     <div>
       <a href="#group-0">custom `conj`</a><br>

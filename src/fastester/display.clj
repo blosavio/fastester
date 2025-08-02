@@ -602,7 +602,7 @@ position, plot border, etc.")
     (into [:div] (drop-last (interleave links (repeat [:br]))))))
 
 
-(defn perflog-md-footer
+(defn fastester-md-footer
   "Given an options map `opt`, retruns a page footer with a copyright notice and
   a compiled on date, plus the UUID."
   {:UUIDv4 #uuid "755d14b3-215f-40fb-990c-5b748dc75ee4"
@@ -613,7 +613,7 @@ position, plot border, etc.")
    [:br]
    "Compiled by " [:a {:href "https://github.com/blosavio/Fastester"}
                    "Fastester"] " on " (short-date) "."
-   [:span#uuid [:br] (opt :perflog-UUID)]])
+   [:span#uuid [:br] (opt :fastester-UUID)]])
 
 
 (defn inject-js
@@ -633,18 +633,18 @@ position, plot border, etc.")
     (str left split-at js-includer right)))
 
 
-(defn generate-perflog-html
+(defn generate-fastester-html
   "Writes html to the filesystem, suitable for a web browser."
   {:UUIDv4 #uuid "e1063a97-77e9-420e-b321-e0f31a729a7d"
    :no-doc true}
   [opt o-data]
   (spit (str (opt :html-directory) (opt :html-filename))
         (-> (page-template
-             (str (opt :project-formatted-name) " library performance log")
-             (opt :perflog-UUID)
+             (str (opt :project-formatted-name) " library performance")
+             (opt :fastester-UUID)
              (conj [:body
                     [:h1 (str (opt :project-formatted-name)
-                              " library performance log")]
+                              " library performance")]
                     (toc o-data)
                     (opt :preamble)
                     (main-section o-data opt)])
@@ -654,8 +654,8 @@ position, plot border, etc.")
             (inject-js "jquery-3.7.1.min.js"))))
 
 
-(defn generate-perflog-markdown
-  "Generates a markdown file, similar to [[generate-perflog-html]]."
+(defn generate-fastester-markdown
+  "Generates a markdown file, similar to [[generate-fastester-html]]."
   {:UUIDv4 #uuid "3c43eb12-0ad8-44b5-919c-fc117b6cd1bf"
    :no-doc true}
   [opt o-data]
@@ -663,21 +663,21 @@ position, plot border, etc.")
         (h2/html
          (vec (-> [:body
                    [:h1 (str (opt :project-formatted-name)
-                             " library performance log")]
+                             " library performance")]
                    (toc o-data)
                    (opt :preamble)
                    (main-section o-data opt)]
-                  (conj (perflog-md-footer opt)))))))
+                  (conj (fastester-md-footer opt)))))))
 
 
-(load "perflog_defaults")
+(load "fastester_defaults")
 
 
-(defn generate-all-perflogs
+(defn generate-all-displays
   "Given Fastester options hashmap `opt`, write-to-file html and markdown
   performance documents.
 
-  See [[perflog-defaults]]
+  See [[fastester-defaults]]
   and
   [Fastester project documentation](https://github.com/blosavio/fastester) for
   details on the structure of the options map.
@@ -685,14 +685,14 @@ position, plot border, etc.")
   Performance data will be read from `resources/performance_entries/` unless
   superseded by `:tests-directory` value in the options map.
 
-  Defaults supplied by `src/perflog_defaults.clj`"
+  Defaults supplied by `src/fastester_defaults.clj`"
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
   [opt]
-  (let [options-n-defaults (merge perflog-defaults opt)
-        perflog-data (load-results (get-result-filenames opt))
-        organized-data (organize-data perflog-data)]
-    (do (generate-perflog-html options-n-defaults organized-data)
-        (generate-perflog-markdown options-n-defaults organized-data)
+  (let [options-n-defaults (merge fastester-defaults opt)
+        fastester-data (load-results (get-result-filenames opt))
+        organized-data (organize-data fastester-data)]
+    (do (generate-fastester-html options-n-defaults organized-data)
+        (generate-fastester-markdown options-n-defaults organized-data)
         (if (options-n-defaults :tidy-html?)
           (do (tidy-html-document
                (str (options-n-defaults :html-directory)

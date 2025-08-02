@@ -1,6 +1,6 @@
 (def ^{:no-doc true}
-  perflog-defaults-docstring
-  "A hash-map residing in `src/perflog_defaults.clj` that supplies the default
+  fastester-defaults-docstring
+  "A hash-map residing in `src/fastester_defaults.clj` that supplies the default
  values for the following option keys:
 
   * `:tests-directory`
@@ -22,12 +22,12 @@
 
 
   Override default values by associating new values into the Fastester _options_
-  hash-map. See [[generate-all-perflogs]].")
+  hash-map. See [[do-all-performance-tests]] and [[generate-all-displays]].")
 
 
-(def ^{:doc perflog-defaults-docstring
+(def ^{:doc fastester-defaults-docstring
        :UUIDv4 #uuid "9e50c897-a734-4fb9-b671-b924bc209a81"}
-  perflog-defaults
+  fastester-defaults
   {:tests-directory "test/fastester/performance/"
    :tests-filename "tests.clj"
 
@@ -52,7 +52,7 @@
    :tidy-html? false
 
    :preamble [:div
-              [:p "Perflog preamble..."]
+              [:p "Preamble..."]
 
               [:a
                {:href

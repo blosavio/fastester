@@ -36,23 +36,23 @@
 
 
 (def ^{:no-doc true}
-  perf-test-registry-docstring
+  performance-test-registry-docstring
   "An atom containing a set of benchmark tests to run. Typically populated with
   [[defperf]], not manipulated directly.
 
-  See also [[clear-perf-test-registry!]].")
+  See also [[clear-performance-test-registry!]].")
 
 
-(def ^{:doc perf-test-registry-docstring}
-  perf-test-registry (atom #{}))
+(def ^{:doc performance-test-registry-docstring}
+  performance-test-registry (atom #{}))
 
 
-(defn clear-perf-test-registry!
-  "Remove all entries from [[perf-test-registry]], thereby eliminating all
-  defined benchmarking tests."
+(defn clear-performance-test-registry!
+  "Remove all entries from [[performance-test-registry]], thereby eliminating
+  all defined benchmarking tests."
   {:UUIDv4 #uuid "d615da84-0b3b-42e3-acdb-9cec175df53e"}
   []
-  (swap! perf-test-registry empty))
+  (swap! performance-test-registry empty))
 
 
 (defmacro defperf
@@ -95,15 +95,15 @@
   Note 2: Invoking `defperf` with one sequence of arguments, *then editing* the
   expression and invoking `defperf` again registers two unique performance
   tests. When developing at the REPL, be aware that the registry may become
-  'stale' with outdated tests. See [[clear-perf-test-registry!]] or edit with,
-  e.g., `disj`."
+  'stale' with outdated tests. See [[clear-performance-test-registry!]] or edit
+  with, e.g., `disj`."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
   [group f n]
   (let [fun (nth &form 2)]
-    `(swap! perf-test-registry conj {:group ~group
-                                     :fexpr '~fun
-                                     :f ~f
-                                     :n ~n})))
+    `(swap! performance-test-registry conj {:group ~group
+                                            :fexpr '~fun
+                                            :f ~f
+                                            :n ~n})))
 
 
 (defn create-results-directories
@@ -121,7 +121,7 @@
         version-dirname (str results-dirname
                              "/version "
                              (project-version))
-        unique-test-names (distinct (map :group @perf-test-registry))
+        unique-test-names (distinct (map :group @performance-test-registry))
         non-excluded-names (remove
                             excludes
                             unique-test-names)]
@@ -345,7 +345,7 @@
    for discussion of cleanly shutting down agents, relevant when using `pmap`."}
   [excludes]
   (let [options (get-options)
-        reg (sort-by :group (vec @perf-test-registry))
+        reg (sort-by :group (vec @performance-test-registry))
         reg (remove #(excludes (% :group)) reg)
         get-idx #(.indexOf %1 %2)
         r-fn (fn [v m] (concat v (map #(assoc m :n %1) (m :n))))

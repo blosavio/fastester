@@ -5,8 +5,8 @@
   (:require
    [hiccup2.core :as h2]
    [fastester.core :refer [do-tests-and-create-displays]]
-   [fastester.display :refer [generate-all-perflogs]]
-   [fastester.measure :refer [clear-perf-test-registry!
+   [fastester.display :refer [generate-all-displays]]
+   [fastester.measure :refer [clear-performance-test-registry!
                               do-all-performance-tests
                               do-selected-performance-tests
                               load-tests-ns]]))
@@ -17,11 +17,11 @@
 
 (load-tests-ns options)
 
+#_(clear-perf-test-registry!)
 #_ @fastester.measure/perf-test-registry
 #_(do-all-performance-tests)
 #_(do-selected-performance-tests)
-
-#_(generate-all-perflogs options)
+#_(generate-all-displays options)
 
 
 (defn -main

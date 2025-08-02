@@ -6,7 +6,7 @@
   1. Write performance tests in a testing namespace.
   2. Run performance tests with, e.g., [[do-all-performance-tests]].
   3. Generate an html document with charts and tables with, e.g.,
-  [[generate-all-perflogs]].")
+  [[generate-all-displays]].")
 
 
 (defn do-tests-and-create-displays
