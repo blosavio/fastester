@@ -12,7 +12,7 @@
 
 ;;;; 1. Testing delayed addition of one to three numbers
 
-(def dly 20)
+(def dly 5)
 
 (defn delayed-+
   [& args]
@@ -22,9 +22,9 @@
 
 (def plus-test-name "plus, vary number of digits in args")
 
-(defperf plus-test-name (fn [n] (delayed-+ n))     (range-pow-10 6))
-(defperf plus-test-name (fn [n] (delayed-+ n n))   (range-pow-10 6))
-(defperf plus-test-name (fn [n] (delayed-+ n n n)) (range-pow-10 6))
+(defperf add-1-arg plus-test-name (fn [n] (delayed-+ n))     (range-pow-10 6))
+(defperf add-2-arg plus-test-name (fn [n] (delayed-+ n n))   (range-pow-10 6))
+(defperf add-3-arg plus-test-name (fn [n] (delayed-+ n n n)) (range-pow-10 6))
 
 
 
@@ -35,19 +35,24 @@
 (def seq-of-n-repeats
   (doall (reduce #(assoc %1 %2 (take %2 (repeat 64))) {} (range-pow-10 5))))
 
-(defperf plus-test-name-2 (fn [n] (apply + (seq-of-n-repeats n))) (range-pow-10 5))
+(defperf
+  add-many-args
+  plus-test-name-2
+  (fn [n] (apply + (seq-of-n-repeats n)))
+  (range-pow-10 5))
 
 
 
 ;;;; 3a. Testing basic mapping over a sequence of numbers
 
-(def mapping-test-name "mapping stuff")
-
 (def range-of-length-n
   (doall (reduce #(assoc %1 %2 (range %2)) {} (range-pow-10 5))))
 
-(defperf mapping-test-name
-  (fn [n] (map inc (range-of-length-n n))) (range-pow-10 5))
+(defperf
+  map-inc-across-a-sequence
+  "mapping stuff"
+  (fn [n] (map inc (range-of-length-n n)))
+  (range-pow-10 5))
 
 
 
@@ -59,8 +64,10 @@
                  (range-pow-10 5))))
 
 (defperf
-  mapping-test-name
-  (fn [n] (map str/upper-case (abc-cycle-of-length-n n))) (range-pow-10 5))
+  map-UC-over-a-cycle
+  "mapping stuff"
+  (fn [n] (map str/upper-case (abc-cycle-of-length-n n)))
+  (range-pow-10 5))
 
 
 
@@ -79,6 +86,7 @@
     (range-pow-10 7))))
 
 (defperf
+  conj-onto-rands
   "custom `conj`"
   (fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))
   (range-pow-10 7))

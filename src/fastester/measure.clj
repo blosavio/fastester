@@ -37,14 +37,14 @@
 
 (def ^{:no-doc true}
   performance-test-registry-docstring
-  "An atom containing a set of benchmark tests to run. Typically populated with
-  [[defperf]], not manipulated directly.
+  "An atom containing a hashmap of benchmark tests to run. Typically populated
+  by invoking [[defperf]] or [[defperf*]], not manipulated directly.
 
-  See also [[clear-performance-test-registry!]].")
+  See also [[undefperf]] and [[clear-performance-test-registry!]].")
 
 
 (def ^{:doc performance-test-registry-docstring}
-  performance-test-registry (atom #{}))
+  performance-test-registry (atom (sorted-map)))
 
 
 (defn clear-performance-test-registry!
@@ -55,10 +55,30 @@
   (swap! performance-test-registry empty))
 
 
+(defn defperf*
+  "Function version of `defperf` macro. Define and register a performance
+  test. See [[defperf]] documentation for full details. The differences are
+  that `name` and `f` are supplied as a quoted symbols.
+
+  Example:
+  ```clojure
+  (defperf* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
+  ```"
+  {:UUIDv4 #uuid "4b09fdc6-f830-40df-8f60-c454f1cca4c4"}
+  [name group f n]
+  (swap! performance-test-registry assoc name {:group group
+                                               :fexpr f
+                                               :f (eval f)
+                                               :n n}))
+
+
 (defmacro defperf
   "Define and register a performance test.
 
-  * `group` is a string that links conceptually-related performance tests.
+  * `name` is an unquoted symbol that labels the performance test.
+
+  * `group` is a string, shared between multiple conceptually-related
+  performance tests.
 
   * `f` is a 1-arity function that measures some performance aspect. Its
   single argument is the \"n\" in *big-O* notation. `f` may be supplied as an
@@ -73,14 +93,14 @@
 
   Example, supplying `f` as an S-expression:
   ```clojure
-  (defperf \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
+  (defperf add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
   ```
 
   Example, supplying `f` as a function object:
   ```clojure
   (defn my-fn-obj [q] (+ q q q))
 
-  (defperf \"benchmarking additon\" my-fn-obj [2 20 200 2000])
+  (defperf add-three \"benchmarking additon\" my-fn-obj [2 20 200 2000])
   ```
 
   Both examples above share the same `group` label (\"benchmarking addition\"),
@@ -98,14 +118,48 @@
   developing at the REPL, be aware that the registry may become 'stale' with
   outdated tests. To put the registry into a state that refelcts the current
   definitions, use [[clear-performance-test-registry!]] and re-evaluate all
-  `defperf`s (recommended) or edit the registry with, e.g., `disj`."
+  `defperf`s (recommended) or edit the registry with, e.g., `disj`.
+
+  See [[defperf*]] for the function version."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
-  [group f n]
-  (let [fun (nth &form 2)]
-    `(swap! performance-test-registry conj {:group ~group
-                                            :fexpr '~fun
-                                            :f ~f
-                                            :n ~n})))
+  [name group f n]
+  (let [fun (nth &form 3)]
+    `(defperf* '~name ~group '~fun ~n)))
+
+
+(defn undefperf*
+  "Function version of [[undefperf]]. Undefines a performance test by removing
+  quoted symbol `name` from the registry.
+
+  Example:
+  ```clojure
+  ;; define a performance test
+  (defperf* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
+
+  ;; undefine that performance test
+  (undefperf* 'add-four)
+  ```"
+  {:UUIDv4 #uuid "6130c03f-e8b0-4ce1-a682-ba3605fc291b"}
+  [name]
+  (swap! performance-test-registry dissoc name))
+
+
+(defmacro undefperf
+  "Undefine a performance test by removing `name` from the registry.
+
+  Example:
+  ```clojure
+  ;; define a performance test
+  (defperf add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
+
+  ;; undefine that performance test
+  (undefperf add-two)
+  ```
+
+  See also [[undefperf*]]."
+  {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"}
+  [name]
+  `(undefperf* '~name))
 
 
 (defn create-results-directories
@@ -240,23 +294,25 @@
 
 
 (defn run-one-test
-  "Given version string `ver`, test group string `group`, function
-  S-expression `f`, test argument `arg`, option hashmap `opts`, and index
-  integer `idx`, executes the benchmark under the current settings and saves
-  results to filesystem.
+  "Given version string `ver`, string `name`, test group string `group`,
+  function object `f`, function S-expression `fexpr`, test argument `arg`,
+  option hashmap `opts`, and index integer `idx`, executes the benchmark under
+  the current settings and saves results to filesystem.
 
   Example:
   ```clojure
   (run-one-test \"77-SNAPSHOT7\"
-                \"mapping --- stuff\"
+                'mult-two-nums
+                \"adding --- stuff\"
+                (fn [n] (* n n))
                 '(fn [n] (* n n))
                 22
                 5
                 options)
   ```
-  See [[run-one-test-subroutine]]."
+  See [[run-one-test-subroutine]] and [[*performance-testing-options*]]."
   {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
-  [ver group f fexpr arg idx opts]
+  [ver name group f fexpr arg idx opts]
   (let [dirname (opts :results-directory)
         filepath (str dirname
                       "version "
@@ -273,6 +329,7 @@
                   (crit/benchmark (f arg) *performance-testing-options*))
         test-metadata {:version ver
                        :index idx
+                       :name (str name)
                        :group group
                        :fexpr (str fexpr)
                        :arg arg
@@ -284,7 +341,9 @@
         results (assoc results :fastester/metadata test-metadata)
         results (if (opts :save-benchmark-fn-results?)
                   results
-                  (assoc results :results :fastester/benchmark-fn-results-elided))
+                  (assoc results
+                         :results
+                         :fastester/benchmark-fn-results-elided))
         results (dissoc-identifying-metadata results)]
     (pretty-print-to-file filepath results)))
 
@@ -334,9 +393,34 @@
      (step rets (drop n rets)))))
 
 
+(defn load-tests-ns
+  "Given options hashmap `opt`, `require`s the testing namespace declared by the
+  Fastester options `:tests-directory` and `:tests-filename`.
+
+  Note: Invokes `clear-performance-test-registry!`."
+  {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
+   :no-doc true
+   :implementation-note "Don't feel great about abusing `require` like this, but
+  it appears to work okay, and it seems how Leiningen gets tasks done, too. See
+  `leiningen.core.utils/require-resolve`."}
+  [opt]
+  (do
+    (clear-perf-test-registry!)
+    (let [filepath (str (opt :tests-directory)
+                        (opt :tests-filename))
+          tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
+      (if (opt :verbose?) (println "Loading tests from " tests-file))
+      (require (symbol tests-file) :reload))))
+
+
 (defn do-tests
   "Execute non-excluded performance tests, as governed by test names in set
-  `excludes`. If option `:parallel?` is `true`, runs tests in parallel."
+  `excludes`.
+
+  If option `:parallel?` is `true`, runs tests in parallel. Warning: Running
+  tests in parallel results in inconsistent time measurements. Use
+  `:parallel? true` only for sanity-checking the return values of `(f n)`, not
+  for final performance measurements."
   {:UUIDv4 #uuid "68d16e2e-2ab2-4dcd-9609-e237d6991594"
    :no-doc true
    :implementation-notes
@@ -344,26 +428,34 @@
    https://clojuredocs.org/clojure.core/future#example-542692c9c026201cdc326a7b
    and
    https://clojure.atlassian.net/browse/CLJ-124
-   for discussion of cleanly shutting down agents, relevant when using `pmap`."}
-  [excludes]
+   for discussion of cleanly shutting down agents, relevant when using
+   `pmap-with`."}
+  [& exclude?]
   (let [options (get-options)
-        reg (sort-by :group (vec @performance-test-registry))
-        reg (remove #(excludes (% :group)) reg)
+        _ (load-tests-ns options)
+        excludes (if exclude?
+                   (options :excludes)
+                   #{})
+        reg (remove #(excludes ((val %) :group)) @performance-test-registry)
         get-idx #(.indexOf %1 %2)
-        r-fn (fn [v m] (concat v (map #(assoc m :n %1) (m :n))))
+        r-fn (fn [v [name settings]]
+               (concat v
+                       (map #(assoc settings :n %1 :name name)
+                            (settings :n))))
         expanded-reg (reduce r-fn [] reg)
         num-reg (dec (count expanded-reg))
+        verbose (options :verbose?)
         runner-fn (fn [t]
                     (let [idx (get-idx expanded-reg t)]
-                      (println (str "Test " idx "/" num-reg))
+                      (if verbose (println (str "Test " idx "/" num-reg)))
                       (run-one-test (project-version)
+                                    (t :name)
                                     (t :group)
                                     (t :f)
                                     (t :fexpr)
                                     (t :n)
                                     idx
                                     options)))
-        verbose (options :verbose?)
         runner ({true (fn [f coll] (pmap-with f coll (options :n-threads)))
                  false map}
                 (options :parallel?))]
@@ -378,7 +470,7 @@
   "Execute all performance tests, ignoring options key `:excludes`."
   {:UUIDv4 #uuid "50b19eef-32f1-4586-a317-21e1f20235cf"}
   []
-  (do-tests #{}))
+  (do-tests))
 
 
 (defn do-selected-performance-tests
@@ -386,22 +478,7 @@
   `:excludes`."
   {:UUIDv4 #uuid "ed3dd772-08d5-47cc-85b9-608892f8c96a"}
   []
-  (do-tests ((get-options) :excludes)))
-
-
-(defn load-tests-ns
-  "Given options hashmap `opt`, `require`s the testing namespace declared by the
-  Fastester options `:tests-directory` and `:tests-filename`."
-  {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
-   :no-doc true
-   :implementation-note "Don't feel great about abusing `require` like this, but
-  it appears to work okay, and it seems how Leiningen gets tasks done, too. See
-  `leiningen.core.utils/require-resolve`."}
-  [opt]
-  (let [filepath (str (opt :tests-directory)
-                      (opt :tests-filename))
-        tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
-    (require (symbol tests-file) :reload)))
+  (do-tests true))
 
 
 (defn range-pow-n

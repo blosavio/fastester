@@ -15,10 +15,8 @@
 (def options (load-file "resources/fastester_options.edn"))
 
 
-(load-tests-ns options)
-
-#_(clear-perf-test-registry!)
-#_ @fastester.measure/perf-test-registry
+#_(clear-performance-test-registry!)
+#_ @fastester.measure/performance-test-registry
 #_(do-all-performance-tests)
 #_(do-selected-performance-tests)
 #_(generate-all-displays options)

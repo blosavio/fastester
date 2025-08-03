@@ -1,6 +1,5 @@
-{:overhead 6.499734422006207E-8,
- :samples
- (120188304 120266956 120233358 120198382 120185341 120201821),
+{:overhead 1.61466671255867E-8,
+ :samples (89897390 90183558 89911703 101067424 92247860 91288805),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -13,11 +12,12 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [0.060107020000000004 (0.06009775866666667 0.060119822333333336)],
- :final-gc-time 160088248,
- :execution-count 2,
+ [1.5883396911476886E-7 (1.5531027737826647E-7 1.67667561629273E-7)],
+ :final-gc-time 210864470,
+ :execution-count 581961,
  :variance
- [2.736994899750211E-10 (7.357614664165397E-11 4.878501616666607E-10)],
+ [5.61585767999643E-17
+  (1.7032720117132793E-18 1.1023735394067373E-16)],
  :os-details
  {:arch "amd64",
   :available-processors 4,
@@ -25,25 +25,28 @@
   :version "5.15.0-144-generic"},
  :tail-quantile 0.025,
  :outlier-variance 0.1388888888888888,
- :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
- :warmup-time 5830036930,
- :lower-q [0.0600926705 (0.0600926705 0.060094152000000005)],
- :warmup-executions 97,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 1},
+ :warmup-time 5046605463,
+ :lower-q
+ [1.5447322071410284E-7 (1.5447322071410284E-7 1.5455620715992997E-7)],
+ :warmup-executions 26982077,
  :sample-count 6,
- :upper-q [0.060131378125 (0.06010091050000001 0.060133478000000004)],
+ :upper-q
+ [1.7156664557418796E-7 (1.5686412835224356E-7 1.736670051773229E-7)],
  :fastester/metadata
- {:fexpr "(fn [n] (delayed-+ n))",
-  :date {:year 2025, :month "August", :day 1},
-  :group "plus, vary number of digits in args",
+ {:fexpr "(fn [n] (map str/upper-case (abc-cycle-of-length-n n)))",
+  :date {:year 2025, :month "August", :day 3},
+  :group "mapping stuff",
   :index 29,
-  :UUIDv4 #uuid "0118af7e-a22d-4071-9875-f788c78ac1a6",
+  :UUIDv4 #uuid "9640f041-5225-4ee8-96e8-bf1753e16db2",
+  :name "map-UC-over-a-cycle",
   :testing-thoroughness :quick,
-  :arg 100000,
+  :arg 100,
   :n-threads 3,
   :version "4",
   :parallel? false},
- :total-time 0.721274162,
- :sample-variance [2.518405860666582E-10 (0.0 0.0)],
+ :total-time 0.55459674,
+ :sample-variance [5.5358077529737254E-17 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -51,7 +54,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 6.499734422006207E-8},
+  :overhead 1.61466671255867E-8},
  :sample-mean
- [0.06010618016666667 (0.060058571708651316 0.06015378862468202)],
+ [1.5882987004283793E-7 (1.365089673333229E-7 1.8115077275235298E-7)],
  :results :fastester/benchmark-fn-results-elided}

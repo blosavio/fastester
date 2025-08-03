@@ -1,6 +1,5 @@
-{:overhead 6.499734422006207E-8,
- :samples
- (120308014 120320313 120275800 120333404 120276779 120298059),
+{:overhead 1.61466671255867E-8,
+ :samples (90487630 90969428 91461448 91981909 93385705 93112299),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,40 +11,42 @@
   {:major 1, :minor 12, :incremental 1, :qualifier nil},
   :spec-version "11",
   :sun-arch-data-model "64"},
- :mean [0.04010064316666667 (0.04009518794444445 0.04010626194444445)],
- :final-gc-time 159186056,
- :execution-count 3,
+ :mean
+ [1.7269257720451446E-7 (1.711048949121627E-7 1.745199834134474E-7)],
+ :final-gc-time 169143835,
+ :execution-count 532158,
  :variance
- [7.304138234074139E-11
-  (2.958612536296496E-11 1.1060736053334098E-10)],
+ [5.748736108184809E-18
+  (2.6577497619714943E-18 8.047831084405766E-18)],
  :os-details
  {:arch "amd64",
   :available-processors 4,
   :name "Linux",
   :version "5.15.0-144-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.13888888888888878,
+ :outlier-variance 0.13888888888888853,
  :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
- :warmup-time 5815346197,
+ :warmup-time 5218994995,
  :lower-q
- [0.040091933333333336 (0.040091933333333336 0.04009286079166667)],
- :warmup-executions 145,
+ [1.7003902976183766E-7 (1.7003902976183766E-7 1.7094439621315474E-7)],
+ :warmup-executions 26967702,
  :sample-count 6,
  :upper-q
- [0.04011058920833334 (0.04010267133333334 0.04011113466666667)],
+ [1.7515518041634253E-7 (1.7260916659150103E-7 1.7548492177135361E-7)],
  :fastester/metadata
- {:fexpr "(fn [n] (delayed-+ n n))",
-  :date {:year 2025, :month "August", :day 1},
-  :group "plus, vary number of digits in args",
+ {:fexpr "(fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))",
+  :date {:year 2025, :month "August", :day 3},
+  :group "custom `conj`",
   :index 28,
-  :UUIDv4 #uuid "a5b30bf0-28b0-4737-8522-dc79335e06a4",
+  :UUIDv4 #uuid "ba56945a-0699-40fb-b431-99b8f47a4b4e",
+  :name "conj-onto-rands",
   :testing-thoroughness :quick,
-  :arg 100000,
+  :arg 10,
   :n-threads 3,
   :version "5",
   :parallel? false},
- :total-time 0.721812369,
- :sample-variance [5.990651132221694E-11 (0.0 0.0)],
+ :total-time 0.551398419,
+ :sample-variance [4.75774368110927E-18 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -53,7 +54,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 6.499734422006207E-8},
+  :overhead 1.61466671255867E-8},
  :sample-mean
- [0.04010068716666667 (0.04007746737765169 0.040123906955681646)],
+ [1.7269257720451446E-7 (1.6614890139271086E-7 1.7923625301631806E-7)],
  :results :fastester/benchmark-fn-results-elided}
