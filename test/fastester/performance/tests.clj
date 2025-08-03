@@ -94,15 +94,15 @@
 
 
 (comment
-  (require '[fastester.measure :refer [clear-perf-test-registry!
+  (require '[fastester.measure :refer [clear-performance-test-registry!
                                        do-all-performance-tests
                                        do-selected-performance-tests
-                                       perf-test-registry]])
+                                       performance-test-registry]])
 
   #_(do-all-performance-tests)
   #_(do-selected-performance-tests)
-  #_(fastester.measure/clear-perf-test-registry!)
-  #_ @fastester.measure/perf-test-registry
+  #_(fastester.measure/clear-performance-test-registry!)
+  #_ @fastester.measure/performance-test-registry
   #_(println "\n\n\n\n\n")
   )
 

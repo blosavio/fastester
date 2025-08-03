@@ -405,7 +405,7 @@
   `leiningen.core.utils/require-resolve`."}
   [opt]
   (do
-    (clear-perf-test-registry!)
+    (clear-performance-test-registry!)
     (let [filepath (str (opt :tests-directory)
                         (opt :tests-filename))
           tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
