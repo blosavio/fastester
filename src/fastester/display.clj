@@ -633,7 +633,7 @@ position, plot border, etc.")
     (str left split-at js-includer right)))
 
 
-(defn generate-fastester-html
+(defn generate-html
   "Writes html to the filesystem, suitable for a web browser."
   {:UUIDv4 #uuid "e1063a97-77e9-420e-b321-e0f31a729a7d"
    :no-doc true}
@@ -654,8 +654,8 @@ position, plot border, etc.")
             (inject-js "jquery-3.7.1.min.js"))))
 
 
-(defn generate-fastester-markdown
-  "Generates a markdown file, similar to [[generate-fastester-html]]."
+(defn generate-markdown
+  "Generates a markdown file, similar to [[generate-html]]."
   {:UUIDv4 #uuid "3c43eb12-0ad8-44b5-919c-fc117b6cd1bf"
    :no-doc true}
   [opt o-data]
@@ -682,17 +682,16 @@ position, plot border, etc.")
   [Fastester project documentation](https://github.com/blosavio/fastester) for
   details on the structure of the options map.
 
-  Performance data will be read from `resources/performance_entries/` unless
-  superseded by `:tests-directory` value in the options map.
-
-  Defaults supplied by `src/fastester_defaults.clj`"
+  Performance data will be read from defaults supplied by
+  `src/fastester_defaults.clj` unless superseded by `:tests-directory` value in
+  the options map."
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
   [opt]
   (let [options-n-defaults (merge fastester-defaults opt)
-        fastester-data (load-results (get-result-filenames opt))
-        organized-data (organize-data fastester-data)]
-    (do (generate-fastester-html options-n-defaults organized-data)
-        (generate-fastester-markdown options-n-defaults organized-data)
+        data (load-results (get-result-filenames opt))
+        organized-data (organize-data data)]
+    (do (generate-html options-n-defaults organized-data)
+        (generate-markdown options-n-defaults organized-data)
         (if (options-n-defaults :tidy-html?)
           (do (tidy-html-document
                (str (options-n-defaults :html-directory)

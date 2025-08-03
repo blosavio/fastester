@@ -1,11 +1,11 @@
 (ns fastester.measure
-  "Execute benchmarking tests to objectively measure a function's performance.
+  "Define and run tests that objectively measure a function's evaluation time.
 
   The general idea is to run the performance test suite once per version. Any
   performance improvement/regression is objectively measured.
 
-  See [[fastester.display]] for utilities that generate html charts and tables
-  to communicate those results."
+  See [[fastester.display]] for utilities that create an html display with
+  charts and tables to communicate those results."
   (:require
    [clojure.java.io :as io]
    [clojure.math :as math]
@@ -60,11 +60,11 @@
 
   * `group` is a string that links conceptually-related performance tests.
 
-  * `f` is a 1-arity function that exercises some performance aspect. Its
+  * `f` is a 1-arity function that measures some performance aspect. Its
   single argument is the \"n\" in *big-O* notation. `f` may be supplied as an
   S-expression or a function object. Supplying `f` as an S-expression has the
   advantage that the definition may later convey some meaning, e.g.,
-  `(fn [x] (+ x x))`, in the html charts and tables, whereas a function object
+  `(fn [n] (+ n n))`, in the html charts and tables, whereas a function object
   will render less meaningfully, e.g.,
   `#function[fastester.measure/eval11540/fn--11541]`.
 
@@ -83,20 +83,22 @@
   (defperf \"benchmarking additon\" my-fn-obj [2 20 200 2000])
   ```
 
-  Both examples above share the same `group` label, \"benchmarking addition\",
-  therefore the benchmarking results may be later conceptually associated, in
-  this example both involving measuring the performance of `+`. Also note that
-  the `n` sequences need not be identical.
+  Both examples above share the same `group` label (\"benchmarking addition\"),
+  both involving measuring the performance of `+`. Putting them in the same
+  group signifies that they are conceptually associated, and the html displays
+  will aggregate them under a single subsection. Also notice that the `n`
+  sequences need not be identical.
 
   Note 1: The registry ensures that every entry is unique, so repeated `defperf`
-  invocations with identical arguments have no additional affect beyond the
+  invocations with identical arguments have no additional affects beyond the
   initial registration.
 
-  Note 2: Invoking `defperf` with one sequence of arguments, *then editing* the
-  expression and invoking `defperf` again registers two unique performance
-  tests. When developing at the REPL, be aware that the registry may become
-  'stale' with outdated tests. See [[clear-performance-test-registry!]] or edit
-  with, e.g., `disj`."
+  Note 2: Invoking a `defperf` expression, editing it, followed by invoking
+  `defperf` a second time, registers two unique performance tests. When
+  developing at the REPL, be aware that the registry may become 'stale' with
+  outdated tests. To put the registry into a state that refelcts the current
+  definitions, use [[clear-performance-test-registry!]] and re-evaluate all
+  `defperf`s (recommended) or edit the registry with, e.g., `disj`."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
   [group f n]
   (let [fun (nth &form 2)]

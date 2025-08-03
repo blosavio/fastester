@@ -1,5 +1,6 @@
 (defproject com.sagevisuals/fastester "0-SNAPSHOT0"
-  :description "A Clojure library for reporting performance changes."
+  :description "A Clojure library for measuring and displaying performance
+ changes."
   :url "https://github.com/blosavio/fastester"
   :license {:name "MIT License"
             :url "https://opensource.org/license/mit"
@@ -26,3 +27,4 @@
           :html {:transforms [[:div.sidebar.primary] [:append [:ul.index-link [:li.depth-1 [:a {:href "https://github.com/blosavio/fastester"} "Project home"]]]]]}
           :project {:name "Fastester" :version "version 0"}}
   :scm {:name "git" :url "https://github.com/blosavio/fastester"})
+

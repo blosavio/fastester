@@ -1,11 +1,11 @@
 (ns fastester.core
-  "Execute performance tests and create displays of those results.
+  "Run performance tests and create displays of those measurements.
 
   High-level workflow:
 
-  1. Write performance tests in a testing namespace.
+  1. Write performance tests in a dedicated namespace.
   2. Run performance tests with, e.g., [[do-all-performance-tests]].
-  3. Generate an html document with charts and tables with, e.g.,
+  3. Create an html document with charts and tables with, e.g.,
   [[generate-all-displays]].")
 
 
