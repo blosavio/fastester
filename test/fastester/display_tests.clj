@@ -9,6 +9,18 @@
    [fastester.display :refer :all]))
 
 
+(deftest link-to-original-data-tests
+  (is (=
+       (link-to-original-data {:fastester/metadata {:index 99
+                                                    :version 101}}
+                              {:results-url "http://example.com/"
+                               :results-directory "foo/"}
+                              "Hooray!")
+       [:a
+        {:href "http://example.com/foo/version 101/test-99.edn"}
+        "Hooray!"])))
+
+
 (def ε 1e-15)
 
 
@@ -53,35 +65,6 @@
       4 0.444)))
 
 
-(deftest integer-keyed-map->vector-tests
-  (testing "valid, empty map"
-    (is (= [] (integer-keyed-map->vector {}))))
-  (testing "valid, in-order"
-    (is (= ["foo" "bar" "baz"]
-           (integer-keyed-map->vector {0 "foo"
-                                       1 "bar"
-                                       2 "baz"}))))
-  (testing "valid, out-of-order"
-    (is (= ["foo" "bar" "baz"]
-           (integer-keyed-map->vector {1 "bar"
-                                       2 "baz"
-                                       0 "foo"}))))
-  (testing "invalid, no zero"
-    (is (thrown? Exception
-                 (integer-keyed-map->vector {1 "bar"
-                                             2 "baz"}))))
-  (testing "invalid, keys not all integers"
-    (is (thrown? Exception 
-                 (integer-keyed-map->vector {0 "foo"
-                                             1 "bar"
-                                             "two" "baz"}))))
-  (testing "invalide, keys not incremental"
-    (is (thrown? Exception 
-                 (integer-keyed-map->vector {0 "foo"
-                                             1 "bar"
-                                             3 "baz"})))))
-
-
 (deftest transpose-tests
   (testing "empty matrix"
     (is (= [] (transpose [[]]))))
@@ -115,4 +98,101 @@
        [:d :e :f]])))
 
 
+(deftest col-tests
+  (is (= (let [datum {:mean [99E0 1 2]
+                      :variance [101E0 3 4]
+                      :fastester/metadata {:arg 1000
+                                           :version "12"}}
+               opt {:results-url "https://example.com/"
+                    :results-directory "baz/"}]
+           (col datum opt))
+         [:td
+          [:a
+           {:href "https://example.com/baz/version 12/test-.edn"}
+           "9.9e+01±1.0e+01"]])))
+
+
+(deftest version-sort-by-comparator-and-sort-table-rows-tests
+  (is (=(let [opt {:sort-comparator #(> (Integer/parseInt %1)
+                                        (Integer/parseInt %2))}
+             c (version-sort-by-comparator opt)]
+         (sort-table-rows-by-version [[[:td "2"] [:td "bar"]]
+                                      [[:td "3"] [:td "baz"]]
+                                      [[:td "1"] [:td "foo"]]]
+                                     opt))
+         [[[:td "3"] [:td "baz"]]
+          [[:td "2"] [:td "bar"]]
+          [[:td "1"] [:td "foo"]]])))
+
+
+(deftest img-filepath-tests
+  (is (= (img-filepath 99 101 {:html-directory "foo/"
+                               :img-subdirectory "baz/"})
+         "foo/baz/group-99-fexpr-101.svg")))
+
+
+(deftest integer-keyed-map->vector-tests
+  (testing "valid, empty map"
+    (is (= [] (integer-keyed-map->vector {}))))
+  (testing "valid, in-order"
+    (is (= ["foo" "bar" "baz"]
+           (integer-keyed-map->vector {0 "foo"
+                                       1 "bar"
+                                       2 "baz"}))))
+  (testing "valid, out-of-order"
+    (is (= ["foo" "bar" "baz"]
+           (integer-keyed-map->vector {1 "bar"
+                                       2 "baz"
+                                       0 "foo"}))))
+  (testing "invalid, no zero"
+    (is (thrown? Exception
+                 (integer-keyed-map->vector {1 "bar"
+                                             2 "baz"}))))
+  (testing "invalid, keys not all integers"
+    (is (thrown? Exception
+                 (integer-keyed-map->vector {0 "foo"
+                                             1 "bar"
+                                             "two" "baz"}))))
+  (testing "invalide, keys not incremental"
+    (is (thrown? Exception
+                 (integer-keyed-map->vector {0 "foo"
+                                             1 "bar"
+                                             3 "baz"})))))
+
+
+(deftest nested-maps->vecs-tests
+  (is (= (nested-maps->vecs {99 {:x {0 :datum-1
+                                     1 :datum-2
+                                     2 :datum-3}
+                                 :y {0 :datum-4
+                                     1 :datum-5
+                                     2 :datum-6}}})
+         {99 {:x [:datum-1
+                  :datum-2
+                  :datum-3]
+              :y [:datum-4
+                  :datum-5
+                  :datum-6]}})))
+
+
+(deftest toc-tests
+  (is (= (toc {"group-1" nil
+             "group-2" nil
+             "group-3" nil})
+       [:div
+        [:a {:href "#group-0"} "group-1"]
+        [:br]
+        [:a {:href "#group-1"} "group-2"]
+        [:br]
+        [:a {:href "#group-2"} "group-3"]])))
+
+
+(deftest inject-js-tests
+  (is (= (let [html "<head><body>..."
+               js-filepath "https://example.com/foo.js"]
+           (inject-js html js-filepath))
+         "<head><script src=\"https://example.com/foo.js\" type=\"text/javascript\"></script><body>...")))
+
+
 (run-tests)
+

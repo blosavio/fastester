@@ -9,6 +9,87 @@
    [fastester.measure :refer :all]))
 
 
+(deftest project-version-tests
+  (is (= java.lang.String (type (project-version)))))
+
+
+(deftest get-options-tests
+  (let [req-options-keys #{:project-formatted-name
+                           :responsible
+                           :copyright-holder
+                           :fastester-UUID
+                           :tests-directory
+                           :tests-filename
+                           :html-directory
+                           :html-filename
+                           :img-subdirectory
+                           :markdown-directory
+                           :markdown-filename
+                           :results-url
+                           :results-directory
+                           :verbose?
+                           :testing-thoroughness
+                           :parallel?
+                           :n-threads
+                           :save-benchmark-fn-results?}]
+    (is (every? (set (keys (get-options))) req-options-keys))))
+
+
+;; mutable items can be tricky to test because `lein test` executes
+;; asynchronously
+
+(deftest registry-tests
+  (is (map?  @performance-test-registry))
+  (is (do
+        (clear-performance-test-registry!)
+        (defperf foo "bar" (fn [q] (+ q q)) [1 2 3])
+        (is (= (update-in @performance-test-registry ['foo] dissoc :f)
+               {'foo {:group "bar"
+                      :fexpr '(fn [q] (+ q q))
+                      :n [1 2 3]}}))))
+  (is (do
+        (clear-performance-test-registry!)
+        (is (empty? @performance-test-registry))))
+  (is (do
+        (defperf baz "quz" (fn [w] (* w w)) [4 5 6])
+        (undefperf baz)
+        (is (empty? @performance-test-registry)))))
+
+
+(deftest date-tests
+  (is (map? (date)))
+  (is (int? ((date) :year)))
+  (is (< 2000 ((date) :year)))
+  (is (contains? #{"January"
+                   "February"
+                   "March"
+                   "April"
+                   "May"
+                   "June"
+                   "July"
+                   "August"
+                   "September"
+                   "October"
+                   "November"} ((date) :month)))
+  (is (int? ((date) :day)))
+  (is (<= 1 ((date) :day) 31)))
+
+
+(deftest dissoc-identifying-metadata-tests
+  (is (= {:runtime-details {}}
+         (dissoc-identifying-metadata
+          {:runtime-details {:vm-version 0
+                             :name "foo"
+                             :java-runtime-version 0
+                             :input-arguments "baz"}}))))
+
+
+(deftest pmap-with-tests
+  (is (= [] (pmap-with inc [] 2)))
+  (is (= [100] (pmap-with inc [99] 2)))
+  (is (= [2 3 4] (pmap-with inc [1 2 3] 2))))
+
+
 (deftest range-pow-10-tests
   (are [x y] (= x y)
     [1] (range-pow-10 0)
@@ -26,3 +107,4 @@
 
 
 #_(run-tests)
+

@@ -9,6 +9,7 @@
   (:require
    [clojure.java.io :as io]
    [clojure.math :as math]
+   [clojure.pprint :as pp]
    [criterium.core :as crit]))
 
 
@@ -285,12 +286,12 @@
   {:UUIDv4 #uuid "c205183a-fa6b-4581-bd58-3e22a66d44b0"
    :no-doc true}
   [filepath content]
-  (binding [clojure.pprint/*print-pretty* true
-            clojure.pprint/*print-miser-width* 40
-            clojure.pprint/*print-right-margin* 72
+  (binding [pp/*print-pretty* true
+            pp/*print-miser-width* 40
+            pp/*print-right-margin* 72
             *print-length* nil]
     (with-open [writer (clojure.java.io/writer filepath)]
-      (clojure.pprint/pprint content writer))))
+      (pp/pprint content writer))))
 
 
 (defn run-one-test

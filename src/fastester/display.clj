@@ -14,6 +14,7 @@
    [clojure.inspector :refer :all]
    [clojure.java.io :as io]
    [clojure.string :as str]
+   [fastester.measure :refer [get-options]]
    [readmoi.core :refer :all]))
 
 
@@ -674,8 +675,7 @@ position, plot border, etc.")
 
 
 (defn generate-all-displays
-  "Given Fastester options hashmap `opt`, write-to-file html and markdown
-  performance documents.
+  "Write-to-file html and markdown performance documents.
 
   See [[fastester-defaults]]
   and
@@ -686,8 +686,9 @@ position, plot border, etc.")
   `src/fastester_defaults.clj` unless superseded by `:tests-directory` value in
   the options map."
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
-  [opt]
-  (let [options-n-defaults (merge fastester-defaults opt)
+  []
+  (let [opt (get-options)
+        options-n-defaults (merge fastester-defaults opt)
         data (load-results (get-result-filenames opt))
         organized-data (organize-data data)]
     (do (generate-html options-n-defaults organized-data)

@@ -1,7 +1,11 @@
 (ns fastester.performance.tests
   "Beware: When actively developing a benchmarking namespace, the test registry
-  may become stale. Use `fastester.measure/clear-perf-test-registry!` to return
-  to empty state before re-defining perf tests."
+  may become stale. Use
+
+  1. [[undefpref]] to undefine a single test, or
+
+  2. [[clear-performance-test-registry!]] to return the registry to an empty
+  state, before re-evaluating the entire namespace."
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
