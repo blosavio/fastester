@@ -1,8 +1,8 @@
 (ns fastester.display
-  "Create html displays with charts and tables of library performance,
-  communicating objective performance changes across versions .
+  "Create html documents with charts and tables, communicating objective
+  performance changes across versions .
 
-  See [[fastester.measure]] for utilities that produce the raw benchmarking
+  See [[fastester.measure]] for utilities that produce the raw performance
   data."
   (:require
    [com.hypirion.clj-xchart :as xc]
@@ -675,16 +675,13 @@ position, plot border, etc.")
 
 
 (defn generate-all-displays
-  "Write-to-file html and markdown performance documents.
+  "Write-to-file html and markdown documents that show performance measurements
+  across a library's versions.
 
   See [[fastester-defaults]]
   and
   [Fastester project documentation](https://github.com/blosavio/fastester) for
-  details on the structure of the options map.
-
-  Performance data will be read from defaults supplied by
-  `src/fastester_defaults.clj` unless superseded by `:tests-directory` value in
-  the options map."
+  details on the structure of the options map."
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
   []
   (let [opt (get-options)

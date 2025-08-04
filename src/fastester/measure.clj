@@ -1,11 +1,15 @@
 (ns fastester.measure
   "Define and run tests that objectively measure a function's evaluation time.
 
-  The general idea is to run the performance test suite once per version. Any
-  performance improvement/regression is objectively measured.
+  The general idea is to run the performance test suite once per release. Any
+  performance improvement/regression is objectively measured and included in the
+  changelog/release notes.
 
-  See [[fastester.display]] for utilities that create an html display with
-  charts and tables to communicate those results."
+  The [Criterium](https://github.com/hugoduncan/criterium/) library does all the
+  actual performance measurements.
+
+  See [[fastester.display]] for utilities that create an html document with
+  charts and tables that communicate those results."
   (:require
    [clojure.java.io :as io]
    [clojure.math :as math]
@@ -38,7 +42,7 @@
 
 (def ^{:no-doc true}
   performance-test-registry-docstring
-  "An atom containing a hashmap of benchmark tests to run. Typically populated
+  "An atom containing a hashmap of performance tests to run. Typically populated
   by invoking [[defperf]] or [[defperf*]], not manipulated directly.
 
   See also [[undefperf]] and [[clear-performance-test-registry!]].")
@@ -77,10 +81,8 @@
   "Define and register a performance test.
 
   * `name` is an unquoted symbol that labels the performance test.
-
   * `group` is a string, shared between multiple conceptually-related
   performance tests.
-
   * `f` is a 1-arity function that measures some performance aspect. Its
   single argument is the \"n\" in *big-O* notation. `f` may be supplied as an
   S-expression or a function object. Supplying `f` as an S-expression has the
@@ -88,7 +90,6 @@
   `(fn [n] (+ n n))`, in the html charts and tables, whereas a function object
   will render less meaningfully, e.g.,
   `#function[fastester.measure/eval11540/fn--11541]`.
-
   * `n` is a sequence of one or more arguments. During performance testing,
   elements of `n` will be individually supplied to the benchmarking utility.
 
@@ -106,20 +107,19 @@
 
   Both examples above share the same `group` label (\"benchmarking addition\"),
   both involving measuring the performance of `+`. Putting them in the same
-  group signifies that they are conceptually associated, and the html displays
+  group signifies that they are conceptually associated, and the html document
   will aggregate them under a single subsection. Also notice that the `n`
   sequences need not be identical.
 
-  Note 1: The registry ensures that every entry is unique, so repeated `defperf`
-  invocations with identical arguments have no additional affects beyond the
-  initial registration.
-
-  Note 2: Invoking a `defperf` expression, editing it, followed by invoking
-  `defperf` a second time, registers two unique performance tests. When
+  Note: Invoking a `defperf` expression, editing the `name`, followed by
+  invoking `defperf` a second time, registers two unique performance tests. When
   developing at the REPL, be aware that the registry may become 'stale' with
-  outdated tests. To put the registry into a state that refelcts the current
-  definitions, use [[clear-performance-test-registry!]] and re-evaluate all
-  `defperf`s (recommended) or edit the registry with, e.g., `disj`.
+  outdated tests.
+
+  1. To remove a single, unwanted test, use [[undefperf]].
+  2. To put the registry into a state that reflects only the current
+  definitions, use [[clear-performance-test-registry!]] and re-evaluate the
+  namespace to invoke all the current `defperf`s .
 
   See [[defperf*]] for the function version."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
@@ -164,7 +164,7 @@
 
 
 (defn create-results-directories
-  "Create directories to contain benchmarking results, location declared by
+  "Create directories to contain measurement results, location declared by
   options key `:results-directory`. Consults names contained in set
   `excludes`. If zero performance tests are to be executed (i.e., all tests are
   excluded), directories are not created.
@@ -190,33 +190,37 @@
 
 (def ^{:no-doc true}
   *performance-testing-options*-docstring
-  "Hashmap containing Criterium benchmarking options used during benchmarking.
+  "Hashmap containing Criterium options applied during performance measuring.
   Defaults to
   [`criterium.core/*default-quick-bench-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92).
- Create a new binding evironment with `binding`.
 
-  Example:
-  ```clojure
-  (binding [*performance-testing-options* criterium.core/*default-benchmark-opts*]
-    (do-one-performance-test (+ 1 2)))
-  ```
+  Any function that consults this value decides what to do with it; not settable
+  by user.
 
   See also [`criterium.core/*default-benchmark-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83)
   and
   [[*lightning-benchmark-opts*]] for alternate values.")
 
 
+
 (def ^{:dynamic true
-       :doc *performance-testing-options*-docstring}
+       :doc *performance-testing-options*-docstring
+       :no-doc true}
   *performance-testing-options* crit/*default-quick-bench-opts*)
 
 
 (def ^{:no-doc true}
   *lightning-benchmark-opts*-docstring
-  "Criterium benchmark options with extremely minimal samples, etc. Use only for
- quick, proof-of-concept runs.
+  "Criterium options with extremely minimal samples, etc. Use only for quick,
+ proof-of-concept runs.
 
- See [`criterium.core/*default-benchmark-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83)
+ Example:
+ ```clojure
+   (criterium.core/benchmark (+ 1 2) *lightning-benchmark-opts*)
+ ```
+
+ See also
+ [`criterium.core/*default-benchmark-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83)
  and
  [`criterium.core/*default-quick-bench-opts*`](https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92).")
 
@@ -232,15 +236,17 @@
            :warmup-jit-period]))
 
 
-(defmacro run-one-test-subroutine
-  "Given 1-arity function S-expression `fexpr` and argument `arg`, run one
-  benchmark test using \"lightning\" thoroughness, sending result to
-  &ast;`out`&ast;.
+(defmacro run-one-test-quickly
+  "Given 1-arity, quoted S-expression `fexpr` representing a function and
+  argument `arg`, run one benchmark test using \"lightning\" thoroughness,
+  sending result to &ast;`out`&ast;.
 
   Example:
   ```clojure
-  (run-one-test-subroutine '(fn [n] (+ n n)) 9)
-  ```"
+  (run-one-test-quickly '(fn [n] (+ n n)) 9)
+  ```
+
+  See [[*lightning-benchmark-opts*]]."
   {:UUIDv4 #uuid "f7d36987-4451-4115-99e3-2fc57bee6a91"}
   [fexpr arg]
   `(binding [*performance-testing-options*
@@ -249,7 +255,7 @@
 
 
 (defn date
-  "Returns hashmap of `{:year YYYY :month M... :day DD}`.
+  "Returns hashmap of `{:year YYYY :month \"M...\" :day DD}`.
 
   Example:
   ```clojure
@@ -297,8 +303,8 @@
 (defn run-one-test
   "Given version string `ver`, string `name`, test group string `group`,
   function object `f`, function S-expression `fexpr`, test argument `arg`,
-  option hashmap `opts`, and index integer `idx`, executes the benchmark under
-  the current settings and saves results to filesystem.
+  option hashmap `opts`, and index integer `idx`, measures the evaluation time
+  under the current benchmark settings and saves results to filesystem.
 
   Example:
   ```clojure
@@ -311,7 +317,8 @@
                 5
                 options)
   ```
-  See [[run-one-test-subroutine]] and [[*performance-testing-options*]]."
+  See also [[run-one-test-quickly]] for a utility to quickly benchmark an
+  expression."
   {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
   [ver name group f fexpr arg idx opts]
   (let [dirname (opts :results-directory)
