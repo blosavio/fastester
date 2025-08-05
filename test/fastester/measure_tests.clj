@@ -39,21 +39,21 @@
 ;; asynchronously
 
 (deftest registry-tests
-  (is (map?  @performance-test-registry))
+  (is (map? @registry))
   (is (do
-        (clear-performance-test-registry!)
-        (defperf foo "bar" (fn [q] (+ q q)) [1 2 3])
-        (is (= (update-in @performance-test-registry ['foo] dissoc :f)
+        (clear-registry!)
+        (defbench foo "bar" (fn [q] (+ q q)) [1 2 3])
+        (is (= (update-in @registry ['foo] dissoc :f)
                {'foo {:group "bar"
                       :fexpr '(fn [q] (+ q q))
                       :n [1 2 3]}}))))
   (is (do
-        (clear-performance-test-registry!)
-        (is (empty? @performance-test-registry))))
+        (clear-registry!)
+        (is (empty? @registry))))
   (is (do
-        (defperf baz "quz" (fn [w] (* w w)) [4 5 6])
-        (undefperf baz)
-        (is (empty? @performance-test-registry)))))
+        (defbench baz "quz" (fn [w] (* w w)) [4 5 6])
+        (undefbench baz)
+        (is (empty? @registry)))))
 
 
 (deftest date-tests

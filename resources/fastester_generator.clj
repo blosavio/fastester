@@ -4,19 +4,19 @@
   {:no-doc true}
   (:require
    [hiccup2.core :as h2]
-   [fastester.core :refer [do-tests-and-create-displays]]
-   [fastester.display :refer [generate-all-displays]]
-   [fastester.measure :refer [do-all-performance-tests
-                              do-selected-performance-tests]]))
+   [fastester.core :refer [run-benchmarks-and-generate-documents]]
+   [fastester.display :refer [generate-documents]]
+   [fastester.measure :refer [run-all-benchmarks
+                              run-selected-benchmarks]]))
 
 
-#_(do-all-performance-tests)
-#_(do-selected-performance-tests)
-#_(generate-all-displays)
+#_(run-all-benchmarks)
+#_(run-selected-benchmarks)
+#_(generate-documents)
 
 
 (defn -main
   [& args]
   {:UUIDv4 #uuid "c20e4554-c4cd-4d92-912d-4e8affb1ddc9"}
-  (println "generated fastester performance page"))
+  (println "TODO: Generated fastester performance documents."))
 

@@ -4,12 +4,12 @@
 
   1. [[undefpref]] to undefine a single test, or
 
-  2. [[clear-performance-test-registry!]] to return the registry to an empty
-  state, before re-evaluating the entire namespace."
+  2. [[clear-registry!]] to return the registry to an empty state, before
+  re-evaluating the entire namespace."
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
-   [fastester.measure :refer [defperf
+   [fastester.measure :refer [defbench
                               range-pow-10]]))
 
 
@@ -26,9 +26,9 @@
 
 (def plus-test-name "plus, vary number of digits in args")
 
-(defperf add-1-arg plus-test-name (fn [n] (delayed-+ n))     (range-pow-10 6))
-(defperf add-2-arg plus-test-name (fn [n] (delayed-+ n n))   (range-pow-10 6))
-(defperf add-3-arg plus-test-name (fn [n] (delayed-+ n n n)) (range-pow-10 6))
+(defbench add-1-arg plus-test-name (fn [n] (delayed-+ n))     (range-pow-10 6))
+(defbench add-2-arg plus-test-name (fn [n] (delayed-+ n n))   (range-pow-10 6))
+(defbench add-3-arg plus-test-name (fn [n] (delayed-+ n n n)) (range-pow-10 6))
 
 
 
@@ -39,7 +39,7 @@
 (def seq-of-n-repeats
   (doall (reduce #(assoc %1 %2 (take %2 (repeat 64))) {} (range-pow-10 5))))
 
-(defperf
+(defbench
   add-many-args
   plus-test-name-2
   (fn [n] (apply + (seq-of-n-repeats n)))
@@ -52,7 +52,7 @@
 (def range-of-length-n
   (doall (reduce #(assoc %1 %2 (range %2)) {} (range-pow-10 5))))
 
-(defperf
+(defbench
   map-inc-across-a-sequence
   "mapping stuff"
   (fn [n] (map inc (range-of-length-n n)))
@@ -67,7 +67,7 @@
                  {}
                  (range-pow-10 5))))
 
-(defperf
+(defbench
   map-UC-over-a-cycle
   "mapping stuff"
   (fn [n] (map str/upper-case (abc-cycle-of-length-n n)))
@@ -89,7 +89,7 @@
     {}
     (range-pow-10 7))))
 
-(defperf
+(defbench
   conj-onto-rands
   "custom `conj`"
   (fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))
@@ -98,15 +98,15 @@
 
 
 (comment
-  (require '[fastester.measure :refer [clear-performance-test-registry!
-                                       do-all-performance-tests
-                                       do-selected-performance-tests
-                                       performance-test-registry]])
+  (require '[fastester.measure :refer [clear-registry!
+                                       run-all-benchmarks
+                                       run-selected-benchmarks
+                                       registry]])
 
-  #_(do-all-performance-tests)
-  #_(do-selected-performance-tests)
-  #_(fastester.measure/clear-performance-test-registry!)
-  #_ @fastester.measure/performance-test-registry
+  #_(run-all-benchmarks)
+  #_(run-selected-benchmarks)
+  #_(fastester.measure/clear-registry!)
+  #_ @fastester.measure/registry
   #_(println "\n\n\n\n\n")
   )
 

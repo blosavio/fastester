@@ -674,7 +674,7 @@ position, plot border, etc.")
 (load "fastester_defaults")
 
 
-(defn generate-all-displays
+(defn generate-documents
   "Write-to-file html and markdown documents that show performance measurements
   across a library's versions.
 

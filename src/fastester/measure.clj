@@ -41,50 +41,50 @@
 
 
 (def ^{:no-doc true}
-  performance-test-registry-docstring
+  registry-docstring
   "An atom containing a hashmap of performance tests to run. Typically populated
-  by invoking [[defperf]] or [[defperf*]], not manipulated directly.
+  by invoking [[defbench]] or [[defbench*]], not manipulated directly.
 
-  See also [[undefperf]] and [[clear-performance-test-registry!]].")
-
-
-(def ^{:doc performance-test-registry-docstring}
-  performance-test-registry (atom (sorted-map)))
+  See also [[undefbench]] and [[clear-registry!]].")
 
 
-(defn clear-performance-test-registry!
-  "Remove all entries from [[performance-test-registry]], thereby eliminating
+(def ^{:doc registry-docstring}
+  registry (atom (sorted-map)))
+
+
+(defn clear-registry!
+  "Remove all entries from [[registry]], thereby eliminating
   all defined benchmarking tests."
   {:UUIDv4 #uuid "d615da84-0b3b-42e3-acdb-9cec175df53e"}
   []
-  (swap! performance-test-registry empty))
+  (swap! registry empty))
 
 
-(defn defperf*
-  "Function version of `defperf` macro. Define and register a performance
-  test. See [[defperf]] documentation for full details. The differences are
-  that `name` and `f` are supplied as a quoted symbols.
+(defn defbench*
+  "Function version of `defbench` macro. Define and register a benchmark. See
+  [[defbench]] documentation for full details. The differences are that `name`
+  and `f` are supplied as a quoted symbols.
 
   Example:
   ```clojure
-  (defperf* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
+  (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
   ```"
   {:UUIDv4 #uuid "4b09fdc6-f830-40df-8f60-c454f1cca4c4"}
   [name group f n]
-  (swap! performance-test-registry assoc name {:group group
-                                               :fexpr f
-                                               :f (eval f)
-                                               :n n}))
+  (swap! registry assoc name {:group group
+                              :fexpr f
+                              :f (eval f)
+                              :n n}))
 
 
-(defmacro defperf
-  "Define and register a performance test.
+(defmacro defbench
+  "Define and register a benchmark.
 
   * `name` is an unquoted symbol that labels the performance test.
   * `group` is a string, shared between multiple conceptually-related
   performance tests.
-  * `f` is a 1-arity function that measures some performance aspect. Its
-  single argument is the \"n\" in *big-O* notation. `f` may be supplied as an
+  * `f` is a 1-arity function that measures some performance aspect. Its single
+  argument is the \"n\" in *big-O* notation. `f` may be supplied as an
   S-expression or a function object. Supplying `f` as an S-expression has the
   advantage that the definition may later convey some meaning, e.g.,
   `(fn [n] (+ n n))`, in the html charts and tables, whereas a function object
@@ -95,14 +95,14 @@
 
   Example, supplying `f` as an S-expression:
   ```clojure
-  (defperf add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
+  (defbench add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
   ```
 
   Example, supplying `f` as a function object:
   ```clojure
   (defn my-fn-obj [q] (+ q q q))
 
-  (defperf add-three \"benchmarking additon\" my-fn-obj [2 20 200 2000])
+  (defbench add-three \"benchmarking additon\" my-fn-obj [2 20 200 2000])
   ```
 
   Both examples above share the same `group` label (\"benchmarking addition\"),
@@ -111,56 +111,56 @@
   will aggregate them under a single subsection. Also notice that the `n`
   sequences need not be identical.
 
-  Note: Invoking a `defperf` expression, editing the `name`, followed by
-  invoking `defperf` a second time, registers two unique performance tests. When
+  Note: Invoking a `defbench` expression, editing the `name`, followed by
+  invoking `defbench` a second time, registers two unique performance tests. When
   developing at the REPL, be aware that the registry may become 'stale' with
   outdated tests.
 
-  1. To remove a single, unwanted test, use [[undefperf]].
+  1. To remove a single, unwanted test, use [[undefbench]].
   2. To put the registry into a state that reflects only the current
-  definitions, use [[clear-performance-test-registry!]] and re-evaluate the
-  namespace to invoke all the current `defperf`s .
+  definitions, use [[clear-registry!]] and re-evaluate the namespace to invoke
+  all the current `defbench`s .
 
-  See [[defperf*]] for the function version."
+  See [[defbench*]] for the function version."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
   [name group f n]
   (let [fun (nth &form 3)]
-    `(defperf* '~name ~group '~fun ~n)))
+    `(defbench* '~name ~group '~fun ~n)))
 
 
-(defn undefperf*
-  "Function version of [[undefperf]]. Undefines a performance test by removing
+(defn undefbench*
+  "Function version of [[undefbench]]. Undefines a performance test by removing
   quoted symbol `name` from the registry.
 
   Example:
   ```clojure
   ;; define a performance test
-  (defperf* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
+  (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
 
   ;; undefine that performance test
-  (undefperf* 'add-four)
+  (undefbench* 'add-four)
   ```"
   {:UUIDv4 #uuid "6130c03f-e8b0-4ce1-a682-ba3605fc291b"}
   [name]
-  (swap! performance-test-registry dissoc name))
+  (swap! registry dissoc name))
 
 
-(defmacro undefperf
+(defmacro undefbench
   "Undefine a performance test by removing `name` from the registry.
 
   Example:
   ```clojure
   ;; define a performance test
-  (defperf add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
+  (defbench add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
 
   ;; undefine that performance test
-  (undefperf add-two)
+  (undefbench add-two)
   ```
 
-  See also [[undefperf*]]."
+  See also [[undefbench*]]."
   {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"}
   [name]
-  `(undefperf* '~name))
+  `(undefbench* '~name))
 
 
 (defn create-results-directories
@@ -178,7 +178,7 @@
         version-dirname (str results-dirname
                              "/version "
                              (project-version))
-        unique-test-names (distinct (map :group @performance-test-registry))
+        unique-test-names (distinct (map :group @registry))
         non-excluded-names (remove
                             excludes
                             unique-test-names)]
@@ -236,22 +236,54 @@
            :warmup-jit-period]))
 
 
-(defmacro run-one-test-quickly
-  "Given 1-arity, quoted S-expression `fexpr` representing a function and
-  argument `arg`, run one benchmark test using \"lightning\" thoroughness,
-  sending result to &ast;`out`&ast;.
+(def ^{:no-doc true}
+  thoroughnesses {:default crit/*default-benchmark-opts*
+                  :quick crit/*default-quick-bench-opts*
+                  :lightning *lightning-benchmark-opts*})
+
+
+(defmacro run-one-benchmark
+  "Given 1-arity, S-expression `fexpr` representing a function and argument
+  `arg`, run one benchmark test using keyword `thoroughness` to designate the
+  Criterium options, sending result to &ast;`out`&ast;.
+
+  `thoroughness` is one of `:default`, `:quick`, or `:lightning`.
 
   Example:
   ```clojure
-  (run-one-test-quickly '(fn [n] (+ n n)) 9)
+  (run-one-benchmark (fn [n] (+ n n)) 9 :lightning)
   ```
 
-  See [[*lightning-benchmark-opts*]]."
+  See [[run-one-registered-benchmark]] and [[*lightning-benchmark-opts*]]."
   {:UUIDv4 #uuid "f7d36987-4451-4115-99e3-2fc57bee6a91"}
-  [fexpr arg]
-  `(binding [*performance-testing-options*
-             *lightning-benchmark-opts*]
-     (crit/benchmark (~(eval fexpr) ~arg) *performance-testing-options*)))
+  [fexpr arg thoroughness]
+  `(crit/benchmark (~(eval fexpr) ~arg) (thoroughnesses ~thoroughness)))
+
+
+(defmacro run-one-registered-benchmark
+  "Given benchmark registered by `name`, and a keyword `thoroughness` that
+  designates the Criterium options, runs benchmarks. Returns a map with keys
+  provided by the benchmark arguments `n` associated with the benchmark results.
+
+  `thoroughness` is one of `:default`, `:quick`, or `:lightning`.
+
+  Example:
+  ```clojure
+  (defbench my-bench \"my-group\" (fn [x] (inc x)) [97 98 99])
+
+  (run-one-registered-benchmark my-bench :lightning)
+  ```
+
+  See [[run-one-benchmark]] and [[*lightning-benchmark-opts*]]."
+  {:UUIDv4 #uuid "eac060b1-2175-4cf3-a3b9-5eb57c0438cb"}
+  [name thoroughness]
+  `(reduce #(assoc %1
+                   %2
+                   (crit/benchmark
+                    (~(eval (get-in @registry [name :fexpr])) %2)
+                    (thoroughnesses ~thoroughness)))
+           {}
+           ~(get-in @registry [name :n])))
 
 
 (defn date
@@ -300,7 +332,7 @@
       (pp/pprint content writer))))
 
 
-(defn run-one-test
+(defn run-save-benchmark
   "Given version string `ver`, string `name`, test group string `group`,
   function object `f`, function S-expression `fexpr`, test argument `arg`,
   option hashmap `opts`, and index integer `idx`, measures the evaluation time
@@ -308,17 +340,18 @@
 
   Example:
   ```clojure
-  (run-one-test \"77-SNAPSHOT7\"
-                'mult-two-nums
-                \"adding --- stuff\"
-                (fn [n] (* n n))
-                '(fn [n] (* n n))
-                22
-                5
-                options)
+  (run-save-benchmark \"77-SNAPSHOT7\"
+                      'mult-two-nums
+                      \"adding --- stuff\"
+                      (fn [n] (* n n))
+                      '(fn [n] (* n n))
+                      22
+                      5
+                      options)
   ```
-  See also [[run-one-test-quickly]] for a utility to quickly benchmark an
-  expression."
+
+  See also [[run-one-benchmark]] and [[run-one-registered-benchmark]] for
+  utilities to quickly benchmark an expression."
   {:UUIDv4 #uuid "5f87d695-9d47-4553-8596-1b9ad26f4bab"}
   [ver name group f fexpr arg idx opts]
   (let [dirname (opts :results-directory)
@@ -401,11 +434,11 @@
      (step rets (drop n rets)))))
 
 
-(defn load-tests-ns
+(defn load-benchmarks-ns
   "Given options hashmap `opt`, `require`s the testing namespace declared by the
   Fastester options `:tests-directory` and `:tests-filename`.
 
-  Note: Invokes `clear-performance-test-registry!`."
+  Note: Invokes `clear-registry!`."
   {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
    :no-doc true
    :implementation-note "Don't feel great about abusing `require` like this, but
@@ -413,7 +446,7 @@
   `leiningen.core.utils/require-resolve`."}
   [opt]
   (do
-    (clear-performance-test-registry!)
+    (clear-registry!)
     (let [filepath (str (opt :tests-directory)
                         (opt :tests-filename))
           tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
@@ -421,7 +454,7 @@
       (require (symbol tests-file) :reload))))
 
 
-(defn do-tests
+(defn run-benchmarks
   "Execute non-excluded performance tests, as governed by test names in set
   `excludes`.
 
@@ -440,11 +473,11 @@
    `pmap-with`."}
   [& exclude?]
   (let [options (get-options)
-        _ (load-tests-ns options)
+        _ (load-benchmarks-ns options)
         excludes (if exclude?
                    (options :excludes)
                    #{})
-        reg (remove #(excludes ((val %) :group)) @performance-test-registry)
+        reg (remove #(excludes ((val %) :group)) @registry)
         get-idx #(.indexOf %1 %2)
         r-fn (fn [v [name settings]]
                (concat v
@@ -456,14 +489,14 @@
         runner-fn (fn [t]
                     (let [idx (get-idx expanded-reg t)]
                       (if verbose (println (str "Test " idx "/" num-reg)))
-                      (run-one-test (project-version)
-                                    (t :name)
-                                    (t :group)
-                                    (t :f)
-                                    (t :fexpr)
-                                    (t :n)
-                                    idx
-                                    options)))
+                      (run-save-benchmark (project-version)
+                                          (t :name)
+                                          (t :group)
+                                          (t :f)
+                                          (t :fexpr)
+                                          (t :n)
+                                          idx
+                                          options)))
         runner ({true (fn [f coll] (pmap-with f coll (options :n-threads)))
                  false map}
                 (options :parallel?))]
@@ -474,19 +507,19 @@
     (if verbose (println "Performance testing complete."))))
 
 
-(defn do-all-performance-tests
+(defn run-all-benchmarks
   "Execute all performance tests, ignoring options key `:excludes`."
   {:UUIDv4 #uuid "50b19eef-32f1-4586-a317-21e1f20235cf"}
   []
-  (do-tests))
+  (run-benchmarks))
 
 
-(defn do-selected-performance-tests
+(defn run-selected-benchmarks
   "Execute performance tests, skipping any tests with name contained in option
   `:excludes`."
   {:UUIDv4 #uuid "ed3dd772-08d5-47cc-85b9-608892f8c96a"}
   []
-  (do-tests true))
+  (run-benchmarks true))
 
 
 (defn range-pow-n
