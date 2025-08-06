@@ -1,7 +1,8 @@
 (def ^{:no-doc true}
   fastester-defaults-docstring
-  "A hash-map residing in `src/fastester_defaults.clj` that supplies the default
- values for the following option keys:
+  "A hash-map residing in
+ [`src/fastester_defaults.clj`](https://github.com/blosavio/fastester/blob/main/src/fastester/fastester_defaults.clj)
+ that supplies the default values for the following option keys:
 
   * `:tests-directory`
   * `:tests-filename`
@@ -20,9 +21,8 @@
   * `:tidy-html?`
   * `:preamble`
 
-
   Override default values by associating new values into the Fastester _options_
-  hash-map. See [[do-all-performance-tests]] and [[generate-all-displays]].")
+  hash-map. See [[run-all-benchmarks]] and [[generate-documents]].")
 
 
 (def ^{:doc fastester-defaults-docstring

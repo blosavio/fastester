@@ -16,7 +16,7 @@
   "Run all benchmarks and generate an html document that displays comparisons to
   previous versions.
 
-  See [[run-all-benchmarks]] and [[generate-documents]]"
+  See [[run-all-benchmarks]] and [[generate-documents]]."
   {:UUIDv4 #uuid "e26d0308-229f-4f2d-b24f-60ff9e59d109"}
   []
   (do

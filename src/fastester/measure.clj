@@ -1,14 +1,15 @@
 (ns fastester.measure
-  "Define and run tests that objectively measure a function's evaluation time.
+  "Define and run benchmarks that objectively measure a function's evaluation
+  time.
 
-  The general idea is to run the performance test suite once per release. Any
+  The general idea is to run the benchmark suite once per release. Any
   performance improvement/regression is objectively measured and included in the
   changelog/release notes.
 
   The [Criterium](https://github.com/hugoduncan/criterium/) library does all the
   actual performance measurements.
 
-  See [[fastester.display]] for utilities that create an html document with
+  See [[fastester.display]] for utilities that generate an html document with
   charts and tables that communicate those results."
   (:require
    [clojure.java.io :as io]
@@ -42,8 +43,8 @@
 
 (def ^{:no-doc true}
   registry-docstring
-  "An atom containing a hashmap of performance tests to run. Typically populated
-  by invoking [[defbench]] or [[defbench*]], not manipulated directly.
+  "An atom containing a hashmap of benchmarks to run. Typically populated by
+  invoking [[defbench]] or [[defbench*]], not manipulated directly.
 
   See also [[undefbench]] and [[clear-registry!]].")
 
@@ -53,8 +54,7 @@
 
 
 (defn clear-registry!
-  "Remove all entries from [[registry]], thereby eliminating
-  all defined benchmarking tests."
+  "Remove all entries from the benchmark [[registry]]."
   {:UUIDv4 #uuid "d615da84-0b3b-42e3-acdb-9cec175df53e"}
   []
   (swap! registry empty))
@@ -62,8 +62,8 @@
 
 (defn defbench*
   "Function version of `defbench` macro. Define and register a benchmark. See
-  [[defbench]] documentation for full details. The differences are that `name`
-  and `f` are supplied as a quoted symbols.
+  [[defbench]] documentation for full details. The two differences are that
+  `name` and `f` are supplied as a quoted symbols.
 
   Example:
   ```clojure
@@ -78,11 +78,11 @@
 
 
 (defmacro defbench
-  "Define and register a benchmark.
+  "Define and register a benchmark by inserting an entry into the [[registry]].
 
-  * `name` is an unquoted symbol that labels the performance test.
+  * `name` is an unquoted symbol that labels the benchmark.
   * `group` is a string, shared between multiple conceptually-related
-  performance tests.
+  benchmarks.
   * `f` is a 1-arity function that measures some performance aspect. Its single
   argument is the \"n\" in *big-O* notation. `f` may be supplied as an
   S-expression or a function object. Supplying `f` as an S-expression has the
@@ -106,15 +106,15 @@
   ```
 
   Both examples above share the same `group` label (\"benchmarking addition\"),
-  both involving measuring the performance of `+`. Putting them in the same
-  group signifies that they are conceptually associated, and the html document
-  will aggregate them under a single subsection. Also notice that the `n`
-  sequences need not be identical.
+  as both are concerned with measuring the performance of `+`. Putting them in
+  the same group signifies that they are conceptually-related, and the html
+  document will aggregate them under a single subsection. Also notice that the
+  `n` sequences need not be identical.
 
   Note: Invoking a `defbench` expression, editing the `name`, followed by
-  invoking `defbench` a second time, registers two unique performance tests. When
-  developing at the REPL, be aware that the registry may become 'stale' with
-  outdated tests.
+  invoking `defbench` a second time, registers two unique performance tests.
+  When developing at the REPL, be aware that the registry may become 'stale'
+  with outdated tests.
 
   1. To remove a single, unwanted test, use [[undefbench]].
   2. To put the registry into a state that reflects only the current
@@ -129,8 +129,8 @@
 
 
 (defn undefbench*
-  "Function version of [[undefbench]]. Undefines a performance test by removing
-  quoted symbol `name` from the registry.
+  "Function version of [[undefbench]]. Undefines a benchmark by removing quoted
+  symbol `name` from the [[registry]].
 
   Example:
   ```clojure
@@ -146,7 +146,7 @@
 
 
 (defmacro undefbench
-  "Undefine a performance test by removing `name` from the registry.
+  "Undefine a benchmark by removing `name` from the [[registry]].
 
   Example:
   ```clojure
@@ -157,7 +157,7 @@
   (undefbench add-two)
   ```
 
-  See also [[undefbench*]]."
+  Undoes the results of [[defbench]]. See also [[undefbench*]]."
   {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"}
   [name]
   `(undefbench* '~name))
@@ -170,7 +170,8 @@
   excluded), directories are not created.
 
   Creates `<options-results-dir>/` then `<options-results-dir>/<version>/`."
-  {:UUIDv4 #uuid "a75a0d12-150b-43e6-b3b7-6a758528a3b2"}
+  {:UUIDv4 #uuid "a75a0d12-150b-43e6-b3b7-6a758528a3b2"
+   :no-doc true}
   [excludes]
   (let [options (get-options)
         mkdir #(.mkdir (io/file %))
@@ -263,7 +264,8 @@
 (defmacro run-one-registered-benchmark
   "Given benchmark registered by `name`, and a keyword `thoroughness` that
   designates the Criterium options, runs benchmarks. Returns a map with keys
-  provided by the benchmark arguments `n` associated with the benchmark results.
+  provided by the benchmark arguments `n` associated with the benchmark results
+  for that `n`.
 
   `thoroughness` is one of `:default`, `:quick`, or `:lightning`.
 
@@ -293,7 +295,8 @@
   ```clojure
   (date) ;; => {:year 2025, :month \"July\", :day 16}
   ```"
-  {:UUIDv4 #uuid "a9d4df42-9cb8-4812-a996-0f080535183e"}
+  {:UUIDv4 #uuid "a9d4df42-9cb8-4812-a996-0f080535183e"
+   :no-doc true}
   []
   (let [instant (java.util.Date.)
         formatted-instant (.format
@@ -333,10 +336,10 @@
 
 
 (defn run-save-benchmark
-  "Given version string `ver`, string `name`, test group string `group`,
-  function object `f`, function S-expression `fexpr`, test argument `arg`,
-  option hashmap `opts`, and index integer `idx`, measures the evaluation time
-  under the current benchmark settings and saves results to filesystem.
+  "Given string `ver`, symbol `name`, string `group`, function object `f`,
+  function S-expression `fexpr`, test argument `arg`, option hashmap `opts`,
+  and index integer `idx`, measures the evaluation time under the current
+  Criterium benchmark settings and saves results to filesystem.
 
   Example:
   ```clojure
@@ -508,15 +511,29 @@
 
 
 (defn run-all-benchmarks
-  "Execute all performance tests, ignoring options key `:excludes`."
+  "Run all registered benchmarks, ignoring options key `:excludes`.
+
+  Example:
+  ```clojure
+  (run-all-benchmarks)
+  ```
+
+  See also [[run-selected-benchmarks]]."
   {:UUIDv4 #uuid "50b19eef-32f1-4586-a317-21e1f20235cf"}
   []
   (run-benchmarks))
 
 
 (defn run-selected-benchmarks
-  "Execute performance tests, skipping any tests with name contained in option
-  `:excludes`."
+  "Run *some* registered benchmarks, skipping any with a name contained in
+  option `:excludes`.
+
+  Example:
+  ```clojure
+  (run-selected-benchmarks)
+  ```
+
+  See also [[run-all-benchmarks]]."
   {:UUIDv4 #uuid "ed3dd772-08d5-47cc-85b9-608892f8c96a"}
   []
   (run-benchmarks true))

@@ -1,9 +1,9 @@
 (ns fastester.display
-  "Create html documents with charts and tables, communicating objective
+  "Generate html documents with charts and tables, communicating objective
   performance changes across versions .
 
-  See [[fastester.measure]] for utilities that produce the raw performance
-  data."
+  See [[fastester.measure]] for utilities to run the benchmarks and save the
+  performance data."
   (:require
    [com.hypirion.clj-xchart :as xc]
    [hiccup2.core :as h2]

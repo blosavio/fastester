@@ -1,6 +1,6 @@
 (ns fastester-generator
   "CIDER eval buffer C-c C-k loads the Fastester options and generates a
-  'performance.html', defaulting to the 'resources/' directory."
+  'performance.html', defaulting to the 'doc/' directory."
   {:no-doc true}
   (:require
    [hiccup2.core :as h2]
