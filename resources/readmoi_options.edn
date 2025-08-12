@@ -1,13 +1,12 @@
-{:sections [{:section-name "Quick summary" :section-href "quick"}
-            {:section-name "Setup"}
+{:sections [{:section-name "Setup"}
             {:section-name "API" :section-href "https://blosavio.github.io/fastester/index.html" :skip-section-load? true}
             {:section-name "Changelog" :section-href "https://github.com/blosavio/fastester/blob/main/changelog.md" :skip-section-load? true}
             {:section-name "Introduction" :section-href "intro"}
             {:section-name "Ideas" :section-href "ideas"}
             {:section-name "Usage" :section-href "usage"}
-            {:section-name "Possibilities" :section-href "possibilities"}
-            {:section-name "Critique" :section-href "critique"}
-            {:section-name "Alternatives" :section-href "alternatives"}
+            {:section-name "Limitations & mitigations" :section-href "limits"}
+            {:section-name "Alternatives & references" :section-href "alternatives"}
+            {:section-name "Non-goals" :section-href "goals"}
             {:section-name "Examples" :section-href "examples"}
             {:section-name "Glossary" :section-href "glossary"}
             {:section-name "Contact" :section-href "https://github.com/blosavio" :skip-section-load? true}]
@@ -18,10 +17,12 @@
  ;; special directives to zprint on how to handle these functions
  :fn-map-additions {}
 
- :project-description "A Clojure library for reporting performance changes"
+ :project-description "A Clojure library for measuring and displaying
+  performance changes"
+
  :project-name-formatted "Fastester"
 
- :readme-UUID 
+ :readme-UUID #uuid "a19c373d-6b51-428e-a99f-a8e89a37b60c"
 
  :readme-html-directory "doc/"
  :readme-html-filename "readme.html"

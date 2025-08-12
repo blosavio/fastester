@@ -1,8 +1,8 @@
-(ns fastester.performance.tests
-  "Beware: When actively developing a benchmarking namespace, the test registry
-  may become stale. Use
+(ns fastester.performance.benchmarks
+  "Beware: When actively developing a benchmarking namespace, the registry may
+ become stale. Use
 
-  1. [[undefpref]] to undefine a single test, or
+  1. [[undefbench]] to undefine a single benchmark, or
 
   2. [[clear-registry!]] to return the registry to an empty state, before
   re-evaluating the entire namespace."
@@ -16,7 +16,7 @@
 
 ;;;; 1. Testing delayed addition of one to three numbers
 
-(def dly 5)
+(def dly 10)
 
 (defn delayed-+
   [& args]
@@ -50,12 +50,12 @@
 ;;;; 3a. Testing basic mapping over a sequence of numbers
 
 (def range-of-length-n
-  (doall (reduce #(assoc %1 %2 (range %2)) {} (range-pow-10 5))))
+  (reduce #(assoc %1 %2 (range %2)) {} (range-pow-10 5)))
 
 (defbench
   map-inc-across-a-sequence
   "mapping stuff"
-  (fn [n] (map inc (range-of-length-n n)))
+  (fn [n] (doall (map inc (range-of-length-n n))))
   (range-pow-10 5))
 
 
@@ -63,14 +63,14 @@
 ;;;; 3b. Testing mapping over a sequence of strings
 
 (def abc-cycle-of-length-n
-  (doall (reduce #(assoc %1 %2 (take %2 (cycle ["a" "b" "c"])))
-                 {}
-                 (range-pow-10 5))))
+  (reduce #(assoc %1 %2 (take %2 (cycle ["a" "b" "c"])))
+          {}
+          (range-pow-10 5)))
 
 (defbench
   map-UC-over-a-cycle
   "mapping stuff"
-  (fn [n] (map str/upper-case (abc-cycle-of-length-n n)))
+  (fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))
   (range-pow-10 5))
 
 
@@ -100,6 +100,7 @@
 (comment
   (require '[fastester.measure :refer [clear-registry!
                                        run-all-benchmarks
+                                       run-one-registered-benchmark
                                        run-selected-benchmarks
                                        registry]])
 

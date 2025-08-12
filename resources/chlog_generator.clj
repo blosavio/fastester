@@ -15,5 +15,6 @@
 
 (defn -main
   [& args]
-  {:UUIDv4 }
-  (println "generated fastester performance page"))
+  {:UUIDv4 #uuid "620eb079-3c79-49e5-af3f-fb9300325b0d"}
+  (println "Generated fastester performance page"))
+

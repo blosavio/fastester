@@ -12,9 +12,11 @@
   See [[fastester.display]] for utilities that generate an html document with
   charts and tables that communicate those results."
   (:require
+   [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.math :as math]
    [clojure.pprint :as pp]
+   [clojure.string :as str]
    [criterium.core :as crit]))
 
 
@@ -301,10 +303,10 @@
   (let [instant (java.util.Date.)
         formatted-instant (.format
                            (java.text.SimpleDateFormat. "yyyy LLLL dd") instant)
-        [year month day] (clojure.string/split formatted-instant #" ")]
-    {:year (clojure.edn/read-string year)
+        [year month day] (str/split formatted-instant #" ")]
+    {:year (edn/read-string year)
      :month month
-     :day (clojure.edn/read-string day)}))
+     :day (edn/read-string (str/replace day #"^0" ""))}))
 
 
 (defn dissoc-identifying-metadata
@@ -439,7 +441,7 @@
 
 (defn load-benchmarks-ns
   "Given options hashmap `opt`, `require`s the testing namespace declared by the
-  Fastester options `:tests-directory` and `:tests-filename`.
+  Fastester options `:benchmarks-directory` and `:benchmarks-filenames`.
 
   Note: Invokes `clear-registry!`."
   {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
@@ -450,8 +452,8 @@
   [opt]
   (do
     (clear-registry!)
-    (let [filepath (str (opt :tests-directory)
-                        (opt :tests-filename))
+    (let [filepath (str (opt :benchmarks-directory)
+                        (opt :benchmarks-filenames))
           tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
       (if (opt :verbose?) (println "Loading tests from " tests-file))
       (require (symbol tests-file) :reload))))

@@ -18,8 +18,8 @@
                            :responsible
                            :copyright-holder
                            :fastester-UUID
-                           :tests-directory
-                           :tests-filename
+                           :benchmarks-directory
+                           :benchmarks-filenames
                            :html-directory
                            :html-filename
                            :img-subdirectory

@@ -1,15 +1,57 @@
 [:section#alternatives
- [:h2 "Alternatives"]
+ [:section#alternatives
+  [:h2 "Alternatives & References"]
 
- [:ul
-  [:li [:p [:strong "Classic markdown/" [:span.small-caps "html"] " files"] " Discussed above."]]
-  
-  [:li [:p [:strong "Changelog generated from version control commit log"] " At first glance, a changelog generated from a version control commit log seems natural. It is certainly easy, and there are many concepts in common. However, the purpose of a changelog is different enough to merit its own focus."]
-   
-   [:p "Version control logs communicate information about the development history to developers of that software. Changelogs communicate the details of the released versions to people who consume the software. Related, but subtly different."]
+  [:ul
+   [:li
+    [:p [:a {:href "https://github.com/clojure-goes-fast/clj-async-profiler"}
+         "clj-async-profiler"]
+     " A single-dependency, embedded high-precision performance profiler."]]
 
-   [:p "A commit message notes fine-grained changes to the software, somewhat like a diary of software development. It would feel a bit oppressive to have to consider how every commit message would appear in a public changelog. The evolution of software is noisy. Commit messages may involve false starts, mistakes, and dead ends. They are meant to be read by people " [:em "developing"] " the software itself. Plus, writing commit messages that also serve as a changelog entry would require some kind of standards or specifications, or heroic discipline by the authors. Finally, commit messages typically do not concern themselves about whether the change is breaking for the people using the software."]
+   [:li
+    [:p
+     [:a {:href "https://github.com/jafingerhut/clojure-benchmarks/tree/master"}
+      "clojure-benchmarks"]
+     " Andy Fingerhut's project for benchmarking programs to compare amongst
+ other languages."]]
 
-   [:p "Changelogs, on the other hand, should clearly and concisely communicate, to people " [:em "using"] " the software, the differences between one version and another. It could be fine- or coarse-grained, but the freedom to decide should be independent of the version control commit log. Authoring a changelog requires care, judgment, and empathy for people ultimately using the software, and is a task somewhat different from wrangling version control commit messages."]]]
+   [:li
+    [:p [:a {:href "https://clojure-goes-fast.com/"}
+         "Clojure Goes Fast"]
+     " A hub for news, docs, and tools related to Clojure and high
+ performance."]]
 
- [:p "Even at this early stage of its life, Chlog can alleviate most of that labor. Keep the changelog as " [:code ".edn"] " data, and Chlog will take care of the " [:span.small-caps "html"] "/markdown."]]
+   [:li
+    [:p [:a {:href "https://github.com/hugoduncan/criterium/"} "Criterium"]
+     " Measures the computation time of an expression, addressing some of the
+ pitfalls of benchmarking. Criterium provides the vital benchmarking engine of
+ the Fastester library."]]
+
+   [:li
+    [:p [:a {:href "https://github.com/openjdk/jmh"}
+         "Java Microbenchmark Harness"] " (JMH) For building, running, and
+ analysing nano/micro/milli/macro benchmarks written in Java and other languages
+ targeting the JVM."]]
+
+   [:li
+    [:p "Laurence Tratt's benchmarking essays."
+     [:br]
+     [:a {:href "https://tratt.net/laurie/blog/2019/minimum_times_tend_to_mislead_when_benchmarking.html"}
+      [:em "Minimum times tend to mislead when benchmarking"]]
+     [:br]
+     [:a {:href "https://soft-dev.org/pubs/html/barrett_bolz-tereick_killick_mount_tratt__virtual_machine_warmup_blows_hot_and_cold_v6/"}
+      [:em "Virtual machine warmup blows hot and cold"]]
+     [:br]
+     [:em "Why aren’t more users more happy with our VMs? "]
+     [:a {:href "https://tratt.net/laurie/blog/2018/why_arent_more_users_more_happy_with_our_vms_part_1.html"}
+      "Part 1"]
+     " "
+     [:a {:href "https://tratt.net/laurie/blog/2018/why_arent_more_users_more_happy_with_our_vms_part_2.html"}
+      "Part 2"]]]
+
+   [:li
+    [:p [:a {:href "https://clojure-goes-fast.com/kb/benchmarking/time-plus/"}
+         [:code "time+"]]
+     " A paste-and-go macro that measures an expression's evaluation time,
+ useful for interactive development."]]]]]
+

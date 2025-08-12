@@ -5,4 +5,5 @@
  [:h3 "Clojure CLI/deps.edn"]
  [:pre [:code (str *project-group* "/" *project-name* " {:mvn/version \"" *project-version* "\"}")]]
  [:h3 "Require"]
- [:pre (print-form-then-eval "(require '[chlog.core :refer [generate-all-changelogs]])")]]
+ [:pre (print-form-then-eval "(require '[fastester.measure :refer [defbench run-one-registered-benchmark]])")]]
+

@@ -1,6 +1,6 @@
-{:overhead 1.61466671255867E-8,
+{:overhead 1.6202972480983663E-8,
  :samples
- (120289757 120790461 120321606 120313626 120291334 120266668),
+ (120290595 120342744 120320649 120284483 120301443 120320973),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -13,40 +13,40 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [0.04012683383333334 (0.040096979444444444 0.04021094866666667)],
- :final-gc-time 164863097,
+ [0.04010340061111112 (0.040098403944444444 0.040108913833333336)],
+ :final-gc-time 163135050,
  :execution-count 3,
  :variance
- [4.5800815993629144E-9 (2.6120181144445998E-11 8.623594437351804E-9)],
+ [5.989209512961885E-11
+  (2.2053939866670393E-11 1.0592345339630934E-10)],
  :os-details
  {:arch "amd64",
   :available-processors 4,
   :name "Linux",
   :version "5.15.0-144-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.13888888888888862,
- :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 1},
- :warmup-time 5814680027,
- :lower-q
- [0.040088889333333336 (0.040088889333333336 0.04009658566666667)],
+ :outlier-variance 0.1388888888888886,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
+ :warmup-time 5814364831,
+ :lower-q [0.04009482766666667 (0.04009482766666667 0.040096865)],
  :warmup-executions 145,
  :sample-count 6,
  :upper-q
- [0.040243618875000005 (0.04010361316666667 0.04026348700000001)],
+ [0.04011332737500001 (0.04010608275000001 0.040114248000000005)],
  :fastester/metadata
  {:fexpr "(fn [n] (delayed-+ n n n))",
-  :date {:year 2025, :month "August", :day 3},
+  :date {:year 2025, :month "August", :day 8},
   :group "plus, vary number of digits in args",
   :index 14,
-  :UUIDv4 #uuid "56b38036-c61e-4a5c-add6-d27560bb7e89",
+  :UUIDv4 #uuid "5ee21b1e-1bdc-4249-9f95-9b7d452ca053",
   :name "add-3-arg",
   :testing-thoroughness :quick,
   :arg 1,
   :n-threads 3,
   :version "4",
   :parallel? false},
- :total-time 0.722273452,
- :sample-variance [4.558578986918529E-9 (0.0 0.0)],
+ :total-time 0.721860887,
+ :sample-variance [5.3483108907408844E-11 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -54,7 +54,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.61466671255867E-8},
+  :overhead 1.6202972480983663E-8},
  :sample-mean
- [0.040126302888888896 (0.03992375114023619 0.0403288546375416)],
+ [0.04010338261111111 (0.040081442967081035 0.04012532225514119)],
  :results :fastester/benchmark-fn-results-elided}

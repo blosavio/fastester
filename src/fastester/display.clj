@@ -202,10 +202,12 @@
         std (Math/sqrt var)
         arg (-> datum :fastester/metadata :arg)
         version (-> datum :fastester/metadata :version)
-        compact-mean-std (format "%2.1e±%2.1e" mean std)
+        below-zero? (when (<= (- mean std) 0) " ‡")
+        compact-mean-std (str (format "%2.1e±%2.1e" mean std) below-zero?)
         verbose-mean-std (str "mean±std: " compact-mean-std
                               "<br/>arg: " arg
-                              "<br/>version: " version)]
+                              "<br/>version: " version
+                              below-zero?)]
     [:td (link-to-original-data
           datum
           opt
@@ -427,6 +429,9 @@
   (update-vals data #(update-vals % integer-keyed-map->vector)))
 
 
+(def ^{:no-doc true} zeroed! (atom nil))
+
+
 (defn rearrange-chart-data
   "Given fexpr organized data `o-data`, returns the mean±std with the following
   arrangement:
@@ -441,10 +446,12 @@
   {:UUIDv4 #uuid "724d4c77-bde4-40b2-8498-0df1021147f3"
    :no-doc true
    :implementation-note "If an axis is logarithmic, it cannot display negative
-  values, but a datum±std *may* be negative. In that case, assoc error bar data
-  to `:ignored` so that clj-xchart ignores the error bars. See [[chart]]."}
+  values, but a datum±std *may* be negative. In that case, coerce std to zero
+  and set the `zeroed!` flag so that a footnote on the chart can be added to
+  inform the reader. See [[chart]]."}
   [o-data opt fexpr]
-  (let [flattened (for [n-arg o-data
+  (let [_ (reset! zeroed! nil)
+        flattened (for [n-arg o-data
                         version (second n-arg)]
                     (let [datums (second version)]
                       {:version (str "version "(first version))
@@ -454,24 +461,23 @@
         get-all #(->> flattened (map %) distinct sort)
         all-args (get-all :n)
         all-versions (get-all :version)
-        get-idx #(.indexOf %1 %2)
-        error-bars? (not (get-in
-                          opt
-                          [:chart-settings fexpr :y-axis-logarithmic?]))]
+        log-axis? (get-in opt [:chart-settings fexpr :y-axis-logarithmic?])
+        get-idx #(.indexOf %1 %2)]
     (reduce (fn [acc x]
-              (-> acc
-                  (assoc-in [(x :version)
-                             :y (get-idx all-args (x :n))]
-                            (x :mean))
-                  (assoc-in [(x :version)
-                             :x (get-idx all-args (x :n))]
-                            (x :n))
-                  (assoc-in [(x :version)
-                             (if error-bars?
-                               :error-bars
-                               :ignored)
-                             (get-idx all-args (x :n))]
-                            (Math/sqrt (x :var)))))
+              (let [version (x :version)
+                    idx (get-idx all-args (x :n))
+                    mean (x :mean)
+                    n (x :n)
+                    std (Math/sqrt (x :var))
+                    std (if (and log-axis? ;; see implementation note above
+                                 (<= (- mean std) 0))
+                          (do (reset! zeroed! true)
+                              0)
+                          std)]
+                (-> acc
+                    (assoc-in [version :y idx] mean)
+                    (assoc-in [version :x idx] n)
+                    (assoc-in [version :error-bars idx] std))))
             (sorted-map)
             flattened)))
 
@@ -505,10 +511,13 @@ position, plot border, etc.")
   2. Returns a hiccup/html image element."
   {:UUIDv4 #uuid "a0313ab9-1cf1-4fcf-aaa9-612f13409583"
    :no-doc true
-   :implementation-note "If an axis is logarithmic, inhibit error bars because
-  they may cross over to negative values, which cannot be displayed on a log
-  scale. If an axis is not logarithmic, display error bars and set the mininum
-  value to zero. See [[rearrange-chart-data]]."}
+   :implementation-note "If an axis is logarithmic, error bars composed of
+   mean±std may be zero or less, which cannot be displayed on a log scale. In
+   that case, `rearrange-chart-data` coerces the std to zero and sets the
+   `zeroed!` flag.
+
+   If an axis is not logarithmic, display error bars as usual and set the
+   mininum value to zero. See [[rearrange-chart-data]]."}
   [o-data opt group group-idx fexpr fexpr-idx]
   (let [file-path (img-filepath group-idx fexpr-idx opt)
         short-path (clojure.string/replace file-path  #"doc/" "")
@@ -545,6 +554,15 @@ position, plot border, etc.")
       (element/image short-path img-alt-text))))
 
 
+(def zeroed-notice
+  [:p.de-highlight.centered
+   "Note: Some error bars are negative and can not be drawn on logarithmic scale."
+   [:br]
+   "See ‡ in "
+   [:em "details"]
+   " below."])
+
+
 (defn fexpr-divs
   "Given organized data `o-data` for one fexpr, `opt` options hashmap, `group`
   string, and the group index `group-idx` as an integer, returns a hiccup/html
@@ -562,6 +580,7 @@ position, plot border, etc.")
                  (conj acc
                        [(h4-fn ky) ky]
                        (chart vl opt group group-idx ky (fexpr-index ky))
+                       (when @zeroed! zeroed-notice)
                        [:button.collapser {:type "button"} "Show details"]
                        (arg-divs vl
                                  opt

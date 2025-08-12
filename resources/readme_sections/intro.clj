@@ -1,17 +1,76 @@
 [:section#intro
  [:h2 "Introduction"]
 
- [:p "Q: " [:em "What will happen if we switch from this version to that version?"]]
- [:p "A: " [:em "Consult the changelog, not the version number."]]
+ [:p "Imagine this: We notice that function "
+  [:code "foo"]
+  " of version 11 of our library is sub-optimal. We improve the implementation
+ so that "
+  [:code "foo"]
+  " executes faster."]
 
- [:p "We ask too much of our software version numbers, and we should expect more from our changelogs. A " [:code "major.minor.patch"] " sequence of numbers simply doesn't have enough bandwidth to tell us how to make good decisions about switching versions. On the other hand, " [:span.small-caps "html"] "/markdown changelogs could potentially convey that information, but require a person to read and interpret it."]
+ [:p "While writing up the changelog for version 12, instead of mumbling, "]
 
- [:p "Ideally, a changelog would contain a compact representation of what changed from one version to the next, and operational implications of those changes. If we use functions " [:code "foo"] " and " [:code "bar"] ", but only function " [:code "baz"] " changed, it's safe to switch. Or, function " [:code "baz"] " changed and we use it, but the change is non-breaking, so, again, it's safe to switch. Or, maybe " [:code "baz"] " was changed in a way that does break the way we use it, but the changelog tells us why it changed and how to manage the switch."]
+ [:blockquote [:em "Function " [:code "foo"] " is faster."]]
 
- [:p "Changelogs are often served as " [:a {:href "https://clojure.org/releases/devchangelog"} [:span.small-caps "html"]] " or " [:a {:href "https://codeberg.org/leiningen/leiningen/raw/branch/main/resources/leiningen/new/template/CHANGELOG.md"} "markdown"] " files, intended for people to read. But to convey the depth of information we're talking about requires a high-level of discipline by the authors to comprehensively write all that out. Mistakes and omissions are bound to happen with free-form text, not to mention irregularities that thwart parsing, and in the end, a person has to synthesize a lot of bits to make a decision. " [:span.small-caps "html"] "/markdown is ill-suited for this purpose."]
+ [:p "We show this."]
 
- [:p "Storing a changelog in Clojure data structures offers many potential benefits. The data can be written, stored, retrieved, and manipulated programmatically. It can be " [:a {:href "https://github.com/blosavio/speculoos"} "validated"] " for correctness and completeness. And we could write " [:a {:href "#possibilities"} "utilities"] " that answer detailed questions about what it would be like to switch from one version to another."]
+ (let [n 5
+       x (range-pow-10 n)
+       raw-y (map #(- (* 2 %) 1) (range 3 (+ 3 (inc n))))
+       y (fn [] (map #(+ % (rand)) raw-y))
+       err-fn (fn [] (map #(* % (rand)) (repeat (count x) 0.3)))
+       v-11 (y)
+       v-12 (map #(* 0.75 %) (y))
+       e-11 (err-fn)
+       e-12 (err-fn)
+       chart (xc/xy-chart
+              {"version 11" {:x x
+                             :y v-11
+                             :error-bars e-11}
+               "version 12" {:x x
+                             :y v-12
+                             :error-bars e-12}}
+              {:title "evaluation times of `(foo n)`"
+               :x-axis {:title "argument, n"
+                        :logarithmic? true}
+               :y-axis {:title "time (nanoseconds)"
+                        :logarithmic? false
+                        :min 0}
+               :theme :xchart
+               :chart {:background-color :white
+                       :title {:box {:visible? false}}}
+               :legend {:position :outside-e
+                        :border-color :white}
+               :plot {:border-visible? false
+                      :border-color :white}
+               :error-bars-color :match-series})
+       chart-filename "synthetic-benchmark-chart.svg"
+       img-alt "Chart of synthetic performance benchmark of function `foo`,
+ comparing verions 4 and 5; version 5 demonstrates approximately 25% faster
+ performance across a specific range of arguments."
+       map-f #(vector :td (format "%2.1f±%2.1f" %1 %2))]
+   (xc/spit chart chart-filename)
+   (xc/spit chart (str "doc/" chart-filename))
+   [:div
+    (hiccup.element/image chart-filename img-alt)
+    [:table
+     [:thead
+      [:tr [:th {:colspan (inc (count x))} "arg, n"]]
+      (into [:tr [:th "version"]] (map #(vector :th %) x))]
+     (into [:tr [:td "11"]] (map map-f v-11 e-11))
+     (into [:tr [:td "12"]] (map map-f v-12 e-12))
+     [:tr [:th {:colspan (inc (count x))} "time in nanoseconds "[:em "(mean±std)"]]]]])
 
- [:p "Chlog is a library that tests these ideas. It encompasses several parts. First, it promotes a set of " [:a {:href "#ideas"} "ideas"] ", some of which we've already mentioned. Second, Chlog proposes a set of specifications for such a changelog. Third, Chlog offers an experimental implementation that maintains an " [:code ".edn"] " changelog specification, validates it, and generates easily-readable " [:span.small-caps "html"] " and markdown webpages based upon the changelog data."]
- 
- [:p "The resulting changelog looks like " [:a {:href "https://github.com/blosavio/chlog/blob/main/changelog.md"} "this"] "."]]
+ [:p "And state,"]
+
+ [:blockquote
+  [:em "Version 12 of function "
+   [:code "foo"]
+   " is 20 to 30 percent faster than version 11 across this particular range of
+ arguments."]]
+
+ [:p "The Fastester library streamlines the tasks of writing benchmarks for a
+ function, objectively measuring evaluation times of different versions of that
+ function, and concisely communicating how performance changes between
+ versions."]]
+

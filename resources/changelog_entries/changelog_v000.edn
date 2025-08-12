@@ -1,6 +1,6 @@
 {:date {:year 2025
-        :month "July"
-        :day }
+        :month "August"
+        :day 6}
  :responsible {:name "Brad Losavio"
                :email "blosavio@sagevisuals.com"}
  :version 0

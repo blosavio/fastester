@@ -177,14 +177,14 @@
 
 (deftest toc-tests
   (is (= (toc {"group-1" nil
-             "group-2" nil
-             "group-3" nil})
-       [:div
-        [:a {:href "#group-0"} "group-1"]
-        [:br]
-        [:a {:href "#group-1"} "group-2"]
-        [:br]
-        [:a {:href "#group-2"} "group-3"]])))
+               "group-2" nil
+               "group-3" nil})
+         [:div
+          [:a {:href "#group-0"} "group-1"]
+          [:br]
+          [:a {:href "#group-1"} "group-2"]
+          [:br]
+          [:a {:href "#group-2"} "group-3"]])))
 
 
 (deftest inject-js-tests
@@ -194,5 +194,5 @@
          "<head><script src=\"https://example.com/foo.js\" type=\"text/javascript\"></script><body>...")))
 
 
-(run-tests)
+#_(run-tests)
 

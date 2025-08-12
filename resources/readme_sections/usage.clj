@@ -1,91 +1,369 @@
 [:section#usage
  [:h2 "Usage"]
 
- [:p "There are four components to using Chlog."]
+ [:p "Prologue: We have previously profiled some path of our code and identified
+ a bottleneck. We then changed the implementation and objectively verified that
+ this new implementation provides shorter execution times than the previous
+ version."]
+ 
+ [:p "After "
+  [:a {:href "#setup"} "declaring and requiring"]
+  " the dependency, there are four steps to using Fastester." ]
 
  [:ol
-  [:li [:p "Maintain changelog data in " [:code "edn"] " files."]]
-  [:li [:p [:a {:href "#setup"} "Declare and require"] " the dependency."]]
-  [:li [:p "Create an " [:em "options"] " file."]]
-  [:li [:p "Generate the changelog documents."]]]
+  [:li [:p [:a {:href "#set-options"} "Set"] " the options."]]
+  [:li [:p [:a {:href "#write-benchmarks"} "Write"] " benchmarks." ]]
+  [:li [:p [:a {:href "#run-benchmarks"} "Run"] " the benchmarks."]]
+  [:li [:p [:a {:href "#generate"} "Generate"] " an "
+        [:span.small-caps "html"]
+        " document that displays the performance data."]]]
 
- [:h3 "Changelog information is Clojure data"]
+ [:p "Steps 1 and 2 are done once, and only occasionally updated as needed.
+ Steps 3 and 4 are done only when a function's implementation changes with
+ affects on performance."]
 
- [:p "Changelog information is stored as a series of nested collections in " [:code ".edn"] " files. Every " [:a {:href "#version"} [:em "version"]] " is represented by the following map."]
+ [:h3#set-options "1. Set the options"]
 
- [:pre [:code "{:version ___\n :date {:year ___\n        :month ___\n        :day ___ }\n :responsible {:name ___\n               :email ___ }\n :project-status ___\n :breaking? ___\n :urgency ___\n :comment ___\n :changes [...]}"]]
+ [:p "We must first set the options that govern how Fastester behaves. Options
+ live in the file "
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/fastester_options.edn"}
+   [:code "resources/fastester_options.edn"]]
+  " as a Clojure map."]
 
- [:p "This map (and all the following) is formally and canonically " [:a {:href "https://github.com/blosavio/chlog/blob/main/src/chlog/changelog_specifications.clj"} "specified"] " with a " [:a {:href "https://github.com/blosavio/speculoos"} "Speculoos"] " style specification."]
+ [:p "The following options have "
+  [:a {:href "https://blosavio.github.io/fastester.display.html#var-fastester-defaults"}
+   "default values"]
+  "."]
 
- [:p "Briefly, the version parts are:"]
+ (do
+   (defn opts-table-row
+     "Given keyword `kw` in the Fastester options hashmap, example value `ex`,
+  and hiccup/html `usage`, returns a hiccup/html table row. If `ex` is not
+  supplied, the default value is referred from `fastester-defaults`."
+     {:UUIDv4 #uuid "e4859fa6-7061-44da-b678-ad89f4afc174"
+      :no-doc true
+      :implementation-note "Use trailing `nil` to soak up return value; hiccup
+                            doesn't render `nil`."}
+     ([kw usage] (opts-table-row kw (fastester-defaults kw) usage))
+     ([kw ex usage]
+      [:tr
+       [:td [:code (str kw)]]
+       [:td [:code (str (if (string? ex)
+                          (str "\"" ex "\"")
+                          ex))]]
+       [:td usage]]))
+   nil)
 
- [:ul
-  [:li [:strong "version"] " is an integer."]
-  [:li [:strong "date"] " is a map of integer year, string month, and integer day"]
-  [:li [:strong "responsible"] " is a map of a name string and an email string."]
-  [:li [:strong "project-status"] " is one of enumerated keywords borrowed from the " [:a {:href "https://github.com/metosin/open-source/blob/main/project-status.md"} " Metosin description"] "."]
-  [:li [:strong "breaking?"] " is a boolean or nil (only valid for the initial release)."]
-  [:li [:strong "urgency"] " is one of " [:code ":low"] ", " [:code ":medium"] ", or " [:code ":high"] "."]
-  [:li [:strong "comment"] " is a free-form string."]
-  [:li [:strong "changes"] " a vector of " [:em "change"] " maps (discussed soon)."]]
+ [:table
+  [:tr
+   [:th "key"]
+   [:th "default"]
+   [:th "usage"]]
 
- [:p "A " [:a {:href "#changelog"} "changelog"] " is a tail-appended vector of one or more such " [:em "version"] " hash-maps. Furthermore, a version hash-map may have zero or more " [:a {:href "#change"} [:em "change"]] " hash-maps associated to the " [:code ":changes"] " key. A " [:em "change"] " hash-map looks like this."]
- 
- [:pre [:code "{:description ___\n :reference {:source ___\n             :url ___}\n :change-type ___\n :breaking? ___\n :altered-functions []\n :date {:year ___\n        :month ___\n        :day ___ }\n :responsible {:name ___\n               :email ___ }}"]]
+  (opts-table-row
+   :benchmarks-directory
+   [:p "Directory from which to load benchmark tests."])
 
- [:p "Besides a sequence of " [:code ":altered-functions"] ", a change may contain sequences of " [:code ":added-functions"] ", " [:code ":deprecated-functions"] ", " [:code ":moved-functions"] ", " [:code ":removed-functions"] ", and " [:code ":renamed-functions"] "."]
+  (opts-table-row
+   :benchmarks-filenames
+   [:p "Filename from which to load benchmark tests."])
 
- [:p "The parts of a change hash-map are:"]
+  (opts-table-row
+   :html-directory
+   [:p "Directory to write html document."])
 
- [:ul
-  [:li [:strong "date"] " analogous to the date of a version."]
-  [:li [:strong "reference"] " a map of source string, optional url string, optional ticket string/uuid."]
-  [:li [:strong "breaking?"] " a boolean."]
-  [:li [:strong "altered-functions"] " a vector of symbols that were altered in this change."]
-  [:li [:strong "responsible"] " a hash-map of a name string and an email string."]
-  [:li [:strong "change-type"] " a keyword from an " [:a {:href "https://github.com/blosavio/chlog/blob/2304b2e780c23d7094872b0c58bf6a94277c77d2/src/chlog/changelog_specifications.clj#L43"} "enumerated list"] "."]
-  [:li [:strong "description"] " a a free-form string."]]
+  (opts-table-row
+   :html-filename
+   [:p "Filename to write html document."])
 
- [:p "The changelog data may be manipulated and queried with any suitable Clojure function, such as " [:code "get-in"] ", " [:code "assoc-in"] ", " [:code "update-in"] ", etc. Chlog includes specifications for changelog data and utilities for performing those validations, but any validation facility, such as " [:code "clojure.spec.alpha"] ", may be used."]
- 
- [:h3 "Creating an " [:em "options"] " file"]
+  (opts-table-row
+   :img-subdirectory
+   [:p " Under "
+    [:code ":html-directory"]
+    ", directory to write svg image files."])
 
- [:p "The " [:em "options"] " file is an " [:a {:href "https://github.com/edn-format/edn"} "edn"] " file (" [:a {:href "https://github.com/blosavio/chlog/blob/main/resources/chlog_options.edn"} "example"] ") that contains a map which supplies required information for generating a changelog. It also declares preferences for other optional settings."]
+  (opts-table-row
+   :markdown-directory
+   [:p "Directory to write markdown files."])
 
- [:p "Required keys:"]
+  (opts-table-row
+   :markdown-filename
+   [:p "Filename to write markdown document."])
 
- [:ul
-  [:li [:p [:code ":project-name-formatted"] " Project name (string) to display on changelog html/markdown documents."]]
+  (opts-table-row
+   :results-url
+   [:p "Base URL for where to find benchmark data. For local filesystem, use
+ something like "
+    [:code "\"../\""]
+    "."])
+
+  (opts-table-row
+   :results-directory
+   [:p "Directory to find benchmark data, appended to "
+    [:code ":results-url"]
+    "."])
+
+  (opts-table-row
+   :excludes
+   [:p "A set of benchmark groups (strings) to skip, i.e., "
+    [:code "#{}"]
+    "  skips zero benchmark groups."])
+
+  (opts-table-row
+   :verbose?
+   false
+   [:p "A boolean that governs printing benchmark status."])
+
+  (opts-table-row
+   :testing-thoroughness
+   [:p "Assigns Criterium benchmark settings. One of "
+    [:code ":default"]
+    ", "
+    [:code ":quick"]
+    ", "
+    [:code ":lightning"]
+    "."])
+
+  (opts-table-row
+   :parallel?
+   [:div#parallel?
+    [:p "A boolean that governs running benchmarks on multiple threads in
+ parallel."]
+
+    [:p "Warning: Running benchmarks in parallel results in undesirable, high
+ variance. Associate to "
+     [:code "true"]
+     " only to quickly verify the value returned from evaluating an expression.
+ Do not use for final benchmarking."]])
   
-  [:li [:p [:code ":copyright-holder"] " Name displayed in the copyright statement in the footer of the changelog."]]
-  
-  [:li [:p [:code ":UUID"] " Version 4 " [:strong "U"] "niversally " [:strong "U"] "nique " [:strong "Id"] "entifier. Suggestion: eval-and-replace " [:code "(random-uuid)"] ". Default " [:code "nil"] "."]]]
 
- [:p "Optional keys (defaults supplied by " [:a {:href "https://github.com/blosavio/chlog/blob/main/src/chlog/chlog_defaults.edn"} [:code "chlog_defaults.edn"]] "):"]
+  (opts-table-row
+   :n-threads
+   [:p "An integer that governs the number of threads to use when "
+    [:code ":parallel"]
+    " is "
+    [:code "true"]
+    ". Recommendation: Set to one fewer than machine core count. See warning
+ for "
+    [:a {:href "#parallel?"} [:code ":parallel?"]]
+    "."])
 
- [:ul
-  [:li [:p [:code ":changelog-entries-directory"] " Alternative directory to find changelog " [:code ".edn"] " files. Include trailing '/'. Defaults to " [:code "resources/changelog_entries/"] "."]]
+  (opts-table-row
+   :save-benchmark-fn-results?
+   [:p "When assigned "
+    [:code "true"]
+    ", includes the value returned from evaluating the benchmark expression.
+ Useful during development to check the correctness of the benchmark expression.
+ However, file sizes grow unwieldy. Setting to "
+    [:code "false"]
+    " replaces the data with "
+    [:code ":fastester/benchmark-fn-results-elided"]])
 
-  [:li [:p [:code ":changelog-data-file"] " Alternative " [:code ".edn"] " file that contains the changelog data. May include " [:code "load-file"] "-ing for easier organization and version control. Defaults to " [:code "changelog.edn"] "."]]
+  (opts-table-row
+   :tidy-html?
+   [:p "Default setting causes html to be writen to file with no line breaks.
+ If set to "
+    [:code "true"]
+    " line breaks are inserted for readability, and for better version control."])
 
-  [:li [:p [:code ":changelog-html-directory"] " Alternative output " [:span.small-caps "html"] " directory (string). Include trailing '/'. Defaults to 'doc/'."]]
+  (opts-table-row
+   :preamble
+   [:div "..."]
+   [:p "A hiccup/html block inserted at the top of the results document."])]
 
-  [:li [:p [:code ":changelog-html-filename"] " Alternative output " [:span.small-caps "html"] " filename (string). Defaults to 'changelog.html'."]]
+ [:p "The following options have no defaults."]
 
-  [:li [:p [:code ":changelog-markdown-directory"] " Alternative output markdown directory (string). Include trailing `/`. Defaults to '' (i.e., project's root directory)."]]
+ [:table
+  [:tr
+   [:th "key"]
+   [:th "example"]
+   [:th "usage"]]
 
-  [:li [:p [:code ":changelog-markdown-filename"] " Alternative output markdown filename (string). Defaults to 'changelog.md'."]]
+  (opts-table-row
+   :responsible
+   {:name "Grace Hopper"
+    :email "RDML@univac.net"}
+   [:p "A hashmap with "
+    [:code ":name"]
+    " and "
+    [:code "email"]
+    " strings that report a person responsible for the report."])
 
-  [:li [:p [:code ":tidy-html?"] " Indent and wrap " [:span.small-caps "html"] " and markdown files. Defaults to " [:code "false"] "."]]]
+  (opts-table-row
+   :copyright-holder
+   "Abraham Lincoln"
+   [:p "Copyright holder listed in the footer of the document."])
+
+  (opts-table-row
+   :fastester-UUID
+   #uuid "de280faa-ebc5-4d75-978a-0a2b2dd8558b"
+   [:p "A version 4 Universally unique ID listed in the footer of the document.
+ To generate a new UUID, evaluate "
+    [:code "(random-uuid)"]
+    ". Associate to "
+    [:code "nil"]
+    " to skip."])]
+
  
- [:h3 "Generating the changelog documents"]
+ [:h3#write-benchmarks "2. Write benchmarks"]
 
- [:p "The Chlog library generates " [:span.small-caps "html"] " and markdown changelog files from " [:a {:href "https://github.com/weavejester/hiccup"} "hiccup"] " source. To generate the " [:span.small-caps "html"] " and markdown files. We could evaluate…"]
+ [:p "Writing benchmarks follows a similar pattern to writing unit tests. We
+ make a file (defaulting to " [:code
+                               (str
+                                (fastester-defaults :benchmarks-directory)
+                                (fastester-defaults :benchmarks-filenames))] ") with a
+ namespace declaration. See this "
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks.clj"}
+   "example"]
+  "."]
 
- [:pre [:code "(generate-all-changelogs (load-file \"resources/chlog_options.edn\"))"]]
+ [:p "Within the benchmarks file, we use "
+  [:code "defbench"]
+  " to "
+  [:strong "def"]
+  "ine a "
+  [:strong "bench"]
+  "mark. Here is its signature."]
 
- [:p "…in whatever namespace we loaded " [:code "generate-all-changelogs"] ". Or, we could copy " [:a {:href "https://github.com/blosavio/chlog/tree/main/resources/chlog_generator.clj"} [:code "resources/chlog_generator.clj"]] " and evaluate all forms in the namespace ("  [:span.small-caps "cider"] " command " [:code "C-c C-k"] ")."]
+ [:pre [:code "(defbench "
+        [:em "name \"group\" fn-expression args"]
+        ")"]]
 
- [:p "Chlog produces two files. The first is a 'markdown' file that's actually plain old " [:span.small-caps "html"] ", abusing the fact that " [:span.small-caps "html"] " passes through the markdown converter. By default, this markdown file is written to the project's root directory where GitHub can find and display the changelog. We don't need a dedicated markdown converter to view this file; copy it to a " [:a {:href "https://gist.github.com/"} "GitHub gist"] " and it'll display similarly to when we view it on GitHub. The second file, by default written to the " [:code "resources/"] " directory, is a proper " [:span.small-caps "html"] " document with a " [:code (raw "&lt;head&gt;")] ", etc., that is viewable in any browser. We may want to copy over the " [:a {:href "https://github.com/blosavio/chlog/blob/main/doc/project.css"} "css file"] " for some minimal styling."]
+ [:p "We supply "
+  [:code "defbench"]
+  " a name, an unquoted symbol. The benchmark name labels the three following
+ arguments."]
+
+ [:p "After the name, we supply a "
+  [:em "group"] ", a string that associates this benchmark with other
+ conceptually-related benchmarks. For example, if we're benchmarking "
+  [:code "map"]
+  ", we will want to test its performance in different ways with different types
+ of arguments. The ultimate html document will gather the benchmarks sharing a
+ group."]
+
+ [:p "The real meat of defining a benchmark lies in the last two arguments. The
+ function expression is a 1-arity function that demonstrates some performance
+ aspect of the new version of the function. Let's pretend we updated "
+  [:code "map"]
+  " so that it processes elements faster. One way to test its performance is to 
+ increment sequences of integers with increasing lengths. That expression might
+ look like this."]
+
+ [:pre [:code "(fn [n] (map inc (range n)))"]]
+
+ [:p "The "
+  [:code "n"]
+  " argument in the expression is supplied serially by the next part of the
+ benchmark definition. Increasing the length by powers of ten explores the
+ range of behaviors."]
+
+ [:pre [:code "[10 100 1000 10000 100000]"]]
+
+ [:p "Altogether, that benchmark definition looks like this."]
+
+ [:pre [:code "(defbench map-inc \"faster map implementation\" (fn [n] (map inc (range n))) [10 100 1000 10000 100000])"]]
+
+ [:p "However, there's an issue with this definition. This benchmark's function
+ expression includes "
+  [:code "range"]
+  ". If we run this benchmark as is, the evaluation time would include "
+  [:code "range"]
+  "'s processing time. We may want that in some cases, but in this example, it
+ would be misleading. Let's move that part out."]
+
+ [:pre
+  [:code "(def range-of-length-n (reduce #(assoc %1 %2 (range %2)) {} [10 100 1000 10000 100000]))"]
+  [:br]
+  [:br]
+  [:code "(defbench map-inc \"faster map implementation\" (fn [n] (map inc (range-of-length-n))) [10 100 1000 10000 100000])"]]
+
+ [:p "Perhaps you spotted a remaining problem. If we were to run these
+ benchmarks, we'd notice that the evaluation times were suspiciously consistent,
+ no matter how many integers the sequence contained. "
+  [:code "map"]
+  " returns a lazy sequence. So we must force the return sequence to be
+ realized so the benchmarking measures what we intend. "
+  [:code "doall"]
+  " is handy for that."]
+
+ [:pre [:code "(defbench map-inc \"faster map implementation\" (fn [n] (doall (map inc (range-of-length-n)))) [10 100 1000 10000 100000])"]]
+ 
+
+ 
+
+ [:h3#run-benchmarks "3. Run benchmarks"]
+
+ [:p "Bar!"]
+
+ [:h3#generate "4. Generate the " [:span.small-caps "html"]]
+
+ [:p "Baz!"]
+
+ [:h3#gotchas]
+
+ [:p "We must be particularly careful to define our benchmarks to test what we
+ intend to test. Writing a benchmark using some common Clojure idioms may mask
+ the property we're interested in. For example, if we're interested in
+ benchmarking mapping over a sequence, if we create the sequence in the map
+ expression, Criterium will include that process in addition to the mapping.
+, such as defining sequences at the location, will measure"]
+ 
+ [:p "We must be particularly careful to define our benchmarks to test what we
+ intend to test. The first problematic pattern is a direct result of Clojure's
+ inherent concision. It's idiomatic to compose a sequence right at the spot
+ where we require it, like this."]
+
+ [:pre [:code "(map inc (repeatedly 99 #(rand))"]]
+
+ [:p "However, if we were to submit this expression to Criterium, intending to
+ measure how long it takes " [:code "map"]
+  " to increment the sequence, we'd be "
+  [:em "also"]
+  " benchmarking creating the sequence, which may be a non-negligible portion of
+ the evaluation time. Instead, we should hoist the sequence creation out of the
+ expression."]
+
+ [:pre
+  [:code ";; *create* the sequence"]
+  [:br]
+  [:code "(def ninety-nine-rands (repeatedly 99 #(rand))"]
+  [:br]
+  [:br]
+  [:code ";; *use* the pre-existing sequence"]
+  [:br]
+  [:code "(map inc ninety-nine-rands)"]]
+
+ [:p "The second expression now involves mostly the "
+  [:code "map"]
+  " action, and is more appropriate for benchmarking."]
+
+ [:p "But, there is another lurking problem! "
+  [:code "map"]
+  " (and friends) returns a lazy sequence, which is almost certainly not what we
+ were intending to benchmark. We must remember to force the realization of the
+ lazy sequence, conveniently done with "
+  [:code "doall"]
+  "."]
+
+ [:pre [:code "(doall (map inc ninety-nine-rands))"]]
+
+ [:p "One final "
+  [:em "gotcha"]
+  ", particular to Fastester itself, will be familiar to Clojurists programming
+ at the "
+  [:span.small-caps "repl"]
+  ". During development, it's typical to define and re-define benchmarks with "
+  [:code "defbench"]
+  ". It's not difficult for the namespace to hold stale benchmark definitions
+ that are not apparent from visual inspection of the current state of the text
+ in the file. Fastester provides a pair of tools to help with this. The "
+  [:code "undefbench"]
+  " utility undefines a benchmark by name. "
+  [:code "clear-registry!"]
+  " undefines all benchmarks, and a quick re-evaluation of the entire text
+ buffer redefines only the benchmarks currently expressed in the file."]
+
 
  ]
+

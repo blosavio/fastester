@@ -8,8 +8,8 @@
  :fastester-UUID #uuid "50c7eada-f96d-41bf-aed0-47d386e61136"
 
  ;; source directories and filenames
- :tests-directory "test/fastester/performance/"
- :tests-filename "tests.clj"
+ :benchmarks-directory "test/fastester/performance/"
+ :benchmarks-filenames "benchmarks.clj"
 
  ;; output directories and filenames
  :html-directory "doc/"
@@ -22,7 +22,7 @@
  :results-url "https://github.com/blosavio/fastester/blob/main/"
  :results-directory "resources/performance_entries/"
 
- :excludes #{"test-name to skip"
+ :excludes #{"groups to skip"
              #_"plus, vary number of digits in args"
              #_"plus, vary number of operands"
              #_"mapping stuff"
@@ -79,11 +79,11 @@
   {:x-axis-logarithmic? true
    :y-axis-logarithmic? true}
 
-  "(fn [n] (map inc (range-of-length-n n)))"
+  "(fn [n] (doall (map inc (range-of-length-n n))))"
   {:x-axis-logarithmic? true
-   :y-axis-logarithmic? false}
+   :y-axis-logarithmic? true}
 
-  "(fn [n] (map str/upper-case (abc-cycle-of-length-n n)))"
+  "(fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))"
   {:x-axis-logarithmic? true
-   :y-axis-logarithmic? false}}}
+   :y-axis-logarithmic? true}}}
 

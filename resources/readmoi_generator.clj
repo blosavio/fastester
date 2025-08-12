@@ -4,8 +4,18 @@
   CIDER eval buffer C-c C-k generates an html page and a markdown chunk."
   {:no-doc true}
   (:require
-   [chlog.core :refer [generate-all-changelogs]]
-   [hiccup2.core :refer [raw]]
+   [com.hypirion.clj-xchart :as xc]
+   [criterium.core :as crit]
+   [fastester.display :refer [fastester-defaults]]
+   [fastester.measure :refer [*lightning-benchmark-opts*
+                              clear-registry!
+                              defbench
+                              range-pow-10
+                              range-pow-2
+                              registry
+                              run-one-benchmark
+                              run-one-registered-benchmark
+                              undefbench]]
    [readmoi.core :refer [*project-group*
                          *project-name*
                          *project-version*
@@ -24,5 +34,6 @@
 
 (defn -main
   [& args]
-  {:UUIDv4 #uuid "60f00c64-6480-42df-9181-3048da80db73"}
-  (println "generated ReadMoi ReadMe docs"))
+  {:UUIDv4 #uuid "053064d2-125d-48cc-8c22-1252aaffb841"}
+  (println "Generated Fastester ReadMe."))
+
