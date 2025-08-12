@@ -9,7 +9,8 @@
 
  ;; source directories and filenames
  :benchmarks-directory "test/fastester/performance/"
- :benchmarks-filenames "benchmarks.clj"
+ :benchmarks-filenames #{"benchmarks.clj"
+                         "benchmarks_mapping.clj"}
 
  ;; output directories and filenames
  :html-directory "doc/"

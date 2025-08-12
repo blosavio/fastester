@@ -440,8 +440,8 @@
 
 
 (defn load-benchmarks-ns
-  "Given options hashmap `opt`, `require`s the testing namespace declared by the
-  Fastester options `:benchmarks-directory` and `:benchmarks-filenames`.
+  "Given options hashmap `opt`, `require`s the testing namespaces declared by
+  the Fastester options `:benchmarks-directory` and `:benchmarks-filenames`.
 
   Note: Invokes `clear-registry!`."
   {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
@@ -452,11 +452,11 @@
   [opt]
   (do
     (clear-registry!)
-    (let [filepath (str (opt :benchmarks-directory)
-                        (opt :benchmarks-filenames))
-          tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
-      (if (opt :verbose?) (println "Loading tests from " tests-file))
-      (require (symbol tests-file) :reload))))
+    (doseq [fname (opt :benchmarks-filenames)]
+      (let [filepath (str (opt :benchmarks-directory) fname)
+            tests-file (clojure.string/replace filepath #"\.[\w\d]{3}$" "")]
+        (if (opt :verbose?) (println "Loading tests from " tests-file))
+        (require (symbol tests-file) :reload)))))
 
 
 (defn run-benchmarks

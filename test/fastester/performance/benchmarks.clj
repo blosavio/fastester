@@ -46,33 +46,7 @@
   (range-pow-10 5))
 
 
-
-;;;; 3a. Testing basic mapping over a sequence of numbers
-
-(def range-of-length-n
-  (reduce #(assoc %1 %2 (range %2)) {} (range-pow-10 5)))
-
-(defbench
-  map-inc-across-a-sequence
-  "mapping stuff"
-  (fn [n] (doall (map inc (range-of-length-n n))))
-  (range-pow-10 5))
-
-
-
-;;;; 3b. Testing mapping over a sequence of strings
-
-(def abc-cycle-of-length-n
-  (reduce #(assoc %1 %2 (take %2 (cycle ["a" "b" "c"])))
-          {}
-          (range-pow-10 5)))
-
-(defbench
-  map-UC-over-a-cycle
-  "mapping stuff"
-  (fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))
-  (range-pow-10 5))
-
+;;;; See sibling namespace `benchmarks-mapping` for #3 benchmarks
 
 
 ;;;; 4. Comparing built-in `conj` to custom conj implemented with transients
