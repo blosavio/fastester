@@ -382,8 +382,7 @@
                        :date (date)
                        :UUIDv4 (random-uuid)
                        :testing-thoroughness (opts :testing-thoroughness)
-                       :parallel? (opts :parallel?)
-                       :n-threads (opts :n-threads)}
+                       :parallel? (opts :parallel?)}
         results (assoc results :fastester/metadata test-metadata)
         results (if (opts :save-benchmark-fn-results?)
                   results
@@ -392,51 +391,6 @@
                          :fastester/benchmark-fn-results-elided))
         results (dissoc-identifying-metadata results)]
     (pretty-print-to-file filepath results)))
-
-
-;; The following license terms apply to `pmap-with`:
-
-;; Copyright (c) Rich Hickey. All rights reserved.
-;; The use and distribution terms for this software are covered by the
-;; Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
-;; which can be found in the file epl-v10.html at the root of this distribution.
-;; By using this software in any fashion, you are agreeing to be bound by
-;; the terms of this license.
-;; You must not remove this notice, or any other, from this software.
-
-
-(defn pmap-with
-  "Maps function `f` over elements of collection `coll`, using `n` threads,
-  analogous to `clojure.core/pmap`. If `n` is not supplied, delegates directly
-  to `pmap`, where `n` is bound to
-  `(+ 2 (.. Runtime getRuntime availableProcessors))`.
-
-  Example:
-  ```clojure
-  ;; in parallel, apply `inc` to elements of a vector, using two threads
-  (pmap-with inc [1 2 3] 2) ;; => (2 3 4)
-  ```
-
-  Note: `pmap-with` does not provide the multi-collection arity.
-
-  Like `map`, except `f` is applied in parallel. Semi-lazy in that the parallel
-  computation stays ahead of the consumption, but doesn't realize the entire
-  result unless required. Only useful for computationally intensive functions
-  where the time of `f` dominates the coordination overhead."
-  {:UUIDv4 #uuid "65bdd065-4ca7-4730-afad-0d76527459a8"
-   :no-doc true
-   :original-source "https://github.com/clojure/clojure/blob/ce55092f2b2f5481d25cff6205470c1335760ef6/src/clj/clojure/core.clj#L7079"
-   :original-author "Rich Hickey"
-   :license "Eclipse Public License 1.0"}
-  ([f coll] (pmap f coll))
-  ([f coll n]
-   (let [rets (map #(future (f %)) coll)
-         step (fn step [[x & xs :as vs] fs]
-                (lazy-seq
-                 (if-let [s (seq fs)]
-                   (cons (deref x) (step xs (rest s)))
-                   (map deref vs))))]
-     (step rets (drop n rets)))))
 
 
 (defn load-benchmarks-ns
@@ -502,7 +456,7 @@
                                           (t :n)
                                           idx
                                           options)))
-        runner ({true (fn [f coll] (pmap-with f coll (options :n-threads)))
+        runner ({true pmap
                  false map}
                 (options :parallel?))]
     (create-results-directories excludes)

@@ -30,7 +30,6 @@
                            :verbose?
                            :testing-thoroughness
                            :parallel?
-                           :n-threads
                            :save-benchmark-fn-results?}]
     (is (every? (set (keys (get-options))) req-options-keys))))
 
@@ -82,12 +81,6 @@
                              :name "foo"
                              :java-runtime-version 0
                              :input-arguments "baz"}}))))
-
-
-(deftest pmap-with-tests
-  (is (= [] (pmap-with inc [] 2)))
-  (is (= [100] (pmap-with inc [99] 2)))
-  (is (= [2 3 4] (pmap-with inc [1 2 3] 2))))
 
 
 (deftest range-pow-10-tests

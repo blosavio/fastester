@@ -156,17 +156,6 @@
  Do not use for final benchmarking."]])
 
   (opts-table-row
-   :n-threads
-   [:p "An integer that governs the number of threads to use when "
-    [:code ":parallel"]
-    " is "
-    [:code "true"]
-    ". Recommendation: Set to one fewer than machine core count. See warning
- for "
-    [:a {:href "#parallel?"} [:code ":parallel?"]]
-    "."])
-
-  (opts-table-row
    :save-benchmark-fn-results?
    [:p "When assigned "
     [:code "true"]

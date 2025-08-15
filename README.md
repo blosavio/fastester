@@ -4,7 +4,7 @@
 &nbsp;orders of magnitude. This implementation change will improve performance for
 &nbsp;the vast majority of intended use cases.</em></blockquote><p>And then show this.</p><div><img alt="Chart of synthetic performance benchmark of function `zap`,
 &nbsp;comparing versions 11 and 12; version 12 demonstrates approximately 25% faster
-&nbsp;performance across a specific range of arguments." src="synthetic-benchmark-chart.svg" /><table><thead><tr><th colspan="7">arg, n</th></tr><tr><th>version</th><th>1</th><th>10</th><th>100</th><th>1000</th><th>10000</th><th>100000</th></tr></thead><tr><td>11</td><td>5.2±0.0</td><td>7.1±0.3</td><td>9.8±0.3</td><td>11.9±0.0</td><td>13.3±0.0</td><td>15.8±0.2</td></tr><tr><td>12</td><td>4.2±0.2</td><td>5.5±0.2</td><td>6.9±0.1</td><td>8.3±0.2</td><td>9.9±0.2</td><td>11.7±0.2</td></tr><tr><th colspan="7">simulated time in nanoseconds <em>(mean±std)</em></th></tr></table></div><p>The Fastester library streamlines the tasks of writing benchmarks for a
+&nbsp;performance across a specific range of arguments." src="synthetic-benchmark-chart.svg" /><table><thead><tr><th colspan="7">arg, n</th></tr><tr><th>version</th><th>1</th><th>10</th><th>100</th><th>1000</th><th>10000</th><th>100000</th></tr></thead><tr><td>11</td><td>5.8±0.2</td><td>7.7±0.1</td><td>9.9±0.2</td><td>11.7±0.1</td><td>13.8±0.1</td><td>15.2±0.1</td></tr><tr><td>12</td><td>4.3±0.3</td><td>5.9±0.1</td><td>7.4±0.2</td><td>8.9±0.1</td><td>9.9±0.2</td><td>11.8±0.1</td></tr><tr><th colspan="7">simulated time in nanoseconds <em>(mean±std)</em></th></tr></table></div><p>The Fastester library streamlines the tasks of writing benchmarks for a
 &nbsp;function, objectively measuring evaluation times of different versions of that
 &nbsp;function, and concisely communicating how performance changes between
 &nbsp;versions.</p></section><section id="ideas"><h2>Ideas</h2><p>We ought to strive to write fast software. Fast software respects other
@@ -16,7 +16,7 @@
 &nbsp;24.5 nanoseconds, we have good reason to believe the later implementation is
 &nbsp;faster.</p><p>Beyond that, tossing out raw numbers like &quot;19.6&quot; and &quot;24.5&quot; requires
 &nbsp;people to juggle arithmetic in their head. Not ideal.</p><p>A Fastester performance report intends to be objective, relative, and
-&nbsp;comprehensible.</p><h3 id="bojective">Objective</h3><p>Thanks to Criterium, we can measure, in units of seconds, how long it
+&nbsp;comprehensible.</p><h3 id="objective">Objective</h3><p>Thanks to Criterium, we can measure, in units of seconds, how long it
 &nbsp;takes to evaluate a function with a particular argument, (somewhat) independent
 &nbsp;of vagaries of the environment.</p><h3 id="comparative">Relative</h3><p>A single, isolated timing measurement doesn&apos;t mean much to a person, even
 &nbsp;if it is <a href="#objective">objective</a>. Humans simply don&apos;t have everyday intuition for an event that occurs in a

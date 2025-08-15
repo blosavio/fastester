@@ -16,7 +16,6 @@
   * `:verbose?`
   * `:testing-thoroughness`
   * `:parallel?`
-  * `:n-threads`
   * `:save-benchmark-fn-results?`
   * `:tidy-html?`
   * `:preamble`
@@ -46,7 +45,6 @@
    :verbose? false
    :testing-thoroughness :quick
    :parallel? false
-   :n-threads 1
    :save-benchmark-fn-results? true
 
    :tidy-html? false

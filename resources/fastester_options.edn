@@ -32,7 +32,6 @@
  :verbose? true
  :testing-thoroughness :quick
  :parallel? false
- :n-threads 3
  :save-benchmark-fn-results? false
 
  :sort-comparator #(> (Integer/parseInt %1) (Integer/parseInt %2))

@@ -28,7 +28,7 @@
  [:p "A Fastester performance report intends to be objective, relative, and
  comprehensible."]
 
- [:h3#bojective "Objective"]
+ [:h3#objective "Objective"]
 
  [:p "Thanks to Criterium, we can measure, in units of seconds, how long it
  takes to evaluate a function with a particular argument, (somewhat) independent
