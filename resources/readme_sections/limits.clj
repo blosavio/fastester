@@ -5,9 +5,9 @@
  perilous environment for accurate, reliable benchmarking. They both toss an
  uncountable number of non-deterministic confounders onto our laps. The OS may
  host other processes which contend for computing resources, interrupt for I/O
- or network events, etc. The Java VM may unpredicatably just-in-time (JIT)
+ or network events, etc. The Java VM may nondeterministically just-in-time (JIT)
  compile hot spots, making the code run faster (or slower!) after some
- unpredicatable delay, and the garbage collecter (GC) is quite skilled at
+ unpredictable delay, and the garbage collector (GC) is quite skilled at
  messing with precise timing measurements."]
 
  [:p [:strong "So we must exercise great care when running the benchmarks and be
@@ -16,7 +16,7 @@
  [:p "Fastester delegates the benchmarking to Criterium, which fortunately goes
  to considerable effort to minimize this non-determinism. First, just before
  running the benchmark, Criterium forces the GC in order to minimize the chance
- of occuring during the benchmark itself. Furthermore, Criterium includes a
+ of occurring during the benchmark itself. Furthermore, Criterium includes a
  warm-up period to give the JIT compiler an opportunity to optimize the
  benchmarked code so that the evaluation time are more consistent."]
 

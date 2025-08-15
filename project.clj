@@ -9,6 +9,7 @@
                  [com.hypirion/clj-xchart "0.2.0"]
                  [criterium "0.4.6"]]
   :repl-options {:init-ns fastester.core}
+  :main fastester.core
   :plugins []
   :profiles {:dev {:dependencies [[org.clojure/test.check "1.1.1"]
                                   [hiccup "2.0.0-RC3"]

@@ -11,78 +11,76 @@
   [:a {:href "https://github.com/hugoduncan/criterium"} "Criterium library"]
   " provides a handy group of benchmarking utilities that measures the
  evaluation time of a Clojure expression. We could use Criterium to learn that "
-  [:code "(foo 99)"]
-  " requires 4.1 nanoseconds to evaluate."]
+  [:code "(zap inc [1 2 3])"]
+  " requires 19.6±0.6 nanoseconds to evaluate."]
 
  [:p "Is…that good? Difficult to say. What we'd really like to know is how
- 4.1 nanoseconds compares to some previous version. So if, for example,
- version 1.12.1 of "
-  [:code "foo"]
-  " evaluated in 4.1 nanoseconds, whereas version 1.11.4 required
- 5.4 nanoseconds, we have good reason to believe the later implementation is
+ 19.6 nanoseconds compares to some previous version. So if, for example,
+ version 12 of "
+  [:code "zap"]
+  " evaluates in 19.6 nanoseconds, whereas version 11 required
+ 24.5 nanoseconds, we have good reason to believe the later implementation is
  faster."]
 
- [:p "A performance report ought to be:"]
+ [:p "Beyond that, tossing out raw numbers like \"19.6\" and \"24.5\" requires
+ people to juggle arithmetic in their head. Not ideal."]
 
- [:ul
-  [:li [:p [:strong "Objective"] " Thanks to Criterium, we can objectively measure
- how long it takes to evaluate a function with a particular argument,
- independent of vagaries of the environment."]]
+ [:p "A Fastester performance report intends to be objective, relative, and
+ comprehensible."]
 
-  [:li [:p [:strong "Thorough"] " Performance tests ought to fully exercise
- invocation patterns, e.g., all the relevant, performance-sensitive arities, and
- the arguments ought to span several orders of magnitude."]]
+ [:h3#bojective "Objective"]
 
-  [:li [:p [:strong "Straighforward"] " Once the benchmarks are written, it ought to
- be effortless to run the benchmarks for any subsequent version."]]
+ [:p "Thanks to Criterium, we can measure, in units of seconds, how long it
+ takes to evaluate a function with a particular argument, (somewhat) independent
+ of vagaries of the environment."]
 
-  [:li [:p [:strong "Comprehensible"] " A person ought to be able glance at the
- performance report and immediately grasp the improvements, with details
- available as needed."]]]
+ [:h3#comparative "Relative"]
 
- [:h3 "Objectively measure performance"]
+ [:p "A single, isolated timing measurement doesn't mean much to a person, even
+ if it is "
+  [:a {:href "#objective"} "objective"]
+  ". Humans simply don't have everyday intuition for an event that occurs in a
+ few nanoseconds. So when we discuss the concept of 'fast', we're often
+ implicitly speaking in relative terms."]
 
- [:p "Thorough data. No trust required. Can see how performance changes, under
- exactly what conditions. Also, what was *not* tested."]
+ [:p "Fastester focuses on comparing the speed of a function to a previous
+ version of itself."]
 
- [:h3 "Communicate performance changes"]
+ [:aside "(I am sorely tempted to remove all absolute units by normalizing time
+ measurements to some arbitrary reference, but I am reluctant to treat the
+ benchmark results so casually.)"]
 
- [:p "Claiming a performance improvement requires objective measurement, wide
- range of inputs, invoking many arities/call patterns. I.e., `map` with
- different mapping functions applied to disparate types."]
+ [:h3#comprehensible "Comprehensible"]
 
- [:p "Makes people less reluctant to use our software. Remove objections, etc.
- What exactly will happen when they switch from one version to another?"]
+ [:p "Humans are visually-oriented, and a straightforward two-dimensional chart
+ is an excellent tool to convey relative performance changes between versions.
+ A person ought to be able glance at the performance report and immediately
+ grasp the improvements, with details available as needed."]
 
- [:p "Particularly if a version number is merely a label without semantics.
- what information is necessary to make an informed decision about if there is
- any benefit to change versions. the people using the software can decide
- whether it is worth switching."]
-
- [:h3 "A low threshold for breakage"]
-
- [:p "Mindset: Performance regression is a "
-  [:a {:href ""}
-   "breaking change"] "."]
-
- [:h3 "Clear communication"]
-
- [:p "A single source of performance information helps inform what will happen
- when switching versions. Must accurately communicate, and clearly and obvious."]
+ [:p "Fastester documents consist primarily of charts with accompanying text.
+ A show/hide button reveals details as the reader desires."]
 
  [:h3 [:em "Et cetera"]]
 
  [:ul
-  [:li [:p "The performance document is accreting. Once version 9 is benchmarked
- and released, that's it. Corrections are encouraged, and later additional tests
- to compare to some new feature are also okay. The data is versioned-controlled,
- and the " [:span.small-caps "html"] "/markdown documents that are generated
- from the data are also under version-control."]]
+  [:li [:p "The performance document is accreting. Once version 12 is
+ benchmarked and released, that's it. Corrections are encouraged, and later
+ additional tests to compare to some new feature are also okay. The data is
+ versioned-controlled, and the "
+        [:span.small-caps "html"]
+        "/markdown documents that are generated from the data are also under
+ version-control."]]
 
   [:li [:p "The performance data is objective, but people may interpret it to
- suit their tastes. 4.1 nanoseconds may be fast enough for one person, but not
+ suit their tastes. 19.6 nanoseconds may be fast enough for one person, but not
  another. The accompanying commentary may express the library author's opinions.
  That's okay. The author is merely communicating that opinion to the person
  considering switching versions. The author may consider a particular version "
- [:em "fast"] ", but the person using the software may not."]]]]
+        [:em "fast"]
+        ", but the person using the software may not."]]
+
+  [:li [:p "We should probably consider a performance regression as a "
+        [:em "breaking change"]
+        ". Fastester can help estimate and communicate how much the performance
+ regressed."]]]]
 

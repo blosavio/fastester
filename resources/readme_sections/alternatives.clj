@@ -30,7 +30,7 @@
    [:li
     [:p [:a {:href "https://github.com/openjdk/jmh"}
          "Java Microbenchmark Harness"] " (JMH) For building, running, and
- analysing nano/micro/milli/macro benchmarks written in Java and other languages
+ analyzing nano/micro/milli/macro benchmarks written in Java and other languages
  targeting the JVM."]]
 
    [:li

@@ -104,7 +104,7 @@
   ```clojure
   (defn my-fn-obj [q] (+ q q q))
 
-  (defbench add-three \"benchmarking additon\" my-fn-obj [2 20 200 2000])
+  (defbench add-three \"benchmarking addition\" my-fn-obj [2 20 200 2000])
   ```
 
   Both examples above share the same `group` label (\"benchmarking addition\"),
@@ -341,7 +341,7 @@
   "Given string `ver`, symbol `name`, string `group`, function object `f`,
   function S-expression `fexpr`, test argument `arg`, option hashmap `opts`,
   and index integer `idx`, measures the evaluation time under the current
-  Criterium benchmark settings and saves results to filesystem.
+  Criterium benchmark settings and saves results to file system.
 
   Example:
   ```clojure

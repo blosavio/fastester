@@ -1,18 +1,27 @@
 [:section#intro
  [:h2 "Introduction"]
 
- [:p "Imagine this: We notice that function "
-  [:code "foo"]
-  " of version 11 of our library is sub-optimal. We improve the implementation
- so that "
-  [:code "foo"]
+ [:p "Imagine: We notice that the "
+  [:code "zap"]
+  " function of version 11 of our library is sub-optimal. We improve the
+ implementation so that "
+  [:code "zap"]
   " executes faster."]
 
- [:p "While writing up the changelog for version 12, instead of mumbling, "]
+ [:p "We could mumble something like this in the version 12 changelog."]
 
- [:blockquote [:em "Function " [:code "foo"] " is faster."]]
+ [:blockquote [:em "Function " [:code "zap"] " is faster."]]
 
- [:p "We show this."]
+ [:p "Or, we could write this."]
+
+ [:blockquote
+  [:em "Version 12 of function "
+   [:code "zap"]
+   " is 20 to 30 percent faster than version 11 for integers spanning five
+ orders of magnitude. This implementation change will improve performance for
+ the vast majority of intended use cases."]]
+ 
+ [:p "And then show this."]
 
  (let [n 5
        x (range-pow-10 n)
@@ -30,10 +39,10 @@
                "version 12" {:x x
                              :y v-12
                              :error-bars e-12}}
-              {:title "evaluation times of `(foo n)`"
+              {:title "simulated evaluation times of `(zap inc (range n))`"
                :x-axis {:title "argument, n"
                         :logarithmic? true}
-               :y-axis {:title "time (nanoseconds)"
+               :y-axis {:title "simulated time (nanoseconds)"
                         :logarithmic? false
                         :min 0}
                :theme :xchart
@@ -45,8 +54,8 @@
                       :border-color :white}
                :error-bars-color :match-series})
        chart-filename "synthetic-benchmark-chart.svg"
-       img-alt "Chart of synthetic performance benchmark of function `foo`,
- comparing verions 4 and 5; version 5 demonstrates approximately 25% faster
+       img-alt "Chart of synthetic performance benchmark of function `zap`,
+ comparing versions 11 and 12; version 12 demonstrates approximately 25% faster
  performance across a specific range of arguments."
        map-f #(vector :td (format "%2.1f±%2.1f" %1 %2))]
    (xc/spit chart chart-filename)
@@ -59,15 +68,8 @@
       (into [:tr [:th "version"]] (map #(vector :th %) x))]
      (into [:tr [:td "11"]] (map map-f v-11 e-11))
      (into [:tr [:td "12"]] (map map-f v-12 e-12))
-     [:tr [:th {:colspan (inc (count x))} "time in nanoseconds "[:em "(mean±std)"]]]]])
-
- [:p "And state,"]
-
- [:blockquote
-  [:em "Version 12 of function "
-   [:code "foo"]
-   " is 20 to 30 percent faster than version 11 across this particular range of
- arguments."]]
+     [:tr [:th {:colspan (inc (count x))} "simulated time in nanoseconds "
+           [:em "(mean±std)"]]]]])
 
  [:p "The Fastester library streamlines the tasks of writing benchmarks for a
  function, objectively measuring evaluation times of different versions of that

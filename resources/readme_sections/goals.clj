@@ -11,8 +11,8 @@
      "locate bottlenecks"]
     ". It is only intended to communicate performance changes when a new version
  behaves differently than a previous version. I.e., we've already located the
- bottlenecks and made it quicker. Fastester is a release task, not a dev-time
- tool."]]
+ bottlenecks and made it quicker. Fastester performs a release task, not a
+ dev-time task."]]
 
   [:li
    [:p [:strong "A comparative profiler."]

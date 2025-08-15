@@ -14,9 +14,3 @@
 #_(run-selected-benchmarks)
 #_(generate-documents)
 
-
-(defn -main
-  [& args]
-  {:UUIDv4 #uuid "c20e4554-c4cd-4d92-912d-4e8affb1ddc9"}
-  (println "TODO: Generated fastester performance documents."))
-

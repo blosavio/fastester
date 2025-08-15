@@ -8,7 +8,8 @@
   3. Create an html document with charts and tables with, e.g.,
   [[generate-documents]]."
   (:require
-   [fastester.measure :refer [run-all-benchmarks]]
+   [fastester.measure :refer [run-all-benchmarks
+                              run-selected-benchmarks]]
    [fastester.display :refer [generate-documents]]))
 
 
@@ -22,4 +23,27 @@
   (do
     (run-all-benchmarks)
     (generate-documents)))
+
+
+(defn -main
+  "Given keyword `arg`, runs a Fastester task with the following mappings:
+
+  * `:all` executes `(run-all-benchmarks)`
+  * `:selected` executes `(run-selected-benchmarks)`
+  * `:gen` executes `(generate-docs)`.
+
+  Examples:
+  ```bash
+  $ lein run :all
+  $ lein run :selected
+  $ lein run :gen
+  ```"
+  [& args]
+  {:UUIDv4 #uuid "c20e4554-c4cd-4d92-912d-4e8affb1ddc9"}
+  (do
+    (case  (first args)
+      ":all" (run-all-benchmarks)
+      ":selected" (run-selected-benchmarks)
+      ":gen" (generate-documents))
+    (System/exit 0)))
 
