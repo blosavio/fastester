@@ -17,10 +17,24 @@
    [clojure.math :as math]
    [clojure.pprint :as pp]
    [clojure.string :as str]
+   [clojure.xml :as xml]
    [criterium.core :as crit]))
 
 
-(defn project-version
+(defn project-version-pom-xml
+  "Queries 'pom.xml' file a returns version element as a string."
+  {:UUIDv4 #uuid "63bc2597-1575-48bf-b444-09bca5115df7"
+   :no-doc true}
+  []
+  (->> (xml/parse "pom.xml")
+       :content
+       (filter #(= (:tag %) :version))
+       first
+       :content
+       first))
+
+
+(defn project-version-lein
   "Queries the Leiningen 'project.clj' file's `defproject` expression and
   returns a string."
   {:UUIDv4 #uuid "9d8409a9-89ad-4567-9572-65c1e456cbb0"
@@ -33,6 +47,33 @@
   []
   (let [project-metadata (read-string (slurp "project.clj"))]
     (nth project-metadata 2)))
+
+
+(defn project-version
+  "Given options hashmap `opt`, returns the project version as a string.
+
+  * If `opt` declares a preference by associating either `:lein` or `:pom-xml`
+  to key `:preferred-version-info`, queries only that preference.
+  * If a preference is not specified and both sources exists, throws.
+  * If a preference is not specified and only one source exists, returns that
+  version.
+  * If neither 'project.clj' nor 'pom.xml' exists, throws."
+  {:UUIDv4 #uuid "c5bd643f-73d8-4bc6-9506-8e59ba32f9fe"
+   :no-doc true}
+  [opts]
+  (case (opts :preferred-version-info)
+    :lein (project-version-lein)
+    :pom-xml (project-version-pom-xml)
+    nil (let [exists? #(.exists (io/file %))
+              lein? (exists? "project.clj")
+              pom-xml? (exists? "pom.xml")
+              both-err "Both 'project.clj' and 'pom.xml' exist, but `:preferred-version-info` not set in options hashmap."
+              neither-err "Neither 'project.clj' nor 'pom.xml' exist."]
+          (cond
+            (and lein? pom-xml?) (throw (Exception. both-err))
+            lein? (project-version-lein)
+            pom-xml? (project-version-pom-xml)
+            :default (throw (Exception. neither-err))))))
 
 
 (defn get-options
@@ -184,7 +225,7 @@
         results-dirname (options :results-directory)
         version-dirname (str results-dirname
                              "/version "
-                             (project-version))
+                             (project-version options))
         unique-test-names (distinct (map :group @registry))
         non-excluded-names (remove
                             excludes
@@ -432,8 +473,7 @@
    https://clojuredocs.org/clojure.core/future#example-542692c9c026201cdc326a7b
    and
    https://clojure.atlassian.net/browse/CLJ-124
-   for discussion of cleanly shutting down agents, relevant when using
-   `pmap-with`."}
+   for discussion of cleanly shutting down agents, relevant when using `pmap`."}
   [& [exclude? explicit-options-filename]]
   (let [options (get-options explicit-options-filename)
         _ (load-benchmarks-ns options)
@@ -452,7 +492,7 @@
         runner-fn (fn [t]
                     (let [idx (get-idx expanded-reg t)]
                       (if verbose (println (str "Test " idx "/" num-reg)))
-                      (run-save-benchmark (project-version)
+                      (run-save-benchmark (project-version options)
                                           (t :name)
                                           (t :group)
                                           (t :f)

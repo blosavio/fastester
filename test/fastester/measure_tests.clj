@@ -10,7 +10,7 @@
 
 
 (deftest project-version-tests
-  (is (= java.lang.String (type (project-version)))))
+  (is (= java.lang.String (type (project-version (get-options))))))
 
 
 (deftest get-options-tests

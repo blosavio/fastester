@@ -7,6 +7,8 @@
 
  :fastester-UUID #uuid "50c7eada-f96d-41bf-aed0-47d386e61136"
 
+ :preferred-version-info :lein
+
  ;; source directories and filenames
  :benchmarks-directory "test/fastester/performance/"
  :benchmarks-filenames #{"benchmarks.clj"
