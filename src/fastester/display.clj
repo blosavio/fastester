@@ -702,8 +702,8 @@ position, plot border, etc.")
   [Fastester project documentation](https://github.com/blosavio/fastester) for
   details on the structure of the options map."
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
-  []
-  (let [opt (get-options)
+  [& [explicit-options-filename]]
+  (let [opt (get-options explicit-options-filename)
         options-n-defaults (merge fastester-defaults opt)
         data (load-results (get-result-filenames opt))
         organized-data (organize-data data)]

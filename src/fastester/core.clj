@@ -26,7 +26,7 @@
 
 
 (defn -main
-  "Given keyword `arg`, runs a Fastester task with the following mappings:
+  "Given keyword `action`, runs a Fastester task with the following mappings:
 
   * `:all` executes `(run-all-benchmarks)`
   * `:selected` executes `(run-selected-benchmarks)`
@@ -37,13 +37,21 @@
   $ lein run :all
   $ lein run :selected
   $ lein run :gen
+  ```
+
+  Reads options from `./resources/fastester_options.edn` unless an explicit
+  options filename is supplied.
+
+  Example:
+  ```bash
+  $ lein run :all ./alternate_options.edn
   ```"
-  [& args]
+  [& [action explicit-options-filename]]
   {:UUIDv4 #uuid "c20e4554-c4cd-4d92-912d-4e8affb1ddc9"}
   (do
-    (case  (first args)
-      ":all" (run-all-benchmarks)
-      ":selected" (run-selected-benchmarks)
-      ":gen" (generate-documents))
+    (case action
+      ":all" (run-all-benchmarks explicit-options-filename)
+      ":selected" (run-selected-benchmarks explicit-options-filename)
+      ":gen" (generate-documents explicit-options-filename))
     (System/exit 0)))
 

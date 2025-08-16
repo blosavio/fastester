@@ -36,11 +36,15 @@
 
 
 (defn get-options
-  "Reads Fastester options hashmap from file 'resources/fastester_options.edn'."
+  "With no argument, reads Fastester options hashmap from file
+  'resources/fastester_options.edn', otherwise, reads from file
+  `explicit-options-filename`."
   {:UUIDv4 #uuid "3fe666a0-2aa4-4777-a88f-056824bbed2f"
    :no-doc true}
-  []
-  (load-file "resources/fastester_options.edn"))
+  ([] (load-file "resources/fastester_options.edn"))
+  ([explicit-options-filename] (if explicit-options-filename
+                                 (load-file explicit-options-filename)
+                                 (get-options))))
 
 
 (def ^{:no-doc true}
@@ -174,8 +178,8 @@
   Creates `<options-results-dir>/` then `<options-results-dir>/<version>/`."
   {:UUIDv4 #uuid "a75a0d12-150b-43e6-b3b7-6a758528a3b2"
    :no-doc true}
-  [excludes]
-  (let [options (get-options)
+  [excludes explicit-options-filename]
+  (let [options (get-options explicit-options-filename)
         mkdir #(.mkdir (io/file %))
         results-dirname (options :results-directory)
         version-dirname (str results-dirname
@@ -430,8 +434,8 @@
    https://clojure.atlassian.net/browse/CLJ-124
    for discussion of cleanly shutting down agents, relevant when using
    `pmap-with`."}
-  [& exclude?]
-  (let [options (get-options)
+  [& [exclude? explicit-options-filename]]
+  (let [options (get-options explicit-options-filename)
         _ (load-benchmarks-ns options)
         excludes (if exclude?
                    (options :excludes)
@@ -459,7 +463,7 @@
         runner ({true pmap
                  false map}
                 (options :parallel?))]
-    (create-results-directories excludes)
+    (create-results-directories excludes explicit-options-filename)
     (do
       (when verbose (println "Estimating overhead"))
       (crit/estimated-overhead!))
@@ -479,8 +483,9 @@
 
   See also [[run-selected-benchmarks]]."
   {:UUIDv4 #uuid "50b19eef-32f1-4586-a317-21e1f20235cf"}
-  []
-  (run-benchmarks))
+  ([] (run-benchmarks false))
+  ([explicit-options-filename]
+   (run-benchmarks false explicit-options-filename)))
 
 
 (defn run-selected-benchmarks
@@ -494,8 +499,8 @@
 
   See also [[run-all-benchmarks]]."
   {:UUIDv4 #uuid "ed3dd772-08d5-47cc-85b9-608892f8c96a"}
-  []
-  (run-benchmarks true))
+  ([] (run-benchmarks true))
+  ([explicit-options-filename] (run-benchmarks true explicit-options-filename)))
 
 
 (defn range-pow-n
