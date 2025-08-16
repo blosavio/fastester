@@ -460,6 +460,9 @@
                  false map}
                 (options :parallel?))]
     (create-results-directories excludes)
+    (do
+      (when verbose (println "Estimating overhead"))
+      (crit/estimated-overhead!))
     (doall (runner runner-fn expanded-reg))
     (if (and (options :parallel?)
              (not *repl*)) (shutdown-agents))
