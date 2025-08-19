@@ -211,7 +211,19 @@
     [:code "(random-uuid)"]
     ". Associate to "
     [:code "nil"]
-    " to skip."])]
+    " to skip."])
+
+  (opts-table-row
+   :preferred-version-info
+   :pom-xml
+   [:p "Declares preference for source of project version. If "
+    [:code ":lein"]
+    ", consults 'project.clj'. If "
+    [:code ":pom-xml"]
+    ", consults 'pom.xml'. If both files exist, a preference must be declared.
+ If only one file exists, "
+    [:code ":preferred-version-info"]
+    " may be omitted."])]
 
  [:h3#write-benchmarks "2. Write benchmarks"]
 

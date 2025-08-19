@@ -9,8 +9,8 @@
 <pre><code class="language-clojure">  (criterium.core/benchmark (+ 1 2) *lightning-benchmark-opts*)
 </code></pre>
 <p>See also <a href="https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83"><code>criterium.core/*default-benchmark-opts*</code></a> and <a href="https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92"><code>criterium.core/*default-quick-bench-opts*</code></a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L231">view source</a></div></div><div class="public anchor" id="var-clear-registry.21"><h3>clear-registry!</h3><div class="usage"><code>(clear-registry!)</code></div><div class="doc"><div class="markdown"><p>Remove all entries from the benchmark <a href="fastester.measure.html#var-registry">registry</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L58">view source</a></div></div><div class="public anchor" id="var-defbench"><h3>defbench</h3><h4 class="type">macro</h4><div class="usage"><code>(defbench name group f n)</code></div><div class="doc"><div class="markdown"><p>Define and register a benchmark by inserting an entry into the <a href="fastester.measure.html#var-registry">registry</a>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L276">view source</a></div></div><div class="public anchor" id="var-clear-registry.21"><h3>clear-registry!</h3><div class="usage"><code>(clear-registry!)</code></div><div class="doc"><div class="markdown"><p>Remove all entries from the benchmark <a href="fastester.measure.html#var-registry">registry</a>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L103">view source</a></div></div><div class="public anchor" id="var-defbench"><h3>defbench</h3><h4 class="type">macro</h4><div class="usage"><code>(defbench name group f n)</code></div><div class="doc"><div class="markdown"><p>Define and register a benchmark by inserting an entry into the <a href="fastester.measure.html#var-registry">registry</a>.</p>
 <ul>
 <li><code>name</code> is an unquoted symbol that labels the benchmark.</li>
 <li><code>group</code> is a string, shared between multiple conceptually-related benchmarks.</li>
@@ -32,35 +32,35 @@
 <li>To put the registry into a state that reflects only the current definitions, use <a href="fastester.measure.html#var-clear-registry.21">clear-registry!</a> and re-evaluate the namespace to invoke all the current <code>defbench</code>s .</li>
 </ol>
 <p>See <a href="fastester.measure.html#var-defbench*">defbench*</a> for the function version.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L82">view source</a></div></div><div class="public anchor" id="var-defbench*"><h3>defbench*</h3><div class="usage"><code>(defbench* name group f n)</code></div><div class="doc"><div class="markdown"><p>Function version of <code>defbench</code> macro. Define and register a benchmark. See <a href="fastester.measure.html#var-defbench">defbench</a> documentation for full details. The two differences are that <code>name</code> and <code>f</code> are supplied as a quoted symbols.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L127">view source</a></div></div><div class="public anchor" id="var-defbench*"><h3>defbench*</h3><div class="usage"><code>(defbench* name group f n)</code></div><div class="doc"><div class="markdown"><p>Function version of <code>defbench</code> macro. Define and register a benchmark. See <a href="fastester.measure.html#var-defbench">defbench</a> documentation for full details. The two differences are that <code>name</code> and <code>f</code> are supplied as a quoted symbols.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(defbench* 'add-four "benchmarking addition" '(fn [z] (+ z z z z) [1 10 100])
 </code></pre>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L65">view source</a></div></div><div class="public anchor" id="var-range-pow-10"><h3>range-pow-10</h3><div class="usage"><code>(range-pow-10 i)</code></div><div class="doc"><div class="markdown"><p>Given integer <code>i</code>, returns a sequence of <code>[10^0...10^i]</code>, inclusive. Useful for supplying to benchmarking functions.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L110">view source</a></div></div><div class="public anchor" id="var-range-pow-10"><h3>range-pow-10</h3><div class="usage"><code>(range-pow-10 i)</code></div><div class="doc"><div class="markdown"><p>Given integer <code>i</code>, returns a sequence of <code>[10^0...10^i]</code>, inclusive. Useful for supplying to benchmarking functions.</p>
 <p>Examples:</p>
 <pre><code class="language-clojure">(range-pow-10 3) ;; =&gt; (1 10 100 1000)
 (range-pow-10 6) ;; =&gt; (1 10 100 1000 10000 100000 1000000)
 </code></pre>
 <p>See also <a href="fastester.measure.html#var-range-pow-2">range-pow-2</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L552">view source</a></div></div><div class="public anchor" id="var-range-pow-2"><h3>range-pow-2</h3><div class="usage"><code>(range-pow-2 i)</code></div><div class="doc"><div class="markdown"><p>Given integer <code>i</code>, returns a sequence of <code>[2^0...2^i]</code>, inclusive. Useful for supplying to benchmarking functions.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L555">view source</a></div></div><div class="public anchor" id="var-range-pow-2"><h3>range-pow-2</h3><div class="usage"><code>(range-pow-2 i)</code></div><div class="doc"><div class="markdown"><p>Given integer <code>i</code>, returns a sequence of <code>[2^0...2^i]</code>, inclusive. Useful for supplying to benchmarking functions.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(range-pow-2 8) ;; (1 2 4 8 16 32 64 128 256)
 </code></pre>
 <p>See also <a href="fastester.measure.html#var-range-pow-10">range-pow-10</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L568">view source</a></div></div><div class="public anchor" id="var-registry"><h3>registry</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>An atom containing a hashmap of benchmarks to run. Typically populated by invoking <a href="fastester.measure.html#var-defbench">defbench</a> or <a href="fastester.measure.html#var-defbench*">defbench*</a>, not manipulated directly.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L571">view source</a></div></div><div class="public anchor" id="var-registry"><h3>registry</h3><div class="usage"></div><div class="doc"><div class="markdown"><p>An atom containing a hashmap of benchmarks to run. Typically populated by invoking <a href="fastester.measure.html#var-defbench">defbench</a> or <a href="fastester.measure.html#var-defbench*">defbench*</a>, not manipulated directly.</p>
 <p>See also <a href="fastester.measure.html#var-undefbench">undefbench</a> and <a href="fastester.measure.html#var-clear-registry.21">clear-registry!</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L54">view source</a></div></div><div class="public anchor" id="var-run-all-benchmarks"><h3>run-all-benchmarks</h3><div class="usage"><code>(run-all-benchmarks)</code></div><div class="doc"><div class="markdown"><p>Run all registered benchmarks, ignoring options key <code>:excludes</code>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L99">view source</a></div></div><div class="public anchor" id="var-run-all-benchmarks"><h3>run-all-benchmarks</h3><div class="usage"><code>(run-all-benchmarks)</code><code>(run-all-benchmarks explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Run all registered benchmarks, ignoring options key <code>:excludes</code>.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(run-all-benchmarks)
 </code></pre>
 <p>See also <a href="fastester.measure.html#var-run-selected-benchmarks">run-selected-benchmarks</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L515">view source</a></div></div><div class="public anchor" id="var-run-one-benchmark"><h3>run-one-benchmark</h3><h4 class="type">macro</h4><div class="usage"><code>(run-one-benchmark fexpr arg thoroughness)</code></div><div class="doc"><div class="markdown"><p>Given 1-arity, S-expression <code>fexpr</code> representing a function and argument <code>arg</code>, run one benchmark test using keyword <code>thoroughness</code> to designate the Criterium options, sending result to *<code>out</code>*.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L517">view source</a></div></div><div class="public anchor" id="var-run-one-benchmark"><h3>run-one-benchmark</h3><h4 class="type">macro</h4><div class="usage"><code>(run-one-benchmark fexpr arg thoroughness)</code></div><div class="doc"><div class="markdown"><p>Given 1-arity, S-expression <code>fexpr</code> representing a function and argument <code>arg</code>, run one benchmark test using keyword <code>thoroughness</code> to designate the Criterium options, sending result to *<code>out</code>*.</p>
 <p><code>thoroughness</code> is one of <code>:default</code>, <code>:quick</code>, or <code>:lightning</code>.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(run-one-benchmark (fn [n] (+ n n)) 9 :lightning)
 </code></pre>
 <p>See <a href="fastester.measure.html#var-run-one-registered-benchmark">run-one-registered-benchmark</a> and <a href="fastester.measure.html#var-*lightning-benchmark-opts*">*lightning-benchmark-opts*</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L248">view source</a></div></div><div class="public anchor" id="var-run-one-registered-benchmark"><h3>run-one-registered-benchmark</h3><h4 class="type">macro</h4><div class="usage"><code>(run-one-registered-benchmark name thoroughness)</code></div><div class="doc"><div class="markdown"><p>Given benchmark registered by <code>name</code>, and a keyword <code>thoroughness</code> that designates the Criterium options, runs benchmarks. Returns a map with keys provided by the benchmark arguments <code>n</code> associated with the benchmark results for that <code>n</code>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L293">view source</a></div></div><div class="public anchor" id="var-run-one-registered-benchmark"><h3>run-one-registered-benchmark</h3><h4 class="type">macro</h4><div class="usage"><code>(run-one-registered-benchmark name thoroughness)</code></div><div class="doc"><div class="markdown"><p>Given benchmark registered by <code>name</code>, and a keyword <code>thoroughness</code> that designates the Criterium options, runs benchmarks. Returns a map with keys provided by the benchmark arguments <code>n</code> associated with the benchmark results for that <code>n</code>.</p>
 <p><code>thoroughness</code> is one of <code>:default</code>, <code>:quick</code>, or <code>:lightning</code>.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(defbench my-bench "my-group" (fn [x] (inc x)) [97 98 99])
@@ -68,7 +68,7 @@
 (run-one-registered-benchmark my-bench :lightning)
 </code></pre>
 <p>See <a href="fastester.measure.html#var-run-one-benchmark">run-one-benchmark</a> and <a href="fastester.measure.html#var-*lightning-benchmark-opts*">*lightning-benchmark-opts*</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L266">view source</a></div></div><div class="public anchor" id="var-run-save-benchmark"><h3>run-save-benchmark</h3><div class="usage"><code>(run-save-benchmark ver name group f fexpr arg idx opts)</code></div><div class="doc"><div class="markdown"><p>Given string <code>ver</code>, symbol <code>name</code>, string <code>group</code>, function object <code>f</code>, function S-expression <code>fexpr</code>, test argument <code>arg</code>, option hashmap <code>opts</code>, and index integer <code>idx</code>, measures the evaluation time under the current Criterium benchmark settings and saves results to file system.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L311">view source</a></div></div><div class="public anchor" id="var-run-save-benchmark"><h3>run-save-benchmark</h3><div class="usage"><code>(run-save-benchmark ver name group f fexpr arg idx opts)</code></div><div class="doc"><div class="markdown"><p>Given string <code>ver</code>, symbol <code>name</code>, string <code>group</code>, function object <code>f</code>, function S-expression <code>fexpr</code>, test argument <code>arg</code>, option hashmap <code>opts</code>, and index integer <code>idx</code>, measures the evaluation time under the current Criterium benchmark settings and saves results to file system.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(run-save-benchmark "77-SNAPSHOT7"
                     'mult-two-nums
@@ -80,12 +80,12 @@
                     options)
 </code></pre>
 <p>See also <a href="fastester.measure.html#var-run-one-benchmark">run-one-benchmark</a> and <a href="fastester.measure.html#var-run-one-registered-benchmark">run-one-registered-benchmark</a> for utilities to quickly benchmark an expression.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L340">view source</a></div></div><div class="public anchor" id="var-run-selected-benchmarks"><h3>run-selected-benchmarks</h3><div class="usage"><code>(run-selected-benchmarks)</code></div><div class="doc"><div class="markdown"><p>Run <em>some</em> registered benchmarks, skipping any with a name contained in option <code>:excludes</code>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L385">view source</a></div></div><div class="public anchor" id="var-run-selected-benchmarks"><h3>run-selected-benchmarks</h3><div class="usage"><code>(run-selected-benchmarks)</code><code>(run-selected-benchmarks explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Run <em>some</em> registered benchmarks, skipping any with a name contained in option <code>:excludes</code>.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">(run-selected-benchmarks)
 </code></pre>
 <p>See also <a href="fastester.measure.html#var-run-all-benchmarks">run-all-benchmarks</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L529">view source</a></div></div><div class="public anchor" id="var-undefbench"><h3>undefbench</h3><h4 class="type">macro</h4><div class="usage"><code>(undefbench name)</code></div><div class="doc"><div class="markdown"><p>Undefine a benchmark by removing <code>name</code> from the <a href="fastester.measure.html#var-registry">registry</a>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L532">view source</a></div></div><div class="public anchor" id="var-undefbench"><h3>undefbench</h3><h4 class="type">macro</h4><div class="usage"><code>(undefbench name)</code></div><div class="doc"><div class="markdown"><p>Undefine a benchmark by removing <code>name</code> from the <a href="fastester.measure.html#var-registry">registry</a>.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">;; define a performance test
 (defbench add-two "benchmarking addition" (fn [n] (+ n n)) [1 10 100 1000])
@@ -94,7 +94,7 @@
 (undefbench add-two)
 </code></pre>
 <p>Undoes the results of <a href="fastester.measure.html#var-defbench">defbench</a>. See also <a href="fastester.measure.html#var-undefbench*">undefbench*</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L150">view source</a></div></div><div class="public anchor" id="var-undefbench*"><h3>undefbench*</h3><div class="usage"><code>(undefbench* name)</code></div><div class="doc"><div class="markdown"><p>Function version of <a href="fastester.measure.html#var-undefbench">undefbench</a>. Undefines a benchmark by removing quoted symbol <code>name</code> from the <a href="fastester.measure.html#var-registry">registry</a>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L195">view source</a></div></div><div class="public anchor" id="var-undefbench*"><h3>undefbench*</h3><div class="usage"><code>(undefbench* name)</code></div><div class="doc"><div class="markdown"><p>Function version of <a href="fastester.measure.html#var-undefbench">undefbench</a>. Undefines a benchmark by removing quoted symbol <code>name</code> from the <a href="fastester.measure.html#var-registry">registry</a>.</p>
 <p>Example:</p>
 <pre><code class="language-clojure">;; define a performance test
 (defbench* 'add-four "benchmarking addition" '(fn [z] (+ z z z z) [1 10 100])
@@ -102,4 +102,4 @@
 ;; undefine that performance test
 (undefbench* 'add-four)
 </code></pre>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L133">view source</a></div></div></div></body></html>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/measure.clj#L178">view source</a></div></div></div></body></html>

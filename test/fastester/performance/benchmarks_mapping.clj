@@ -1,5 +1,5 @@
 (ns fastester.performance.benchmarks-mapping
-  "Demonstrate multiple benchmark namespaces and qualified symbols.
+  "Demonstrate multiple benchmark namespaces.
 
   See also [[fastester.performance.benchmarks]]."
   (:require
@@ -15,7 +15,7 @@
   (reduce #(assoc %1 %2 (range %2)) {} (range-pow-10 5)))
 
 (defbench
-  mapping/map-inc-across-a-sequence
+  map-inc-across-a-sequence
   "mapping stuff"
   (fn [n] (doall (map inc (range-of-length-n n))))
   (range-pow-10 5))
@@ -30,23 +30,8 @@
           (range-pow-10 5)))
 
 (defbench
-  mapping/map-UC-over-a-cycle
+  map-UC-over-a-cycle
   "mapping stuff"
   (fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))
   (range-pow-10 5))
-
-
-(comment
-  (require '[fastester.measure :refer [clear-registry!
-                                       run-all-benchmarks
-                                       run-one-registered-benchmark
-                                       run-selected-benchmarks
-                                       registry]])
-
-  #_(run-all-benchmarks)
-  #_(run-selected-benchmarks)
-  #_(fastester.measure/clear-registry!)
-  #_ @fastester.measure/registry
-  #_(println "\n\n\n\n\n")
-  )
 

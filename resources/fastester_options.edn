@@ -9,11 +9,17 @@
 
  :preferred-version-info :lein
 
- ;; source directories and filenames
- :benchmarks-directory "test/fastester/performance/"
- :benchmarks-filenames #{"benchmarks.clj"
-                         "benchmarks_mapping.clj"}
-
+ :benchmarks {'fastester.performance.benchmarks
+              #{'add-1-arg
+                'add-2-arg
+                'add-3-arg
+                'add-many-args
+                'conj-onto-rands}
+              
+              'fastester.performance.benchmarks-mapping
+              #{'map-inc-across-a-sequence
+                'map-UC-over-a-cycle}}
+ 
  ;; output directories and filenames
  :html-directory "doc/"
  :html-filename "performance.html"
@@ -25,15 +31,9 @@
  :results-url "https://github.com/blosavio/fastester/blob/main/"
  :results-directory "resources/performance_entries/"
 
- :excludes #{"groups to skip"
-             #_"plus, vary number of digits in args"
-             #_"plus, vary number of operands"
-             #_"mapping stuff"
-             #_"custom `conj`"}
-
  :verbose? true
- :testing-thoroughness :quick
- :parallel? false
+ :testing-thoroughness :lightning
+ :parallel? true
  :save-benchmark-fn-results? false
 
  :sort-comparator #(> (Integer/parseInt %1) (Integer/parseInt %2))

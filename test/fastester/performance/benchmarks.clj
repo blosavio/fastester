@@ -1,17 +1,11 @@
 (ns fastester.performance.benchmarks
   "Beware: When actively developing a benchmarking namespace, the registry may
- become stale. Use
-
-  1. [[undefbench]] to undefine a single benchmark, or
-
-  2. [[clear-registry!]] to return the registry to an empty state, before
-  re-evaluating the entire namespace."
+  become stale. Use `clojure.core/ns-unmap` to undefine a single benchmark."
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
    [fastester.measure :refer [defbench
                               range-pow-10]]))
-
 
 
 ;;;; 1. Testing delayed addition of one to three numbers
@@ -24,24 +18,24 @@
     (Thread/sleep dly)
     (apply + args)))
 
-(def plus-test-name "plus, vary number of digits in args")
+(def group-1 "plus, vary number of digits in args")
 
-(defbench add-1-arg plus-test-name (fn [n] (delayed-+ n))     (range-pow-10 6))
-(defbench add-2-arg plus-test-name (fn [n] (delayed-+ n n))   (range-pow-10 6))
-(defbench add-3-arg plus-test-name (fn [n] (delayed-+ n n n)) (range-pow-10 6))
+(defbench add-1-arg group-1 (fn [n] (delayed-+ n))     (range-pow-10 6))
+(defbench add-2-arg group-1 (fn [n] (delayed-+ n n))   (range-pow-10 6))
+(defbench add-3-arg group-1 (fn [n] (delayed-+ n n n)) (range-pow-10 6))
 
 
 
 ;;;; 2. Testing regular addition with different-sized operands
 
-(def plus-test-name-2 "plus, vary number of operands")
+(def group-2 "plus, vary number of operands")
 
 (def seq-of-n-repeats
   (doall (reduce #(assoc %1 %2 (take %2 (repeat 64))) {} (range-pow-10 5))))
 
 (defbench
   add-many-args
-  plus-test-name-2
+  group-2
   (fn [n] (apply + (seq-of-n-repeats n)))
   (range-pow-10 5))
 
@@ -68,20 +62,4 @@
   "custom `conj`"
   (fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))
   (range-pow-10 7))
-
-
-
-(comment
-  (require '[fastester.measure :refer [clear-registry!
-                                       run-all-benchmarks
-                                       run-one-registered-benchmark
-                                       run-selected-benchmarks
-                                       registry]])
-
-  #_(run-all-benchmarks)
-  #_(run-selected-benchmarks)
-  #_(fastester.measure/clear-registry!)
-  #_ @fastester.measure/registry
-  #_(println "\n\n\n\n\n")
-  )
 
