@@ -63,3 +63,17 @@
   (fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))
   (range-pow-10 7))
 
+
+(comment
+  #_(require '[fastester.measure :refer [clear-registry!
+                                         registry
+                                         run-manual-benchmark
+                                         run-one-defined-benchmark]])
+
+  #_(clear-registry!)
+  #_ @registry
+  #_(run-manual-benchmark (fn [w] (my-conj [1 2 3] w)) :foo :lightning)
+  #_(run-one-defined-benchmark
+     fastester.performance.benchmarks/add-3-arg
+     :lightning))
+

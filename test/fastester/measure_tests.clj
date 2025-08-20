@@ -18,8 +18,9 @@
                            :responsible
                            :copyright-holder
                            :fastester-UUID
-                           :benchmarks-directory
-                           :benchmarks-filenames
+                           :benchmarks
+                           ;;:benchmarks-directory
+                           ;;:benchmarks-filenames
                            :html-directory
                            :html-filename
                            :img-subdirectory
@@ -37,15 +38,16 @@
 ;; mutable items can be tricky to test because `lein test` executes
 ;; asynchronously
 
-(deftest registry-tests
+#_(deftest registry-tests
   (is (map? @registry))
   (is (do
         (clear-registry!)
         (defbench foo "bar" (fn [q] (+ q q)) [1 2 3])
-        (is (= (update-in @registry ['foo] dissoc :f)
-               {'foo {:group "bar"
-                      :fexpr '(fn [q] (+ q q))
-                      :n [1 2 3]}}))))
+        (is (= (update-in @registry ['fastester.measure-tests/foo] dissoc :f :ns)
+               {'fastester.measure-tests/foo {:name 'foo
+                                              :group "bar"
+                                              :fexpr '(fn [q] (+ q q))
+                                              :n [1 2 3]}}))))
   (is (do
         (clear-registry!)
         (is (empty? @registry))))

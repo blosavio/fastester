@@ -88,6 +88,47 @@
                                  (get-options))))
 
 
+(def ^{:no-doc true}
+  registry-docstring
+  "An atom containing a hashmap of benchmarks to run. Typically populated by
+  invoking [[defbench]] or [[defbench*]], not manipulated directly.
+
+  See also [[undefbench]] and [[clear-registry!]].")
+
+
+(def ^{:doc registry-docstring}
+  registry (atom (sorted-map)))
+
+
+(defn clear-registry!
+  "Remove all entries from the benchmark [[registry]]."
+  {:UUIDv4 #uuid "d615da84-0b3b-42e3-acdb-9cec175df53e"}
+  []
+  (swap! registry empty))
+
+
+(defn defbench*
+  "Function version of `defbench` macro. Define and register a benchmark. See
+  [[defbench]] documentation for full details. The two differences are that
+  `name` and `f` are supplied as a quoted symbols.
+
+  Example:
+  ```clojure
+  (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
+  ```"
+  {:UUIDv4 #uuid "4b09fdc6-f830-40df-8f60-c454f1cca4c4"
+   :implementation-note "2-arity form of `symbol` accepts only strings, so must
+                         convert both `ns` and `name` to strings first."}
+  [name group f n]
+  (let [ns-name (symbol (str *ns*) (str name))]
+    (swap! registry assoc ns-name {:name name
+                                   :ns *ns*
+                                   :group group
+                                   :fexpr f
+                                   :f (eval f)
+                                   :n n})))
+
+
 (defmacro defbench
   "Define a benchmark by associating its name, group, function, and arguments.
 
@@ -130,12 +171,42 @@
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
   [name group f n]
   (let [fun (nth &form 3)]
-    `(def ~name {:group ~group
-                 :fexpr '~fun
-                 :f ~(eval fun)
-                 :n ~n
-                 :name ~(str name)
-                 :ns ~*ns*})))
+    `(defbench* '~name ~group '~fun ~n)))
+
+
+(defn undefbench*
+  "Function version of [[undefbench]]. Undefines a benchmark by removing
+  namespace-qualified quoted symbol `name` from the [[registry]].
+
+  Example:
+  ```clojure
+  ;; define a performance test
+  (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
+
+  ;; undefine that performance test
+  (undefbench* 'some-ns/add-four)
+  ```"
+  {:UUIDv4 #uuid "6130c03f-e8b0-4ce1-a682-ba3605fc291b"}
+  [name]
+  (swap! registry dissoc name))
+
+
+(defmacro undefbench
+  "Undefine a benchmark by removing `name` from the [[registry]].
+
+  Example:
+  ```clojure
+  ;; define a performance test
+  (defbench add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
+
+  ;; undefine that performance test
+  (undefbench add-two)
+  ```
+
+  Undoes the results of [[defbench]]. See also [[undefbench*]]."
+  {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"}
+  [name]
+  `(undefbench* '~(symbol (str *ns*) (str name))))
 
 
 (defn create-results-directories
@@ -210,7 +281,7 @@
 
 
 (defmacro run-one-defined-benchmark
-  "Given benchmark defined by `name` in `namespace`, followed by a keyword
+  "Given defined `benchmark`, a namespace-qualified symbol, and keyword
   `thoroughness` that designates the Criterium options, runs a benchmark for
   each defined argument. Returns a map with keys provided by the benchmark
   arguments `n` associated with the benchmark results for that `n`.
@@ -221,22 +292,23 @@
   ```clojure
   (defbench my-bench \"my-group\" (fn [x] (inc x)) [97 98 99])
 
-  (run-one-defined-benchmark my-bench my-ns :lightning)
+  (run-one-defined-benchmark my-ns/my-bench :lightning)
   ```
   Returns a hashmap with three key+vals: keys `97`, `98`, and `99`, each
   associated with its respective benchmark result.
 
   See also [[run-manual-benchmark]] and [[*lightning-benchmark-opts*]]."
   {:UUIDv4 #uuid "eac060b1-2175-4cf3-a3b9-5eb57c0438cb"}
-  [name namespace thoroughness]
-  (let [benchmark @(ns-resolve namespace (symbol name))]
-    `(reduce #(assoc %1
+  [benchmark-name thoroughness]
+  `(let [benchmark# (@registry '~benchmark-name)
+         f# (benchmark# :f)]
+     (reduce #(assoc %1
                      %2
                      (crit/benchmark
-                      (~(eval (benchmark :fexpr)) %2)
+                      (f# %2)
                       (thoroughnesses ~thoroughness)))
              {}
-             ~(benchmark :n))))
+             (benchmark# :n))))
 
 
 (defn date
@@ -345,13 +417,18 @@
   the Fastester options `:benchmarks`."
   {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
    :no-doc true
-   :implementation-note "Don't feel great about abusing `require` like this, but
-  it appears to work okay, and it seems how Leiningen gets tasks done, too. See
-  `leiningen.core.utils/require-resolve`."}
+   :implementation-note "Use `require` to affect compiling the namespaces, while
+                         aliasing to a gensym so that the names don't pollute
+                         elsewhere.
+
+                         Don't feel great about abusing `require` like this, but
+                         it appears to work okay, and it seems how Leiningen
+                         gets tasks done, too. See
+                         `leiningen.core.utils/require-resolve`."}
   [opt]
   (doseq [fname (keys (opt :benchmarks))]
     (if (opt :verbose?) (println "Loading tests from " fname))
-    (require fname :reload)))
+    (require `[~fname :as ~(gensym)] :reload)))
 
 
 (defn benchmark-nspace+syms
@@ -373,7 +450,7 @@
   {:UUIDv4 #uuid "01ae3707-ba31-4f89-a222-e85c0a7b804d"
    :no-doc true}
   [s]
-  (map (fn [[nspace sym]] (deref (ns-resolve nspace sym))) s))
+  (map (fn [[nspace sym]] (@registry (symbol (str nspace) (str sym)))) s))
 
 
 (defn run-benchmarks
@@ -397,7 +474,8 @@
    (let [options (get-options explicit-options-filename)
          _ (load-benchmarks-ns options)
          get-idx #(.indexOf %1 %2)
-         benchmarks (-> (benchmark-nspace+syms options)
+         benchmarks (-> options
+                        benchmark-nspace+syms
                         benchmark-defs)
          expander-fn (fn [v bm]
                        (concat v (map #(assoc bm :n %1) (bm :n))))

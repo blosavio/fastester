@@ -4,24 +4,22 @@
 <p>High-level workflow:</p>
 <ol>
 <li>Write benchmarks in a dedicated namespace.</li>
-<li>Run performance benchmarks with, e.g., <a href="fastester.measure.html#var-run-all-benchmarks">run-all-benchmarks</a>.</li>
+<li>Run performance benchmarks with, e.g., <a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a>.</li>
 <li>Create an html document with charts and tables with, e.g., <a href="fastester.display.html#var-generate-documents">generate-documents</a>.</li>
 </ol>
 </div></div><div class="public anchor" id="var--main"><h3>-main</h3><div class="usage"><code>(-main action)</code><code>(-main action explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Given keyword <code>action</code>, runs a Fastester task with the following mappings:</p>
 <ul>
-<li><code>:all</code> executes <code>(run-all-benchmarks)</code></li>
-<li><code>:selected</code> executes <code>(run-selected-benchmarks)</code></li>
-<li><code>:gen</code> executes <code>(generate-docs)</code>.</li>
+<li><code>:benchmarks</code> executes <code>(run-benchmarks)</code></li>
+<li><code>:documents</code> executes <code>(generate-docs)</code>.</li>
 </ul>
 <p>Examples:</p>
-<pre><code class="language-bash">$ lein run :all
-$ lein run :selected
-$ lein run :gen
+<pre><code class="language-bash">$ lein run :benchmarks
+$ lein run :documents
 </code></pre>
 <p>Reads options from <code>./resources/fastester_options.edn</code> unless an explicit options filename is supplied.</p>
 <p>Example:</p>
-<pre><code class="language-bash">$ lein run :all ./alternate_options.edn
+<pre><code class="language-bash">$ lein run :benchmarks ./alternate_options.edn
 </code></pre>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L28">view source</a></div></div><div class="public anchor" id="var-run-benchmarks-and-generate-documents"><h3>run-benchmarks-and-generate-documents</h3><div class="usage"><code>(run-benchmarks-and-generate-documents)</code></div><div class="doc"><div class="markdown"><p>Run all benchmarks and generate an html document that displays comparisons to previous versions.</p>
-<p>See <a href="fastester.measure.html#var-run-all-benchmarks">run-all-benchmarks</a> and <a href="fastester.display.html#var-generate-documents">generate-documents</a>.</p>
-</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L16">view source</a></div></div></div></body></html>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L28">view source</a></div></div><div class="public anchor" id="var-run-benchmarks-and-generate-documents"><h3>run-benchmarks-and-generate-documents</h3><div class="usage"><code>(run-benchmarks-and-generate-documents)</code><code>(run-benchmarks-and-generate-documents explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Run all benchmarks and generate an html document that displays comparisons to previous versions.</p>
+<p>See <a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a> and <a href="fastester.display.html#var-generate-documents">generate-documents</a>.</p>
+</div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L15">view source</a></div></div></div></body></html>
