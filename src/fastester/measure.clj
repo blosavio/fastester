@@ -463,8 +463,8 @@
 
 
 (defn run-benchmarks
-  "Execute benchmarks all benchmarks listed in options, saving results to a
-  version-specific directory. If `explicit-options-filename` is not supplied,
+  "Execute benchmarks associated to option key `:benchmarks`, saving results to
+  a version-specific directory. If `explicit-options-filename` is not supplied,
   defaults to `./resources/fastester_options.edn`.
 
   If option `:parallel?` is `true`, runs tests in parallel. Warning: Running

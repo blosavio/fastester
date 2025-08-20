@@ -32,7 +32,7 @@
  :results-directory "resources/performance_entries/"
 
  :verbose? true
- :testing-thoroughness :lightning
+ :testing-thoroughness :quick
  :parallel? false
  :save-benchmark-fn-results? false
 

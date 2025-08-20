@@ -4,8 +4,7 @@
  [`src/fastester_defaults.clj`](https://github.com/blosavio/fastester/blob/main/src/fastester/fastester_defaults.clj)
  that supplies the default values for the following option keys:
 
-  * `:benchmarks-directory`
-  * `:benchmarks-filenames`
+  * `:benchmarks`
   * `:html-directory`
   * `:html-filename`
   * `:img-subdirectory`
@@ -21,14 +20,13 @@
   * `:preamble`
 
   Override default values by associating new values into the Fastester _options_
-  hash-map. See [[run-all-benchmarks]] and [[generate-documents]].")
+  hash-map. See [[run-benchmarks]] and [[generate-documents]].")
 
 
 (def ^{:doc fastester-defaults-docstring
        :UUIDv4 #uuid "9e50c897-a734-4fb9-b671-b924bc209a81"}
   fastester-defaults
-  {:benchmarks-directory "test/fastester/performance/"
-   :benchmarks-filenames "benchmarks.clj"
+  {:benchmarks {}
 
    :html-directory "doc/"
    :html-filename "performance.html"
@@ -39,8 +37,6 @@
 
    :results-url "https://example.com"
    :results-directory "resources/performance_entries/"
-
-   :excludes #{}
 
    :verbose? false
    :testing-thoroughness :quick

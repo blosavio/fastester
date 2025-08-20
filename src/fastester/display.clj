@@ -1,6 +1,6 @@
 (ns fastester.display
   "Generate html documents with charts and tables, communicating objective
-  performance changes across versions .
+  performance changes across versions.
 
   See [[fastester.measure]] for utilities to run the benchmarks and save the
   performance data."
@@ -489,7 +489,9 @@ position, plot border, etc.")
       (element/image short-path img-alt-text))))
 
 
-(def zeroed-notice
+(def
+  ^{:no-doc true}
+  zeroed-notice
   [:p.de-highlight.centered
    "Note: Some error bars are negative and can not be drawn on logarithmic scale."
    [:br]

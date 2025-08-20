@@ -37,12 +37,12 @@
   $ lein run :documents
   ```
 
-  Reads options from `./resources/fastester_options.edn` unless an explicit
-  options filename is supplied.
+  Reads options from `./resources/fastester_options.edn` unless an options
+  filename is supplied.
 
   Example:
   ```bash
-  $ lein run :benchmarks ./alternate_options.edn
+  $ lein run :benchmarks ./foobar_options.edn
   ```"
   {:UUIDv4 #uuid "c20e4554-c4cd-4d92-912d-4e8affb1ddc9"}
   ([action] (-main action nil))
