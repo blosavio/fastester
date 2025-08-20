@@ -130,7 +130,8 @@
 
 
 (defmacro defbench
-  "Define a benchmark by associating its name, group, function, and arguments.
+  "Define a benchmark by adding a name, a group, a function, and arguments
+  sequence to the  [[registry]].
 
   * `name` is an unquoted symbol that labels the benchmark.
   * `group` is a string, shared between multiple conceptually-related
@@ -165,9 +166,15 @@
 
   Note: Invoking a `defbench` expression, editing the `name`, followed by
   invoking `defbench` a second time, defines two unique benchmarks.
-  When developing at the REPL, be aware that the namespace may become 'stale'
-  with outdated tests. To remove a single, unwanted test, use
-  `clojure.core/ns-unmap`."
+  When developing at the REPL, be aware that the registry may become 'stale'
+  with outdated tests.
+
+  1. To remove a single, unwanted test, use [[undefbench]].
+  2. To put the registry into a state that reflects only the current
+  definitions, use [[clear-registry!]] and re-evaluate the namespace to invoke
+  all the current `defbench`s .
+
+  See [[defbench*]] for the function version."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
   [name group f n]
   (let [fun (nth &form 3)]
@@ -204,7 +211,8 @@
   ```
 
   Undoes the results of [[defbench]]. See also [[undefbench*]]."
-  {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"}
+  {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"
+   :implementation-note "2-arity `symbol` only accepts string args"}
   [name]
   `(undefbench* '~(symbol (str *ns*) (str name))))
 
@@ -283,8 +291,8 @@
 (defmacro run-one-defined-benchmark
   "Given defined `benchmark`, a namespace-qualified symbol, and keyword
   `thoroughness` that designates the Criterium options, runs a benchmark for
-  each defined argument. Returns a map with keys provided by the benchmark
-  arguments `n` associated with the benchmark results for that `n`.
+  each defined argument. Returns a hashmap whose keys are arguments `n`,
+  associated to values that are the benchmark results for that `n`.
 
   `thoroughness` is one of `:default`, `:quick`, or `:lightning`.
 
@@ -448,7 +456,8 @@
   benchmark hashmap definitions,
   `{:name ... :ns ... :group ... :fexpr ... :f ... :n ...}`."
   {:UUIDv4 #uuid "01ae3707-ba31-4f89-a222-e85c0a7b804d"
-   :no-doc true}
+   :no-doc true
+   :implementation-note "2-arity `symbol` only accepts string args"}
   [s]
   (map (fn [[nspace sym]] (@registry (symbol (str nspace) (str sym)))) s))
 

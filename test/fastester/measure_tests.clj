@@ -19,8 +19,6 @@
                            :copyright-holder
                            :fastester-UUID
                            :benchmarks
-                           ;;:benchmarks-directory
-                           ;;:benchmarks-filenames
                            :html-directory
                            :html-filename
                            :img-subdirectory

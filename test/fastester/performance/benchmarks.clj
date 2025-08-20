@@ -1,6 +1,11 @@
 (ns fastester.performance.benchmarks
   "Beware: When actively developing a benchmarking namespace, the registry may
-  become stale. Use `clojure.core/ns-unmap` to undefine a single benchmark."
+  become stale. Use
+
+  1. [[undefbench]] to undefine a single benchmark, or
+
+  2. [[clear-registry!]] to return the registry to an empty state, before
+  re-evaluating the entire namespace."
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
