@@ -109,59 +109,6 @@
       (* f (Math/round (/ x f))))))
 
 
-(defn data-divs
-  "Returns a `[:p ...]` hiccup/html element with a flat sequence of benchmark
-  timing results. See also [[version-divs]], [[arg-divs]], and [[fexpr-divs]]."
-  {:UUIDv4 #uuid "6643ccc7-8d04-4aff-ab72-aec4bc03ff41"
-   :no-doc true}
-  [o-data opt group group-idx fexpr fexpr-idx arg arg-idx version version-idx]
-  (let [var->std #(Math/sqrt %)]
-    [:div
-     [:p (str "samples: " (o-data :samples))]
-     [:p (str "mean±std: "
-              (-> (o-data :mean)
-                  first
-                  (#(format "%2.1e" %)))
-              "±"
-              (-> (o-data :variance)
-                  first
-                  var->std
-                  (#(format "%2.1e" %))))]
-     [:p
-      (str "original data: ")
-      (link-to-original-data o-data opt "link")]]))
-
-
-(defn version-divs
-  "Returns a `[:h6 ...]` hiccup/html element and a sequence of paragraph
-  elements for a single version of a single fexpr of a single group. See also
-  [[data-divs]], [[arg-divs]], and [[fexpr-divs]]."
-  {:UUIDv4 #uuid "8b806197-371f-42fa-a9c2-34d860e0d0bb"
-   :no-doc true}
-  [o-data opt group group-idx fexpr fexpr-idx arg arg-idx]
-  (let [o-data (into (sorted-map) o-data)
-        versions (keys o-data)
-        version-index #(.indexOf versions %)
-        h6-fn #(keyword (str "h6#group-" group-idx
-                             "-fexpr-" fexpr-idx
-                             "-arg-" arg-idx
-                             "-version-" (version-index %)))
-        red-fn (fn [acc ky vl]
-                 (conj acc
-                       [(h6-fn ky) (str "version " ky)]
-                       (data-divs vl
-                                  opt
-                                  group
-                                  group-idx
-                                  fexpr
-                                  fexpr-idx
-                                  arg
-                                  arg-idx
-                                  ky
-                                  (version-index ky))))]
-    (into [:div] (reduce-kv red-fn [] o-data))))
-
-
 ;; The 'organized-data' at this stage has first-level keys 'args' and
 ;; second-level keys 'versions'. Html tables are row-oriented, with a table row
 ;; `[:tr ...]` containing column elements, table datums `[:td]`. However, the
@@ -328,21 +275,9 @@
         arg-index #(.indexOf args %)
         h5-fn #(keyword (str "h5#group-" group-idx
                              "-fexpr-" fexpr-idx
-                             "-arg-" (arg-index %)))
-        red-fn (fn [acc ky vl]
-                 (conj acc
-                       [(h5-fn ky) (str "n = " ky)]
-                       (version-divs vl
-                                     opt
-                                     group
-                                     group-idx
-                                     fexpr
-                                     fexpr-idx
-                                     ky
-                                     (arg-index ky))))]
+                             "-arg-" (arg-index %)))]
     (into [:div.collapsable]
-          [#_(reduce-kv red-fn [] o-data) ;; generate flat listing
-           (arg-vs-version-table o-data opt)])))
+          [(arg-vs-version-table o-data opt)])))
 
 
 (defn create-img-directory
