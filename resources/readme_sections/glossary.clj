@@ -16,7 +16,7 @@
   [:dt#document "document"]
   [:dd [:p "An "
         [:span.small-caps "html"]
-        " or markdown file that contains benchmarks results consisting of,
+        " or markdown file that contains benchmarks results consisting of
  charts, text, and tables."]]]
  
  [:dl
@@ -28,13 +28,21 @@
 
  [:dl
   [:dt#name "name"]
-  [:dd [:p "A tag that refers to a benchmark definition. Currently a Clojure
- symbol which to which a value is associated in the registry. In a future
- version, a symbol which simply maps to a namespace var."]]]
+  [:dd [:p "A tag that refers to a benchmark definition. Supplied to "
+        [:code "defbench"]
+        " as a simple symbol. Insertion into the registry prepends the namespace
+ (making it namespace-qualified), to which a benchmark definition is
+ associated."]]]
 
  [:dl
   [:dt#registry "registry"]
-  [:dd [:p "Soon to be deprecated..."]]]
+  [:dd [:p "A singular collection of benchmark definitions. An atom-wrapped
+ hashmap whose keys are namespace-qualified symbols ("
+        [:a {:href "#name"} "names"]
+        ") associated to a set of benchmark definitions ("
+        [:a {:href "#group"} "group"]
+        ", function expression, arguments). Any other property of the registry
+ is an implementation detail an not guaranteed."]]]
 
  [:dl
   [:dt#version "version"]

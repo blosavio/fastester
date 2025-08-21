@@ -13,8 +13,9 @@
                               range-pow-10
                               range-pow-2
                               registry
-                              run-one-benchmark
-                              run-one-registered-benchmark
+                              run-benchmarks
+                              run-manual-benchmark
+                              run-one-defined-benchmark
                               undefbench]]
    [readmoi.core :refer [*project-group*
                          *project-name*
@@ -36,5 +37,4 @@
   [& args]
   {:UUIDv4 #uuid "053064d2-125d-48cc-8c22-1252aaffb841"}
   (println "Generated Fastester ReadMe."))
-
 

@@ -22,7 +22,8 @@
 
  [:p "We're now ready to release version 12 with the updated "
   [:code "zap"]
-  ". After "
+  ". When we're writing the changelog/release notes, we want to include a
+ performance report that demonstrates the improvement. After "
   [:a {:href "#setup"} "declaring and requiring"]
   " the dependency, there are four steps to using Fastester." ]
 
@@ -41,9 +42,9 @@
  [:h3#set-options "1. Set the options"]
 
  [:p "We must first set the options that govern how Fastester behaves. Options
- live in the file "
+ live in the file (defaulting to"
   [:code "fastester_options.edn"]
-  " as a Clojure map. One way to get up and running quickly is to copy-paste
+  ") as a Clojure map. One way to get up and running quickly is to copy-paste
  Fastester's "
   [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/fastester_options.edn"}
    "sample options file"]
@@ -80,12 +81,18 @@
    [:th "usage"]]
 
   (opts-table-row
-   :benchmarks-directory
-   [:p "Directory from which to load benchmark tests."])
+   :benchmarks
+   [:div
+    [:p "Hashmap arranging a hierarchichy of namespaces and benchmark
+ definitions. Keys (quoted symbols) represent namespaces. Values (sets of quoted
+ symbols) represent benchmark names. See "
+     [:a {:href "#hierarchy"} "discussion"]
+     "."]
 
-  (opts-table-row
-   :benchmarks-filenames
-   [:p "Set of filenames from which to load benchmark tests."])
+    [:p "Note: This setting only affects benchmark running. It does not affect
+ which data sets are used to generate the "
+     [:span.small-caps "html"]
+     " documents."]])
 
   (opts-table-row
    :html-directory
@@ -121,12 +128,6 @@
    [:p "Directory to find benchmark data, appended to "
     [:code ":results-url"]
     "."])
-
-  (opts-table-row
-   :excludes
-   [:p "A set of benchmark groups (strings) to skip, i.e., "
-    [:code "#{}"]
-    "  skips zero benchmark groups."])
 
   (opts-table-row
    :verbose?
@@ -191,7 +192,7 @@
   (opts-table-row
    :responsible
    {:name "Grace Hopper"
-    :email "RDML@univac.net"}
+    :email "univac@example.com"}
    [:p "A hashmap with "
     [:code ":name"]
     " and "
@@ -227,31 +228,52 @@
 
  [:h3#write-benchmarks "2. Write benchmarks"]
 
- [:p "Writing benchmarks follows a similar pattern to writing unit tests. We
- make a file (defaulting to " [:code
-                               (str
-                                (fastester-defaults :benchmarks-directory)
-                                (fastester-defaults :benchmarks-filenames))]
-  ") with a namespace declaration. See these "
-  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks.clj"}
-   "two"]
-  " "
-  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks_mapping.clj"}
-   "examples"]
-  ". For organizing purposes, we may write more than one benchmarks file, if,
- for example, we'd like to write one benchmark file per source namespace."]
-
  [:p "Before we start bashing the keyboard, let's think a little about how we
  want to test "
   [:code "zap"]
   ". We'd like to demonstrate "
   [:code "zap"]
   "'s improved performance for a variety of argument types, over a wide range of
- argument sizes. To do so, we decide to write two benchmarks. The first
- benchmark will measure the evaluation times of increasingly-lengthy sequences
- of integers. The second benchmark will measure the evaluation times of
- upper-casing ever-longer sequences of strings. We will therefore need to write
- two benchmarks."]
+ argument sizes. To do that, we'll write two benchmarks."]
+
+ [:ol
+  [:li
+   [:p "The first benchmark will measure the evaluation times of incrementing
+ increasingly-lengthy sequences of integers."]
+   [:pre
+    [:code "(benchmark (zap inc [1]))"] [:br]
+    [:code "(benchmark (zap inc [1 2]))"] [:br]
+    [:code "(benchmark (zap inc [1 2 3]))"] [:br]
+    [:code "(benchmark (zap inc [1 2 3 4]))"] [:br]
+    [:code "(benchmark (zap inc [1 2 3 4 ...]))"]]
+   [:p "We'll label this series of benchmark runs with the name "
+    [:code "zap-inc"]
+    " ."]]
+
+  [:li
+   [:p "The second benchmark will measure the evaluation times of upper-casing
+ ever-longer sequences of strings."]
+   [:pre
+    [:code "(benchmark (zap str/uppercase [\"a\"]))"] [:br]
+    [:code "(benchmark (zap str/uppercase [\"a\" \"b\"]))"] [:br]
+    [:code "(benchmark (zap str/uppercase [\"a\" \"b\" \"c\"]))"] [:br]
+    [:code "(benchmark (zap str/uppercase [\"a\" \"b\" \"c\" ...]))"] [:br]]
+   [:p "We'll label this series of benchmark runs with the name "
+    [:code "zap-uc"]
+    "."]]]
+
+ [:p "Writing benchmarks follows a similar pattern to writing unit tests. We
+ create a file (defaulting to "
+  [:code "resources/fastester_options.edn"]
+  "), topped with a namespace declaration. For organizing purposes, we may write
+ more than one benchmarks file if, for example, we'd like to write one benchmark
+ file per source namespace. See these "
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks.clj"}
+   "two"]
+  " "
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks_mapping.clj"}
+   "examples"]
+  "."]
 
  [:p "Within a benchmarks file, we use "
   [:code "defbench"]
@@ -269,66 +291,124 @@
   [:code "defbench"]
   " with a "
   [:em "name"]
-  ", an unquoted symbol. The name labels the three trailing arguments. For our
- scenario, let's name our two benchmarks with the symbols "
+  ", an unquoted symbol. The name provides the lookup key for benchmark
+ definition in the registry. We've chosen "
   [:code "zap-inc"]
   " and "
   [:code "zap-uc"]
-  "."]
+  ". The names don't have any functional significance (we could have named the
+ benchmarks "
+  [:code "Romeo"]
+  " and "
+  [:code "Juliet"]
+  "), but it's nice if the names have some semantic meaning."]
 
- [:p "Note that all benchmarks will be added to a singular "
+ [:p "So far, we have the following two incomplete benchmark definitions: "
+  [:code "defbench"]
+  " and a name."]
+
+ [:pre
+  [:code "(defbench zap-inc ...)"] [:br]
+  [:code "(defbench zap-uc ...)"]]
+
+ [:p#hierarchy "Note that all benchmarks are added to a singular "
   [:a {:href "#registry"} "registry"]
   ", so if we write two "
   [:code "defbench"]
-  " expressions using the same name, the later will overwrite the former
- (any particular ordering is an implementation detail and not guaranteed). If
- we'd like to give the same name to two different benchmarks (particularly the
- same name from two different namespaces), we can use "
-  [:a {:href "https://clojure.org/reference/reader#_symbols"}
-   "qualified symbols"]
-  ". In the scenario of benchmarking "
+  " expressions using the same name in the same namespace, one definition will
+ overwrite the other (any particular ordering is an implementation detail and
+ not guaranteed). If we'd like to give the same name to two different
+ benchmarks, we could isolate the definitions into two different namespaces. For
+ this scenario benchmarking "
   [:code "zap"]
   ", we've chosen two different names, so we won't worry about overwriting."]
 
  [:p "After the name, we supply a "
-  [:em "group"] ", a string that associates this benchmark with other
- conceptually-related benchmarks. For example, while we're benchmarking "
+  [:em "group"] ", a string that associates one benchmark with other
+ conceptually-related benchmarks. The "
+  [:span.small-caps "html"]
+  " document will aggregate the benchmarks sharing a group. For "
   [:code "zap"]
-  ", we will want to test its performance in different ways, varying the size of
- arguments, with different types of arguments, e.g., integers, strings, etc. The
- ultimate html document will gather into a section the benchmarks sharing a
- group. Let's assign both our benchmarks to the "
+  ", we have our two related benchmarks. Let's assign both our benchmarks to
+ the "
   [:code "\"faster zap implementation\""]
   " group."]
 
+ [:p "Now, we have the following two incomplete benchmark definitions, with the
+ addition of the group."]
+
+ [:pre
+  [:code "(defbench zap-inc \"faster zap implementation\" ...)"] [:br]
+  [:code "(defbench zap-uc \"faster zap implementation\" ...)"]]
+
  [:p "The final two arguments, "
-  [:code "fn-expression"]
+  [:em  "fn-expression"]
   " and "
-  [:code "args"]
-  ", share the heavy lifting. The next step, "
+  [:em "args"]
+  ", do the heavy lifting. The next step of thw workflow, "
   [:a {:href "#run-benchmarks"} [:em "running the benchmarks"]]
-  " will entail serially supplying elements of "
+  ", involves serially supplying elements of "
   [:code "args"]
   " to the function expression."]
 
- [:p  "The function expression is a 1-arity function that demonstrates some
+ [:p "The function expression is a 1-arity function that demonstrates some
  performance aspect of the new version of the function. We updated "
   [:code "zap"]
   " so that it processes elements faster. One way to demonstrate its improved
- performance is to increment a sequence of integers. That expression might
- look like this."]
+ performance is to increment a sequence of integers with "
+  [:code "inc"]
+  ". That particular function expression looks like this."]
 
  [:pre [:code "(fn [n] (zap inc (range n)))"]]
 
- [:p "'Running' that benchmark means that a series of "
+ [:p "In addition to incrementing integers, we wanted to demonstrate
+ upper-casing strings. Clojure's "
+  [:code "clojure.string/upper-case"] "
+ performns that operation on a single string."]
+
+ [:pre (print-form-then-eval "(require '[clojure.string :as str])")]
+ 
+ [:p "To create sequence of strings, we can use "
+  [:code "cycle"]
+  ", and "
+  [:code "take"]
+  " the number of elements we desire."]
+
+ [:pre
+  (print-form-then-eval "(take 1 (cycle [\"a\" \"b\" \"c\"]))") [:br]
+  (print-form-then-eval "(take 2 (cycle [\"a\" \"b\" \"c\"]))") [:br]
+  (print-form-then-eval "(take 3 (cycle [\"a\" \"b\" \"c\"]))")]
+
+ [:p "Our second function expression looks like this."]
+
+ [:pre [:code "(fn [i] (zap str/upper-case (take i (cycle [\"a\" \"b\" \"c\"]))))"]]
+
+ [:p "And with the addition of their function expressions, our two
+ almost-complete benchmark definitions look like this."]
+
+ [:pre
+  [:code "(defbench zap-inc \"faster zap implementation\" (fn [n] (zap inc (range n))) ...)"]
+  [:br]
+  [:br]
+  [:code "(defbench zap-uc \"faster zap implementation\" (fn [i] (zap str/upper-case (take i (cycle [\"a\" \"b\" \"c\"])))) ...)"]]
+
+ [:p "Note that there is nothing special about the function expression's
+ parameter. "
+  [:code "zap-inc"]
+  " uses "
   [:code "n"]
-  " arguments are passed to the expression, measuring the evaluation times for
- each "
-  [:code "n"]
-  ". The values for "
-  [:code "n"]
-  " are supplied by the final part of the benchmark definition. Let's explore
- "
+  ", while "
+  [:code "zap-us"]
+  " uses "
+  [:code "i"]
+  "."]
+
+ [:p "'Running' a benchmark with those function expresions means thatarguments
+ are serially passed to the expression, measuring the evaluation times for each.
+ The arguments are supplied by the final element of the benchmark definition, a
+ sequence. For "
+  [:code "zap-inc"]
+  ", let's explore "
   [:code "range"]
   "s from ten to one-hundred thousand."]
 
@@ -355,11 +435,34 @@
           (fn [n] (zap inc (range n)))
           [10 100 1000 10000 100000])"]]
 
- [:p "However, there's a problem. This benchmark's function expression contains "
+ [:p "Likewise, we'd like "
+  [:code "zap-uc"]
+  " to exercise a similar span of strings."]
+
+ [:pre
+  [:code "(benchmark (zap str/upper-case (take 10 (cycle \"a\" \"b\" \"c\"))))"] [:br]
+  [:code "(benchmark (zap str/upper-case (take 100 (cycle \"a\" \"b\" \"c\"))))"] [:br]
+  [:code "(benchmark (zap str/upper-case (take 1000 (cycle \"a\" \"b\" \"c\"))))"] [:br]
+  [:code "(benchmark (zap str/upper-case (take 10000 (cycle \"a\" \"b\" \"c\"))))"] [:br]
+  [:code "(benchmark (zap str/upper-case (take 100000 (cycle \"a\" \"b\" \"c\"))))"] [:br]]
+
+ [:p "The complete benchmark definition looks like this."]
+
+ [:pre [:code
+        "(defbench zap-uc
+          \"faster zap implementation\"
+          (fn [i] (zap str/upper-case (take i (cycle [\"a\" \"b\" \"c\"]))))
+          [10 100 1000 10000 100000])"]]
+
+ [:p "However, there's a problem. The function expressions contain "
   [:code "range"]
-  ". If we run this benchmark as is, the evaluation time would include "
+  " or "
+  [:code "cycle"]
+  ". If we run these benchmarks as is, the evaluation times would include "
   [:code "range"]
-  "'s processing time. We may want to do so in other cases, but in this
+  "'s and "
+  [:code "cycle"]
+  "'s processing times. We may want to do that in some cases, but in this
  scenario, it would be misleading. We want to focus solely on how fast "
   [:code "zap"]
   " can process its elements. Let's extract "
@@ -381,7 +484,7 @@
  outside of the benchmark expression, the time measurement will mainly reflect
  the work done by "
   [:code "zap"]
-  " itself."]
+  " itself. "]
 
  [:p "Perhaps you anticipated a remaining problem if you extrapolated that "
   [:code "zap"]
@@ -395,7 +498,9 @@
   ", like many core sequence functions, returns a lazy sequence. We must force
  the return sequence to be realized so that "
   [:code "zap-inc"]
-  " measures what we intend. "
+  " measures "
+  [:code "zap"]
+  " actually doing something. "
   [:code "doall"]
   " is handy for that."]
 
@@ -405,14 +510,9 @@
           (fn [n] (doall (zap inc (range-of-length-n n))))
           [10 100 1000 10000 100000])"]]
 
- [:p "We want to define another benchmark that exercises "
-  [:code "zap"]
-  " by upper-casing strings. We picked a name earlier "
-  [:code "zap-uc"]
-  ", so now we'll define the benchmark, analogous to "
-  [:code "zap-inc"]
-  ". First, we'll pre-compute the test sequences so that running the benchmark
- doesn't measure evaluating "
+ [:p "We would handle "
+  [:code "zap-us"]
+  " similarly. First, we'll pre-compute the test sequences so that running the benchmark doesn't measure evaluating "
   [:code "cycle"]
   "."]
 
@@ -421,14 +521,7 @@
    "(def abc-cycle-of-length-n
      (reduce #(assoc %1 %2 (take %2 (cycle [\"a\" \"b\" \"c\"])))
              {}
-             [10 100 1000 10000 100000]))"]]
-
- [:p "Next, we'll "
-  [:code "require"]
-  " the string-handler, then define the benchmark."]
- 
- [:pre
-  (print-form-then-eval "(require '[clojure.string :as str])")
+             [10 100 1000 10000 100000]))"]
   [:br]
   [:br]
   [:br]
@@ -438,32 +531,35 @@
           (fn [n] (doall (zap str/upper-case (abc-cycle-of-length-n n))))
           [10 100 1000 10000 10000])"]]
 
- [:p "Since both "
-  [:code "zap-inc"]
-  " and "
-  [:code "zap-uc"]
-  "  measure "
-  [:code "zap"]
-  ", both share the same group: "
-  [:code "\"faster zap implementation\""]
-  ". Their benchmark results will appear under that heading in the html report."]
-
- [:p "Take a moment to discuss the registry..."]
-
+ [:p "So what happens when we evaluate a "
+  [:code "defbench"]
+  " expression? Doing that places an entry in the benchmark "
+  [:a {:href "#registry"} "registry"]
+  ". The registry is an atom-wrapped hashmap whose keys are namespace-qualified
+ symbols (the "
+  [:em "name"]
+  ") associated to values that are benchmark metadata (group, function
+ expression, arguments, etc.). Soon, in the "
+  [:a {:href "#run-benchmarks"} "run benchmarks"]
+  " step, Fastester will rip through the registry and run a Criterium benchmark
+ for every element in the registry."]
 
  [:p "The registry now contains two benchmarks that will demonstrate "
   [:code "zap"]
-  "'s performance: one incrementing sequences of integers, and one upper-casing
- sequences of strings."]
+  "'s performance: one incrementing sequences of integers, named "
+  [:code "zap-inc"]
+  ", and one upper-casing sequences of strings, named "
+  [:code "zap-uc"]
+  "."]
 
  [:p "Fastester provides a few helper utilities. If we want to see how a
  benchmark would work, we can invoke "
   [:code "run-one-registered-benchmark"]
   ". In the course of writing benchmarks, we often need a sequence of
  exponentially-growing integers. For that, Fastester offers "
-  [:code "range-pow-10"]
+  [:code "range‑pow‑10"]
   " and "
-  [:code "range-pow-2"]
+  [:code "range‑pow‑2"]
   "."]
 
  [:pre
@@ -477,7 +573,7 @@
   [:code "undefbench"]
   ". And when we need to tear everything down and start defining from scratch,
  we have "
-  [:code "clear-registry!"]
+  [:code "clear‑registry!"]
   "."]
 
  [:h3#run-benchmarks "3. Run benchmarks"]
@@ -485,15 +581,15 @@
  [:p "Now that we've written "
   [:code "zap-inc"]
   " and "
-  ["zap-uc"]
+  [:code "zap-uc"]
   ", we can run the benchmarks in two ways. If we've got our editor open with an
  attached  "
   [:span.small-caps "repl"]
   ", we can invoke "
-  [:code "(run-all-benchmarks)"]
+  [:code "(run-benchmarks)"]
   ". If we're at the command line, invoking "]
 
- [:pre [:code "$ lein run :all"]]
+ [:pre [:code "$ lein run :benchmarks"]]
 
  [:p " has the same effect."]
 
@@ -503,10 +599,10 @@
 
  [:p "We should see one "
   [:code "edn"]
-  "file per benchmark. If not, double check the options hashmap to make sure our
- benchmarks are not contained in the "
-  [:code ":excludes"]
-  " set."]
+  " file per benchmark. If not, double check the options hashmap to make sure
+ all the namespace and name symbols within  "
+  [:code ":benchmarks"]
+  " are complete and correct."]
 
  [:h3#generate "4. Generate the " [:span.small-caps "html"]]
 
@@ -517,12 +613,18 @@
  markdown file (i.e., to show on Github), so Fastester generates one of each."]
 
  [:p "To generate the documents, we can invoke "
-  [:code "(generate-documents)"]
+  [:code "(generate‑documents)"]
   " at the "
   [:span.small-caps "repl"]
   ", or "
-  [:code "$ lein run :gen"]
+  [:code "$ lein run :documents"]
   " from the command line."]
+
+ [:p "Note: Fastester uses all data files in the directory set by the options "
+  [:code ":results-directory"]
+  ". The "
+  [:code ":benchmarks"]
+  " setting has no affect on generating the documents."]
 
  [:p "When we look at the report, there's only version 12! We wanted a "
   [:a {:href "#comparative"} "comparative"]
@@ -532,10 +634,13 @@
   [:em "relative"]
   " to version 11's "
   [:code "zap"]
-  ". So, we use version control to roll-back to the version 11 tag, run the
- benchmarks with version 11. Then, we roll-forward again to version 12."]
+  ". To fix this, we use our version control system to roll-back to the
+ version 11 tag, and then we run the benchmarks with version 11. Once done, we
+ roll-forward again to version 12."]
 
- [:p "Now the charts and tables show the version 12 benchmark measurements
+ [:p "After a followup "
+  [:code "generate-documents"]
+  " invocation, the charts and tables show the version 12 benchmark measurements
  side-by-side with version 11's, similar to the "
   [:a {:href "#intro"} "introduction example"]
   ". We can clearly see that the new "
@@ -548,7 +653,7 @@
  [:p "We must be particularly careful to define our benchmarks to test what we
  intend to test. Writing a benchmark using some common Clojure idioms may mask
  the property we're interested in. For example, if we're interested in
- benchmarking mapping over a sequence, if we create the sequence in the map
+ benchmarking mapping over a sequence, if we create the sequence inside the map
  expression, Criterium will include that process in addition to the mapping.
 , such as defining sequences at the location, will measure"]
 

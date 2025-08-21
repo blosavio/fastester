@@ -8,11 +8,11 @@
   [:code "zap"]
   " executes faster."]
 
- [:p "We could mumble something like this in the version 12 changelog."]
+ [:p "In the version 12 changelog, we could mumble,"]
 
  [:blockquote [:em "Function " [:code "zap"] " is faster."]]
 
- [:p "Or, we could write this."]
+ [:p "Or instead, we could assert,"]
 
  [:blockquote
   [:em "Version 12 of function "

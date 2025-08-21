@@ -43,7 +43,7 @@
  few nanoseconds. So when we discuss the concept of 'fast', we're often
  implicitly speaking in relative terms."]
 
- [:p "Fastester focuses on comparing the speed of a function to a previous
+ [:p "Fastester focuses on comparing the speed of one function to a previous
  version of itself."]
 
  [:aside "(I am sorely tempted to remove all absolute units by normalizing time
@@ -54,7 +54,7 @@
 
  [:p "Humans are visually-oriented, and a straightforward two-dimensional chart
  is an excellent tool to convey relative performance changes between versions.
- A person ought to be able glance at the performance report and immediately
+ A person ought to be able to glance at the performance report and immediately
  grasp the improvements, with details available as needed."]
 
  [:p "Fastester documents consist primarily of charts with accompanying text.
@@ -64,9 +64,9 @@
 
  [:ul
   [:li [:p "The performance document is accreting. Once version 12 is
- benchmarked and released, that's it. Corrections are encouraged, and later
- additional tests to compare to some new feature are also okay. The data is
- versioned-controlled, and the "
+ benchmarked and released, it's there for good. Corrections are encouraged, and
+ later additional tests to compare to some new feature are also okay. The data
+ is versioned-controlled, and the "
         [:span.small-caps "html"]
         "/markdown documents that are generated from the data are also under
  version-control."]]
