@@ -33,7 +33,7 @@
  analyzing nano/micro/milli/macro benchmarks written in Java and other languages
  targeting the JVM."]]
 
-   [:li
+   [:li#tratt
     [:p "Laurence Tratt's benchmarking essays."
      [:br]
      [:a {:href "https://tratt.net/laurie/blog/2019/minimum_times_tend_to_mislead_when_benchmarking.html"}

@@ -97,22 +97,22 @@
               11
             </td>
             <td>
-              5.3±0.2
+              5.3±0.1
             </td>
             <td>
-              7.2±0.1
+              7.6±0.3
             </td>
             <td>
-              9.5±0.2
+              10.0±0.2
             </td>
             <td>
-              12.0±0.2
+              11.3±0.0
             </td>
             <td>
-              13.3±0.3
+              13.2±0.2
             </td>
             <td>
-              15.9±0.1
+              15.0±0.3
             </td>
           </tr>
           <tr>
@@ -120,22 +120,22 @@
               12
             </td>
             <td>
-              3.8±0.2
+              4.1±0.3
             </td>
             <td>
-              5.5±0.2
+              5.9±0.1
             </td>
             <td>
-              7.2±0.1
+              6.9±0.3
             </td>
             <td>
-              8.6±0.0
+              8.4±0.2
             </td>
             <td>
-              10.3±0.3
+              9.9±0.3
             </td>
             <td>
-              11.6±0.3
+              11.4±0.1
             </td>
           </tr>
           <tr>
@@ -278,6 +278,10 @@
       <p>
         Steps&nbsp;1 and&nbsp;2 are done once, and only occasionally updated as needed. &nbsp;Steps&nbsp;3 and&nbsp;4 are done only when a function&apos;s
         implementation changes with &nbsp;measurable affects on performance.
+      </p>
+      <p>
+        Follow along with this <a href="https://blosavio.github.io/">TODO:update-link example options file</a> and this <a href=
+        "https://blosavio.github.io/">TODO:update-link example benchmark definition file</a>.
       </p>
       <h3 id="set-options">
         1. Set the options
@@ -749,6 +753,18 @@
         Sometimes, we&apos;ll want to remove a defined benchmark, which we can do &nbsp;with <code>undefbench</code>. And when we need to tear everything down
         and start defining from scratch, &nbsp;we have <code>clear‑registry!</code>.
       </p>
+      <p>
+        Before we go to the next step, let&apos;s double-check the options. We need &nbsp;Fastester to find our two benchmark definitions, so we must correctly
+        &nbsp;set the <code>:benchmarks</code>. The keys are simple symbols indicating the namespace, in our example, &nbsp;we have one namespace, and
+        therefore one key, <code>&apos;zap-benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in
+        our example, <code>&apos;zap-inc</code> and <code>&apos;zap-uc</code>. Altogether, that section of the options looks like this.
+      </p>
+      <pre><code>:benchmarks {&apos;zap-benchmarks #{&apos;zap-inc
+&nbsp;                              &apos;zap-uc}}</code></pre>
+      <p>
+        Also, saving the function expression results (i.e., one-hundred-thousand &nbsp;incremented inegers) blows up the file sizes, so let&apos;s set
+        <code>:save-benchmark-fn-results?</code> to <code>false</code>.
+      </p>
       <h3 id="run-benchmarks">
         3. Run benchmarks
       </h3>
@@ -799,14 +815,8 @@
         Gotchas
       </h3>
       <p>
-        We must be particularly careful to define our benchmarks to test what we &nbsp;intend to test. Writing a benchmark using some common Clojure idioms may
-        mask &nbsp;the property we&apos;re interested in. For example, if we&apos;re interested in &nbsp;benchmarking mapping over a sequence, if we create the
-        sequence inside the map &nbsp;expression, Criterium will include that process in addition to the mapping. , such as defining sequences at the location,
-        will measure
-      </p>
-      <p>
-        We must be particularly careful to define our benchmarks to test what we &nbsp;intend to test. The first problematic pattern is a direct result of
-        Clojure&apos;s &nbsp;inherent concision. It&apos;s idiomatic to compose a sequence right at the spot &nbsp;where we require it, like this.
+        We must be particularly careful to define our benchmarks to test exactly &nbsp;and only what we intend to test. One danger is idiomatic Clojure
+        patterns will &nbsp;pollute our time measurements. It&apos;s typical to compose a sequence right at the &nbsp;spot where we require it, like this.
       </p>
       <pre><code>(map inc (repeatedly 99 #(rand))</code></pre>
       <p>
@@ -814,13 +824,14 @@
         we&apos;d be <em>also</em> benchmarking creating the sequence, which may be a non-negligible portion of &nbsp;the evaluation time. Instead, we should
         hoist the sequence creation out of the &nbsp;expression.
       </p>
-      <pre><code>;; *create* the sequence</code><br><code>(def ninety-nine-rands (repeatedly 99 #(rand))</code><br><br><code>;; *use* the pre-existing sequence</code><br><code>(map inc ninety-nine-rands)</code></pre>
+      <pre><code>;; *create* the sequence</code><br><code>(def ninety-nine-rands (repeatedly 99 #(rand)))</code><br><br><code>;; *use* the pre-existing sequence</code><br><code>(map inc ninety-nine-rands)</code></pre>
       <p>
         The second expression now involves mostly the <code>map</code> action, and is more appropriate for benchmarking.
       </p>
       <p>
-        But, there is another lurking problem! <code>map</code> (and friends) returns a lazy sequence, which is almost certainly not what we &nbsp;were
-        intending to benchmark. We must remember to force the realization of the &nbsp;lazy sequence, conveniently done with <code>doall</code>.
+        Another danger is that while we may be accurately timing an expression, &nbsp;the expression isn&apos;t calculating what we&apos;d like to measure.
+        <code>map</code> (and friends) returns a lazy sequence, which is almost certainly not what we &nbsp;were intending to benchmark. We must remember to
+        force the realization of the &nbsp;lazy sequence, conveniently done with <code>doall</code>.
       </p>
       <pre><code>(doall (map inc ninety-nine-rands))</code></pre>
       <p>
@@ -836,10 +847,10 @@
         Limitations &amp; mitigations
       </h2>
       <p>
-        Modern operating systems (OSes) and virtual machines (VMs) provide a perilous environment for accurate, reliable benchmarking. They both toss an
-        uncountable number of non-deterministic confounders onto our laps. The OS may host other processes which contend for computing resources, interrupt for
-        I/O or network events, etc. The Java VM may nondeterministically just-in-time (JIT) compile hot spots, making the code run faster (or slower!) after
-        some unpredictable delay, and the garbage collector (GC) is quite skilled at messing with precise timing measurements.
+        Modern operating systems (OSes) and virtual machines (VMs) provide a <a href="#tratt">perilous environment</a> for accurate, reliable benchmarking.
+        They both toss an uncountable number of non-deterministic confounders onto our laps. The OS may host other processes which contend for computing
+        resources, interrupt for I/O or network events, etc. The Java VM may nondeterministically just-in-time (JIT) compile hot spots, making the code run
+        faster (or slower!) after some unpredictable delay, and the garbage collector (GC) is quite skilled at messing with precise timing measurements.
       </p>
       <p>
         <strong>So we must exercise great care when running the benchmarks and be very conservative with our claims when reporting the benchmark
@@ -847,12 +858,12 @@
       </p>
       <p>
         Fastester delegates the benchmarking to Criterium, which fortunately goes to considerable effort to minimize this non-determinism. First, just before
-        running the benchmark, Criterium forces the GC in order to minimize the chance of occurring during the benchmark itself. Furthermore, Criterium
-        includes a warm-up period to give the JIT compiler an opportunity to optimize the benchmarked code so that the evaluation time are more consistent.
+        running the benchmark, Criterium forces the GC in order to minimize the chance of it running during the benchmark itself. Furthermore, Criterium
+        includes a warm-up period to give the JIT compiler an opportunity to optimize the benchmarked code so that the evaluation times are more consistent.
       </p>
       <p>
-        To try to control for other non-determinism, we run each benchmark multiple times (default 60), and calculate statistics on those results, which helps
-        suggest whether or not our benchmark data is consistent.
+        To try to control for other sources of non-determinism, we should run each benchmark multiple times (default 60), and calculate statistics on those
+        results, which helps suggest whether or not our benchmark data is consistent and significantly different.
       </p>
       <p>
         Fastester, following Criterium&apos;s lead, focuses on the mean (average) evaluation time, not the minimum. This policy is intended to avoid
@@ -860,7 +871,7 @@
       </p>
       <p>
         If our new implementation is only a few percent &apos;faster&apos; than the old version, we ought to consider very carefully whether it is worth
-        changing the the implementation which may or may not be an improvement.
+        changing the the implementation which may or may not be an actual improvement.
       </p>
     </section>
     <section id="alternatives">
@@ -898,7 +909,7 @@
               benchmarks written in Java and other languages targeting the JVM.
             </p>
           </li>
-          <li>
+          <li id="tratt">
             <p>
               Laurence Tratt&apos;s benchmarking essays.<br>
               <a href="https://tratt.net/laurie/blog/2019/minimum_times_tend_to_mislead_when_benchmarking.html"><em>Minimum times tend to mislead when
@@ -1037,7 +1048,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 21.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 22.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

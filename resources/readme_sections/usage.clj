@@ -39,6 +39,14 @@
  Steps 3 and 4 are done only when a function's implementation changes with
  measurable affects on performance."]
 
+ [:p "Follow along with this "
+  [:a {:href "https://blosavio.github.io/"}
+   "TODO:update-link example options file"]
+  " and this "
+  [:a {:href "https://blosavio.github.io/"}
+   "TODO:update-link example benchmark definition file"]
+  "."]
+
  [:h3#set-options "1. Set the options"]
 
  [:p "We must first set the options that govern how Fastester behaves. Options
@@ -367,7 +375,7 @@
  performns that operation on a single string."]
 
  [:pre (print-form-then-eval "(require '[clojure.string :as str])")]
- 
+
  [:p "To create sequence of strings, we can use "
   [:code "cycle"]
   ", and "
@@ -576,6 +584,31 @@
   [:code "clear‑registry!"]
   "."]
 
+ [:p "Before we go to the next step, let's double-check the options. We need
+ Fastester to find our two benchmark definitions, so we must correctly
+ set the "
+  [:code ":benchmarks"]
+  ". The keys are simple symbols indicating the namespace, in our example,
+ we have one namespace, and therefore one key, "
+  [:code "'zap-benchmarks"]
+  ". Associated to that one key is a set of simple symbols indicating the
+ benchmark names, in our example, "
+  [:code "'zap-inc"]
+  " and "
+  [:code "'zap-uc"]
+  ". Altogether, that section of the options looks like this."]
+
+ [:pre [:code
+        ":benchmarks {'zap-benchmarks #{'zap-inc
+                               'zap-uc}}"]]
+
+ [:p "Also, saving the function expression results (i.e., one-hundred-thousand
+ incremented inegers) blows up the file sizes, so let's set "
+  [:code ":save-benchmark-fn-results?"]
+  " to "
+  [:code "false"]
+  "."]
+
  [:h3#run-benchmarks "3. Run benchmarks"]
 
  [:p "Now that we've written "
@@ -650,17 +683,10 @@
 
  [:h3#gotchas "Gotchas"]
 
- [:p "We must be particularly careful to define our benchmarks to test what we
- intend to test. Writing a benchmark using some common Clojure idioms may mask
- the property we're interested in. For example, if we're interested in
- benchmarking mapping over a sequence, if we create the sequence inside the map
- expression, Criterium will include that process in addition to the mapping.
-, such as defining sequences at the location, will measure"]
-
- [:p "We must be particularly careful to define our benchmarks to test what we
- intend to test. The first problematic pattern is a direct result of Clojure's
- inherent concision. It's idiomatic to compose a sequence right at the spot
- where we require it, like this."]
+ [:p "We must be particularly careful to define our benchmarks to test exactly
+ and only what we intend to test. One danger is idiomatic Clojure patterns will
+ pollute our time measurements. It's typical to compose a sequence right at the
+ spot where we require it, like this."]
 
  [:pre [:code "(map inc (repeatedly 99 #(rand))"]]
 
@@ -675,7 +701,7 @@
  [:pre
   [:code ";; *create* the sequence"]
   [:br]
-  [:code "(def ninety-nine-rands (repeatedly 99 #(rand))"]
+  (print-form-then-eval "(def ninety-nine-rands (repeatedly 99 #(rand)))")
   [:br]
   [:br]
   [:code ";; *use* the pre-existing sequence"]
@@ -686,7 +712,8 @@
   [:code "map"]
   " action, and is more appropriate for benchmarking."]
 
- [:p "But, there is another lurking problem! "
+ [:p "Another danger is that while we may be accurately timing an expression,
+ the expression isn't calculating what we'd like to measure. "
   [:code "map"]
   " (and friends) returns a lazy sequence, which is almost certainly not what we
  were intending to benchmark. We must remember to force the realization of the
