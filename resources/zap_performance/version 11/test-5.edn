@@ -1,0 +1,62 @@
+{:overhead 1.8303836940408698E-8,
+ :samples
+ (101062038 105692162 101877339 106568756 102836771 103690036),
+ :runtime-details
+ {:spec-vendor "Oracle Corporation",
+  :spec-name "Java Virtual Machine Specification",
+  :clojure-version-string "1.12.1",
+  :java-version "11.0.28",
+  :vm-name "OpenJDK 64-Bit Server VM",
+  :vm-vendor "Ubuntu",
+  :clojure-version
+  {:major 1, :minor 12, :incremental 1, :qualifier nil},
+  :spec-version "11",
+  :sun-arch-data-model "64"},
+ :mean
+ [2.643136943027211E-4 (2.604377942176871E-4 2.6866577721088437E-4)],
+ :final-gc-time 124434811,
+ :execution-count 392,
+ :variance
+ [3.460126630284884E-11
+  (1.4816090187405673E-11 5.920178401874998E-11)],
+ :os-details
+ {:arch "amd64",
+  :available-processors 4,
+  :name "Linux",
+  :version "5.15.0-151-generic"},
+ :tail-quantile 0.025,
+ :outlier-variance 0.13888888888888856,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
+ :warmup-time 5541195536,
+ :lower-q
+ [2.578113214285714E-4 (2.578113214285714E-4 2.5864933099489795E-4)],
+ :warmup-executions 21239,
+ :sample-count 6,
+ :upper-q
+ [2.7094111224489797E-4 (2.6424331090561223E-4 2.7185907142857145E-4)],
+ :fastester/metadata
+ {:fexpr
+  "(fn [i] (doall (zap str/upper-case (abc-cycle-of-length-i i))))",
+  :date {:year 2025, :month "August", :day 22},
+  :group "faster `zap` implementation",
+  :index 5,
+  :ns "zap.benchmarks",
+  :UUIDv4 #uuid "ef519a01-753a-4960-9e3a-317c544cba7c",
+  :name "zap-uc",
+  :testing-thoroughness :quick,
+  :arg 1,
+  :version "11",
+  :parallel? false},
+ :total-time 0.621727102,
+ :sample-variance [3.0179350475688906E-11 (0.0 0.0)],
+ :options
+ {:max-gc-attempts 100,
+  :samples 6,
+  :target-execution-time 100000000,
+  :warmup-jit-period 5000000000,
+  :tail-quantile 0.025,
+  :bootstrap-size 500,
+  :overhead 1.8303836940408698E-8},
+ :sample-mean
+ [2.643397542517007E-4 (2.4785903356717965E-4 2.8082047493622174E-4)],
+ :results :fastester/benchmark-fn-results-elided}

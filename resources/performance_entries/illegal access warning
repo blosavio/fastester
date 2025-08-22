@@ -1,0 +1,10 @@
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by clojure.lang.InjectedInvoker/0x0000000840062040 (file:/home/xel/.m2/repository/org/clojure/clojure/1.12.1/clojure-1.12.1.jar) to method com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(org.xml.sax.InputSource,org.xml.sax.HandlerBase)
+WARNING: Please consider reporting this to the maintainers of clojure.lang.InjectedInvoker/0x0000000840062040
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+
+https://ask.clojure.org/index.php/9377/what-static-type-needed-fix-this-illegal-reflective-access?show=9377#q9377
+
+https://gist.github.com/seancorfield/01e42dbf3de68bab6ef3d7d6245af192
