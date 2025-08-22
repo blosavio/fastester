@@ -21,6 +21,35 @@
    [criterium.core :as crit]))
 
 
+(defn unambiguous-key?
+  "Given map `m` whose keys are all qualified keys, and simple symbol `k`,
+  returns:
+  * `[true [qualified-key]]` if `k` is unambiguous.
+  * `[false seq-of-ambiguous-keys]` if `k` is simple part of multiple qualified
+    keys.
+
+  Throws if:
+  * Not every key in `m` is a qualified symbol.
+  * `k` is not a key."
+  {:UUIDv4 #uuid "b2486cb1-ae13-4a15-b1d0-42231286936b"
+   :no-doc true}
+  [m k]
+  (cond
+    (not-every? qualified-symbol? (keys m))
+    (throw (Exception. "Every key in map `m` must be a qualified symbol."))
+
+    (qualified-symbol? k)
+    [true [k] m]
+
+    (simple-symbol? k)
+    (let [matches (filter #(= k (symbol (name %))) (keys m))
+          unambiguous? (= 1 (count matches))]
+      [unambiguous? matches m])
+
+    :else
+    (throw (Exception. "Key `k` must be a symbol."))))
+
+
 (defn project-version-pom-xml
   "Queries 'pom.xml' file a returns version element as a string."
   {:UUIDv4 #uuid "63bc2597-1575-48bf-b444-09bca5115df7"
@@ -110,19 +139,30 @@
 (defn defbench*
   "Function version of `defbench` macro. Define and register a benchmark. See
   [[defbench]] documentation for full details. The two differences are that
-  `name` and `f` are supplied as a quoted symbols.
+  `benchmark-name` and `f` are supplied as a quoted symbols.
 
   Example:
   ```clojure
   (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
-  ```"
+  ```
+  If `benchmark-name` is a qualified symbol, it is used as-is. If
+  `benchmark-name` is simple symbol, it is appended with `*ns` upon insertion
+  into the registry. "
   {:UUIDv4 #uuid "4b09fdc6-f830-40df-8f60-c454f1cca4c4"
    :implementation-note "2-arity form of `symbol` accepts only strings, so must
                          convert both `ns` and `name` to strings first."}
-  [name group f n]
-  (let [ns-name (symbol (str *ns*) (str name))]
-    (swap! registry assoc ns-name {:name name
-                                   :ns *ns*
+  [benchmark-name group f n]
+  (let [[ns+name
+         this-ns
+         this-name] (if (simple-symbol? benchmark-name)
+                      [(symbol (str *ns*) (str benchmark-name))
+                       *ns*
+                       benchmark-name]
+                      [benchmark-name
+                       (namespace benchmark-name)
+                       (name benchmark-name)])]
+    (swap! registry assoc ns+name {:name this-name
+                                   :ns this-ns
                                    :group group
                                    :fexpr f
                                    :f (eval f)
@@ -193,9 +233,21 @@
   ;; undefine that performance test
   (undefbench* 'some-ns/add-four)
   ```"
-  {:UUIDv4 #uuid "6130c03f-e8b0-4ce1-a682-ba3605fc291b"}
-  [name]
-  (swap! registry dissoc name))
+  {:UUIDv4 #uuid "6130c03f-e8b0-4ce1-a682-ba3605fc291b"
+   :implementation-note "To avoid race condition, deref registry once at
+ beginning, then at the end reset the atom to a dissoc-ed version of that
+ deref-ed atom at the end."}
+  [benchmark-name]
+  (let [[unambiguous?
+         keys
+         reg] (unambiguous-key? @registry benchmark-name)
+        msg (str
+             "Simple key is ambiguous. Use qualified symbol. Possibilities: "
+             (clojure.string/join " " keys))
+        ns+name (if unambiguous?
+                  (first keys)
+                  (throw (Exception. msg)))]
+    (reset! registry (dissoc reg ns+name))))
 
 
 (defmacro undefbench
@@ -213,8 +265,8 @@
   Undoes the results of [[defbench]]. See also [[undefbench*]]."
   {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"
    :implementation-note "2-arity `symbol` only accepts string args"}
-  [name]
-  `(undefbench* '~(symbol (str *ns*) (str name))))
+  [benchmark-name]
+  `(undefbench* '~benchmark-name))
 
 
 (defn create-results-directories
