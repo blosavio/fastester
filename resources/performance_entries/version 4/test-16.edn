@@ -1,6 +1,6 @@
-{:overhead 1.6202972480983663E-8,
+{:overhead 1.825573308515938E-8,
  :samples
- (120283403 120293556 120266265 120237301 120269709 120387000),
+ (120282398 120318377 120281126 120272475 120310853 120282406),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,40 +12,41 @@
   {:major 1, :minor 12, :incremental 1, :qualifier nil},
   :spec-version "11",
   :sun-arch-data-model "64"},
- :mean [0.04009670433333334 (0.04008658727777778 0.04011710116666667)],
- :final-gc-time 163733241,
+ :mean
+ [0.040097090833333335 (0.0400933693888889 0.040101710444444445)],
+ :final-gc-time 167320996,
  :execution-count 3,
  :variance
- [2.969471832444489E-10 (1.756586041851649E-11 6.184568039407365E-10)],
+ [4.2253562977783704E-11
+  (1.6113198240740746E-11 7.023312013333639E-11)],
  :os-details
  {:arch "amd64",
   :available-processors 4,
   :name "Linux",
-  :version "5.15.0-144-generic"},
+  :version "5.15.0-152-generic"},
  :tail-quantile 0.025,
  :outlier-variance 0.13888888888888887,
- :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 1},
- :warmup-time 5813667196,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
+ :warmup-time 5813514006,
  :lower-q
- [0.04007910033333334 (0.04007910033333334 0.040088755000000004)],
+ [0.040090825000000004 (0.040090825000000004 0.04009370866666667)],
  :warmup-executions 145,
  :sample-count 6,
- :upper-q
- [0.04012468345833334 (0.04009389708333334 0.040129000000000005)],
+ :upper-q [0.04010462687500001 (0.040094135 0.04010612566666667)],
  :fastester/metadata
- {:fexpr "(fn [n] (delayed-+ n n n))",
-  :date {:year 2025, :month "August", :day 8},
+ {:fexpr "(fn [n] (delayed-+ n n))",
+  :date {:year 2025, :month "August", :day 23},
   :group "plus, vary number of digits in args",
   :index 16,
-  :UUIDv4 #uuid "90e18d2e-3ff1-4fed-ab10-54b894ded169",
-  :name "add-3-arg",
+  :ns "fastester.performance.benchmarks",
+  :UUIDv4 #uuid "29f8c3c2-8ace-4b4e-b4e6-c8881aae9b27",
+  :name "add-2-arg",
   :testing-thoroughness :quick,
-  :arg 100,
-  :n-threads 3,
+  :arg 1000,
   :version "4",
   :parallel? false},
- :total-time 0.721737234,
- :sample-variance [2.936922205777979E-10 (0.0 0.0)],
+ :total-time 0.721747635,
+ :sample-variance [3.8482643144443274E-11 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -53,7 +54,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.6202972480983663E-8},
+  :overhead 1.825573308515938E-8},
  :sample-mean
- [0.04009651300000001 (0.04004510064754264 0.04014792535245737)],
+ [0.040097090833333335 (0.040078480519303204 0.040115701147363465)],
  :results :fastester/benchmark-fn-results-elided}

@@ -67,7 +67,7 @@
 
 
 ;; mutable items can be tricky to test because `lein test` executes
-;; asynchronously
+;; asynchronously, and in a namespace other than this one
 
 (deftest registry-tests
   (testing "registry type"
@@ -95,7 +95,24 @@
                              (clear-registry!)
                              (defbench foo/baz "quz" (fn [x] (- x)) [1 2 3])
                              (defbench bar/baz "qua" (fn [y] (- y)) [4 5 6])
-                             (undefbench baz))))))
+                             (undefbench baz)))))
+  (testing "retrieving benchmark definition"
+    (is (=
+         (-> (do
+               (clear-registry!)
+               (defbench qux/quq "quq group" (fn [z] (inc z)) [7 8 9])
+               (benchmark-def qux/quq))
+             (dissoc :f))
+         {:name "quq"
+          :ns "qux"
+          :group "quq group"
+          :fexpr '(fn [z] (inc z))
+          :n [7 8 9]})))
+  (testing "name not in registry"
+    (is (thrown? Exception
+                 (do
+                   (clear-registry!)
+                   (benchmark-def non-existant))))))
 
 
 (deftest date-tests
@@ -172,6 +189,14 @@
     [1 2] (range-pow-2 1)
     [1 2 4] (range-pow-2 2)
     [1 2 4 8 16 32 64 128 256] (range-pow-2 8)))
+
+
+(deftest benchmark-fn-tests
+  (is (= 100)
+      (do
+        (clear-registry!)
+        (defbench test-qual/foobar "foobar group" #(inc %) [1 2 3])
+        ((benchmark-fn foobar) 99))))
 
 
 #_(run-tests)

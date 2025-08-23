@@ -9,18 +9,31 @@
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
-   [fastester.measure :refer [defbench
+   [clojure.test :refer [are
+                         deftest
+                         is
+                         run-test
+                         run-tests
+                         testing]]
+   [fastester.measure :refer [project-version
+                              defbench
                               range-pow-10]]))
+
+
+(def ver (project-version {:preferred-version-info :lein}))
 
 
 ;;;; 1. Testing delayed addition of one to three numbers
 
-(def dly 10)
+(def dly {"3" 60
+          "4" 40
+          "5" 20
+          "6" 10})
 
 (defn delayed-+
   [& args]
   (do
-    (Thread/sleep dly)
+    (Thread/sleep (dly ver))
     (apply + args)))
 
 (def group-1 "plus, vary number of digits in args")
@@ -45,15 +58,19 @@
   (range-pow-10 5))
 
 
+
 ;;;; See sibling namespace `benchmarks-mapping` for #3 benchmarks
+
 
 
 ;;;; 4. Comparing built-in `conj` to custom conj implemented with transients
 
 (defn my-conj
   [coll x]
-  #_(conj coll x)
-  (persistent! (conj! (transient coll) x)))
+  (case ver
+    "5" (conj coll x)
+    "6" (persistent! (conj! (transient coll) x))))
+
 
 (def seq-of-n-rand-ints
   (doall
@@ -69,16 +86,29 @@
   (range-pow-10 7))
 
 
-(comment
-  #_(require '[fastester.measure :refer [clear-registry!
-                                         registry
-                                         run-manual-benchmark
-                                         run-one-defined-benchmark]])
 
-  #_(clear-registry!)
-  #_ @registry
-  #_(run-manual-benchmark (fn [w] (my-conj [1 2 3] w)) :foo :lightning)
-  #_(run-one-defined-benchmark
-     fastester.performance.benchmarks/add-3-arg
-     :lightning))
+;; Demonstrate dev helpers
+
+#_(require '[fastester.measure :refer [benchmark-fn
+                                       clear-registry!
+                                       registry
+                                       run-manual-benchmark
+                                       run-one-defined-benchmark]])
+
+#_(clear-registry!)
+#_ @registry
+#_(run-manual-benchmark (fn [w] (my-conj [1 2 3] w)) :foo :lightning)
+#_(run-one-defined-benchmark fastester.performance.benchmarks/add-3-arg :lightning)
+#_(run-one-defined-benchmark add-1-arg :lightning)
+#_((benchmark-fn add-2-arg) 55)
+
+
+#_(deftest benchmark-function-tests
+  (testing "demonstrate using `benchmark-fn` to compose a benchmark unit test"
+    (is (= 110 ((benchmark-fn add-2-arg) 55)))
+    (is (= 64000 ((benchmark-fn add-many-args) 1000)))
+    (is (= :tail-value (last ((benchmark-fn conj-onto-rands) 1))))))
+
+
+#_(run-tests)
 

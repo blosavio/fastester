@@ -8,8 +8,9 @@
                                   run-test
                                   run-tests
                                   testing]]
-            [fastester.display :refer [ generate-documents]]
-            [fastester.measure :refer [clear-registry!
+            [fastester.display :refer [generate-documents]]
+            [fastester.measure :refer [benchmark-fn
+                                       clear-registry!
                                        defbench
                                        project-version
                                        range-pow-10
@@ -93,7 +94,20 @@
   #_ @registry
   #_(run-one-defined-benchmark zap.benchmarks/zap-inc :lightning)
   #_(run-one-defined-benchmark zap.benchmarks/zap-uc :lightning)
-  (run-benchmarks zap-options-filename)
-  (generate-documents zap-options-filename)
+  #_(run-benchmarks zap-options-filename)
+  #_(generate-documents zap-options-filename)
   )
+
+
+;; Unit test the benchmark functions
+
+#_(deftest benchmark-fn-tests
+  (are [x y] (= x y)
+    [1 2 3 4 5 6 7 8 9 10]
+    ((benchmark-fn zap-inc) 10)
+
+    ["A" "B" "C" "A" "B" "C" "A" "B" "C" "A"]
+    ((benchmark-fn zap-uc) 10)))
+
+#_(run-tests)
 

@@ -1,5 +1,5 @@
-{:overhead 1.6202972480983663E-8,
- :samples (99788255 99962502 102591729 99386325 107435516 128320535),
+{:overhead 1.1420142307949473E-8,
+ :samples (98933537 99039350 106481283 104010693 129422848 127204225),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,41 +12,42 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [7.540567794406223E-6 (7.143332174858737E-6 8.51247110906211E-6)],
- :final-gc-time 182932810,
- :execution-count 14099,
+ [2.2526541514783312E-5 (2.0643334649655733E-5 2.5030732111516134E-5)],
+ :final-gc-time 154612530,
+ :execution-count 4938,
  :variance
- [6.417215748705885E-13
-  (1.434557611155493E-14 1.2186564878749893E-12)],
+ [8.598723220215638E-12
+  (3.281986928673947E-12 1.1410672515318305E-11)],
  :os-details
  {:arch "amd64",
   :available-processors 4,
   :name "Linux",
-  :version "5.15.0-144-generic"},
+  :version "5.15.0-152-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.3076951219857164,
- :outliers {:low-severe 0, :low-mild 0, :high-mild 1, :high-severe 0},
- :warmup-time 5346389434,
+ :outlier-variance 0.3162575224583301,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
+ :warmup-time 5079897235,
  :lower-q
- [7.049175473437833E-6 (7.049175473437833E-6 7.07768316901908E-6)],
- :warmup-executions 745974,
+ [2.0035143175374646E-5 (2.0035143175374646E-5 2.0163665755366546E-5)],
+ :warmup-executions 248029,
  :sample-count 6,
  :upper-q
- [8.873284222285269E-6 (7.2532148113341375E-6 9.101392651961133E-6)],
+ [2.6153406262656947E-5 (2.150110555893074E-5 2.6209568246253545E-5)],
  :fastester/metadata
- {:fexpr "(fn [n] (doall (map inc (range-of-length-n n))))",
-  :date {:year 2025, :month "August", :day 8},
+ {:fexpr
+  "(fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))",
+  :date {:year 2025, :month "August", :day 23},
   :group "mapping stuff",
   :index 43,
-  :UUIDv4 #uuid "5f9ce599-da7c-42b9-8e0c-1de2352b133e",
-  :name "map-inc-across-a-sequence",
+  :ns "fastester.performance.benchmarks-mapping",
+  :UUIDv4 #uuid "315670be-b596-474f-9a6c-e27bcc237a76",
+  :name "map-UC-over-a-cycle",
   :testing-thoroughness :quick,
   :arg 100,
-  :n-threads 3,
   :version "6",
   :parallel? false},
- :total-time 0.637484862,
- :sample-variance [6.341563289683666E-13 (0.0 0.0)],
+ :total-time 0.665091936,
+ :sample-variance [7.872152558578703E-12 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -54,7 +55,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.6202972480983663E-8},
+  :overhead 1.1420142307949473E-8},
  :sample-mean
- [7.535816511809349E-6 (5.146798520936258E-6 9.924834502682441E-6)],
+ [2.2448087484811664E-5 (1.4030880523639312E-5 3.0865294445984024E-5)],
  :results :fastester/benchmark-fn-results-elided}

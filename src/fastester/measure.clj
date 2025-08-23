@@ -10,7 +10,22 @@
   actual performance measurements.
 
   See [[fastester.display]] for utilities that generate an html document with
-  charts and tables that communicate those results."
+  charts and tables that communicate those results.
+
+  Functions that consume symbols for the purposes of binding a name
+  ([[defbench]] and [[defbench*]]) may be either simple or qualified. Qualified
+  symbols are used as-is to bind the name. Simple symbols are automatically
+  prepended with `*ns*` before used to bind the name.
+
+  Functions that consume symbols for the purposes of name lookup
+  ([[undefbench]], [[undefbench*]], [[benchmark-fn]], and
+  [[run-one-defined-benchmark]]) may be either simple or qualified. Qualified
+  symbols are used as-is for the lookup. If a simple symbol is used for lookup,
+  there must be only one qualified name with given simple part, otherwise an
+  exception is thrown.
+
+  Simple symbols are intended as a dev-time convenience. Use explicit, qualified
+  symbols when running (i.e., `:benchmarks` section of the options hashmap)."
   (:require
    [clojure.edn :as edn]
    [clojure.java.io :as io]
@@ -30,7 +45,7 @@
 
   Throws if:
   * Not every key in `m` is a qualified symbol.
-  * `k` is not a key."
+  * `k` is not a symbol."
   {:UUIDv4 #uuid "b2486cb1-ae13-4a15-b1d0-42231286936b"
    :no-doc true}
   [m k]
@@ -145,9 +160,10 @@
   ```clojure
   (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
   ```
+
   If `benchmark-name` is a qualified symbol, it is used as-is. If
-  `benchmark-name` is simple symbol, it is appended with `*ns` upon insertion
-  into the registry. "
+  `benchmark-name` is a simple symbol, it is prepended with `*ns*` when
+  benchmark definition is added to the registry."
   {:UUIDv4 #uuid "4b09fdc6-f830-40df-8f60-c454f1cca4c4"
    :implementation-note "2-arity form of `symbol` accepts only strings, so must
                          convert both `ns` and `name` to strings first."}
@@ -173,7 +189,9 @@
   "Define a benchmark by adding a name, a group, a function, and arguments
   sequence to the  [[registry]].
 
-  * `name` is an unquoted symbol that labels the benchmark.
+  * `name` is a symbol that labels the benchmark. If supplied as a qualified
+  symbol, `name` is used as-is. If supplied as a simple symbol, `name` is
+  appended with `*ns*` when benchmark definition is added to the registry.
   * `group` is a string, shared between multiple conceptually-related
   benchmarks.
   * `f` is a 1-arity function that measures some performance aspect. Its single
@@ -222,8 +240,8 @@
 
 
 (defn undefbench*
-  "Function version of [[undefbench]]. Undefines a benchmark by removing
-  namespace-qualified quoted symbol `name` from the [[registry]].
+  "Function version of [[undefbench]]. Undefines a benchmark by removing quoted
+  symbol `name` from the [[registry]].
 
   Example:
   ```clojure
@@ -231,18 +249,20 @@
   (defbench* 'add-four \"benchmarking addition\" '(fn [z] (+ z z z z) [1 10 100])
 
   ;; undefine that performance test
-  (undefbench* 'some-ns/add-four)
+  (undefbench* 'add-four)
   ```"
   {:UUIDv4 #uuid "6130c03f-e8b0-4ce1-a682-ba3605fc291b"
    :implementation-note "To avoid race condition, deref registry once at
- beginning, then at the end reset the atom to a dissoc-ed version of that
- deref-ed atom at the end."}
+ beginning, then, at the end, reset the atom to a dissoc-ed version of that
+ deref-ed atom."}
   [benchmark-name]
   (let [[unambiguous?
          keys
          reg] (unambiguous-key? @registry benchmark-name)
         msg (str
-             "Simple key is ambiguous. Use qualified symbol. Possibilities: "
+             "`benchmark-name`, "
+             benchmark-name
+             ", is ambiguous. Use qualified symbol. Possibilities: "
              (clojure.string/join " " keys))
         ns+name (if unambiguous?
                   (first keys)
@@ -251,7 +271,7 @@
 
 
 (defmacro undefbench
-  "Undefine a benchmark by removing `name` from the [[registry]].
+  "Undefine a benchmark by removing `benchmark-name` from the [[registry]].
 
   Example:
   ```clojure
@@ -261,6 +281,10 @@
   ;; undefine that performance test
   (undefbench add-two)
   ```
+
+  If `benchmark-name` is a qualified symbol, it is used as-is. If
+  `benchmark-name` is a simple symbol, there must be only one qualified name in
+  the registry with that simple part, otherwise an exception is thrown.
 
   Undoes the results of [[defbench]]. See also [[undefbench*]]."
   {:UUIDv4 #uuid "2b9a96f7-087d-483d-bde9-d43841132eba"
@@ -338,37 +362,6 @@
   {:UUIDv4 #uuid "f7d36987-4451-4115-99e3-2fc57bee6a91"}
   [fexpr arg thoroughness]
   `(crit/benchmark (~(eval fexpr) ~arg) (thoroughnesses ~thoroughness)))
-
-
-(defmacro run-one-defined-benchmark
-  "Given defined `benchmark`, a namespace-qualified symbol, and keyword
-  `thoroughness` that designates the Criterium options, runs a benchmark for
-  each defined argument. Returns a hashmap whose keys are arguments `n`,
-  associated to values that are the benchmark results for that `n`.
-
-  `thoroughness` is one of `:default`, `:quick`, or `:lightning`.
-
-  Example:
-  ```clojure
-  (defbench my-bench \"my-group\" (fn [x] (inc x)) [97 98 99])
-
-  (run-one-defined-benchmark my-ns/my-bench :lightning)
-  ```
-  Returns a hashmap with three key+vals: keys `97`, `98`, and `99`, each
-  associated with its respective benchmark result.
-
-  See also [[run-manual-benchmark]] and [[*lightning-benchmark-opts*]]."
-  {:UUIDv4 #uuid "eac060b1-2175-4cf3-a3b9-5eb57c0438cb"}
-  [benchmark-name thoroughness]
-  `(let [benchmark# (@registry '~benchmark-name)
-         f# (benchmark# :f)]
-     (reduce #(assoc %1
-                     %2
-                     (crit/benchmark
-                      (f# %2)
-                      (thoroughnesses ~thoroughness)))
-             {}
-             (benchmark# :n))))
 
 
 (defn date
@@ -605,4 +598,123 @@
   {:UUIDv4 #uuid "15a59bb1-9e00-459b-b40d-8b8f0d0011c9"}
   [i]
   ((range-pow-n 2) i))
+
+
+(defn benchmark-def*
+  "Given quoted symbol `benchmark-name`, returns a hashmap of the
+  definition components.
+
+  Example:
+  ```clojure
+  (defbench* 'my-qual/my-bench \"some group\" '(fn [w] (inc w)) [1 2 3])
+
+  (benchmark-def* 'my-ns/my-bench :group)
+  ;; => {:name \"my-bench\",
+  ;;     :ns \"my-qual\",
+  ;;     :group \"some group\",
+  ;;     :fexpr (fn [w] (inc w)),
+  ;;     :f #function[fn--23446],
+  ;;     :n [1 2 3]}
+  ```"
+  {:UUIDv4 #uuid "c408b7b4-d03f-478a-ab16-225624d1b7b1"
+   :no-doc true}
+  [benchmark-name]
+  (let [[unambiguous?
+         keys
+         reg] (unambiguous-key? @registry benchmark-name)
+        msg-not-found (str "`benchmark-name` " benchmark-name " not found.")
+        _ (when-not (seq keys) (throw (Exception. msg-not-found)))
+        _ (when-not (reg (first keys)) (throw (Exception. msg-not-found))) 
+        msg (str "`benchmark-name`, "
+                 benchmark-name
+                 ", is ambiguous. Use qualified symbol. Possibilities: "
+                 (clojure.string/join " " keys))]
+    (if unambiguous?
+      (reg (first keys))
+      (throw (Exception. msg)))))
+
+
+(defmacro benchmark-def
+  "Given unquoted symbol `benchmark-name`, returns a hashmap of the definition
+  components.
+
+  Example:
+  ```clojure
+  (defbench my-qual/my-bench \"some group\" (fn [w] (inc w)) [1 2 3])
+
+  (benchmark-def my-ns/my-bench :group)
+  ;; => {:name \"my-bench\",
+  ;;     :ns \"my-qual\",
+  ;;     :group \"some group\",
+  ;;     :fexpr (fn [w] (inc w)),
+  ;;     :f #function[fn--23446],
+  ;;     :n [1 2 3]}
+  ```"
+  {:UUIDv4 #uuid "c408b7b4-d03f-478a-ab16-225624d1b7b1"
+   :no-doc true}
+  [benchmark-name]
+  `(benchmark-def* '~benchmark-name))
+
+
+(defmacro benchmark-fn
+  "Given symbol `benchmark-name`, returns the benchmark definition's function
+  object.
+
+  Example:
+  ```clojure
+  (defbench foo-qualifier/baz-name \"quz group\" (fn [z] (+ z z)) [1 2 3])
+
+  ((benchmark-fn foo-qualifier/baz-name) 55) ;; => 110
+  ```"
+  {:UUIDv4 #uuid "2f9de55f-90a9-4586-902f-3b5c5767eef1"}
+  [benchmark-name]
+  `((benchmark-def ~benchmark-name) :f))
+
+
+(defn run-one-defined-benchmark*
+  "Function version of [[run-one-defined-benchmark]].
+
+  `benchmark` is a quoted symbol. `thoroughness` is a keyword that designates
+  the Criterium options, one of `:default`, `:quick`, or `:lightning`.
+
+  Example:
+  ```clojure
+  (defbench* 'my-qualifier/my-bench \"my-group\" '(fn [x] (inc x)) [97 98 99])
+
+  (run-one-defined-benchmark* my-qualifier/my-bench :lightning)
+  ```"
+  {:UUIDv4 #uuid "c2b4860d-3a46-44be-8ea1-ab97b282dfae"}
+  [benchmark-name thoroughness]
+  (let [benchmark (benchmark-def* benchmark-name)
+        f (benchmark :f)]
+    (reduce #(assoc %1
+                    %2
+                    (crit/benchmark
+                     (f %2)
+                     (thoroughnesses thoroughness)))
+            {}
+            (benchmark :n))))
+
+
+(defmacro run-one-defined-benchmark
+  "Given defined `benchmark`, an unquoted symbol, and keyword `thoroughness`
+  that designates the Criterium options, runs a benchmark for each defined
+  argument. Returns a hashmap whose keys are arguments `n`, associated to values
+  that are the benchmark results for that `n`.
+
+  `thoroughness` is one of `:default`, `:quick`, or `:lightning`.
+
+  Example:
+  ```clojure
+  (defbench my-qualifier/my-bench \"my-group\" (fn [x] (inc x)) [97 98 99])
+
+  (run-one-defined-benchmark my-qualifier/my-bench :lightning)
+  ```
+  Returns a hashmap with three key+vals: keys `97`, `98`, and `99`, each
+  associated with its respective benchmark result.
+
+  See also [[run-manual-benchmark]] and [[*lightning-benchmark-opts*]]."
+  {:UUIDv4 #uuid "eac060b1-2175-4cf3-a3b9-5eb57c0438cb"}
+  [benchmark-name thoroughness]
+  `(run-one-defined-benchmark* '~benchmark-name ~thoroughness))
 
