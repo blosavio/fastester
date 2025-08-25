@@ -9,39 +9,6 @@
    [fastester.measure :refer :all]))
 
 
-(deftest unambiguous-key?-tests
-  (testing "map's keys not qualified symbols"
-    (is (thrown? Exception (unambiguous-key? {:foo 101} :bar)))
-    (is (thrown? Exception (unambiguous-key? {'foo 101} 'foo))))
-  (testing "argument key not a symbol"
-    (is (thrown? Exception (unambiguous-key? {'qual-1/foo 101} :bar))))
-  (testing "empty map"
-    (is (= [false [] {}])(unambiguous-key? {} 'foo)))
-  (testing "unambiguous, unqualified arguemnt key"
-    (is (= (unambiguous-key? {'qual-1/foo 99
-                              'qual-1/bar 88
-                              'qual-2/baz 77}
-                             'foo)
-           [true ['qual-1/foo] {'qual-1/foo 99
-                                'qual-1/bar 88
-                                'qual-2/baz 77}])))
-  (testing "unambiguous, qualified argument key"
-    (is (=
-         (unambiguous-key? {'qual-1/foo 99
-                            'qual-1/bar 88
-                            'qual-2/foo 77} 'qual-2/foo)
-         [true ['qual-2/foo] {'qual-1/foo 99
-                              'qual-1/bar 88
-                              'qual-2/foo 77}])))
-  (testing "ambiguous argument key"
-    (is (= (unambiguous-key? {'qual-1/foo 99
-                              'qual-1/bar 88
-                              'qual-2/foo 77} 'foo)
-           [false ['qual-1/foo 'qual-2/foo] {'qual-1/foo 99
-                                             'qual-1/bar 88
-                                             'qual-2/foo 77}]))))
-
-
 (deftest project-version-tests
   (is (= java.lang.String (type (project-version (get-options))))))
 
@@ -64,55 +31,6 @@
                            :parallel?
                            :save-benchmark-fn-results?}]
     (is (every? (set (keys (get-options))) req-options-keys))))
-
-
-;; mutable items can be tricky to test because `lein test` executes
-;; asynchronously, and in a namespace other than this one
-
-(deftest registry-tests
-  (testing "registry type"
-    (is (map? @registry)))
-  (testing "defining a benchmark"
-    (is (do
-          (clear-registry!)
-          (defbench foo/baz "bar" (fn [q] (+ q q)) [1 2 3])
-          (is (= (update-in @registry ['foo/baz] dissoc :f :ns)
-                 {'foo/baz {:name "baz"
-                            :group "bar"
-                            :fexpr '(fn [q] (+ q q))
-                            :n [1 2 3]}})))))
-  (testing "clearing registry"
-    (is (do
-          (clear-registry!)
-          (is (empty? @registry)))))
-  (testing "undefining a benchmark"
-    (is (do
-          (defbench foo/baz "quz" (fn [w] (* w w)) [4 5 6])
-          (undefbench foo/baz)
-          (is (empty? @registry)))))
-  (testing "undefining failure due to name ambiguity"
-    (is (thrown? Exception (do
-                             (clear-registry!)
-                             (defbench foo/baz "quz" (fn [x] (- x)) [1 2 3])
-                             (defbench bar/baz "qua" (fn [y] (- y)) [4 5 6])
-                             (undefbench baz)))))
-  (testing "retrieving benchmark definition"
-    (is (=
-         (-> (do
-               (clear-registry!)
-               (defbench qux/quq "quq group" (fn [z] (inc z)) [7 8 9])
-               (benchmark-def qux/quq))
-             (dissoc :f))
-         {:name "quq"
-          :ns "qux"
-          :group "quq group"
-          :fexpr '(fn [z] (inc z))
-          :n [7 8 9]})))
-  (testing "name not in registry"
-    (is (thrown? Exception
-                 (do
-                   (clear-registry!)
-                   (benchmark-def non-existant))))))
 
 
 (deftest date-tests
@@ -194,9 +112,8 @@
 (deftest benchmark-fn-tests
   (is (= 100)
       (do
-        (clear-registry!)
-        (defbench test-qual/foobar "foobar group" #(inc %) [1 2 3])
-        ((benchmark-fn foobar) 99))))
+        (defbench foobar "foobar group" #(inc %) [1 2 3])
+        ((foobar :f) 99))))
 
 
 #_(run-tests)

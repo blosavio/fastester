@@ -9,15 +9,11 @@
                                   run-tests
                                   testing]]
             [fastester.display :refer [generate-documents]]
-            [fastester.measure :refer [benchmark-fn
-                                       clear-registry!
-                                       defbench
+            [fastester.measure :refer [defbench
                                        project-version
                                        range-pow-10
-                                       registry
                                        run-benchmarks
-                                       run-one-defined-benchmark
-                                       undefbench]]))
+                                       run-one-defined-benchmark]]))
 
 
 ;; Strategy: Instead of changing the implementation of `zap`, we will *simulate*
@@ -36,8 +32,8 @@
   (fn [& args]
     (let [ver (project-version {:preferred-version-info :lein})
           ver-to-times {"11" 1000
-                        "12" 1}
-          _ (dotimes [n (dec (ver-to-times ver))]
+                        "12" 0}
+          _ (dotimes [n (dec (get ver-to-times ver 100))]
               (apply f args))]
       (apply f args))))
 
@@ -91,9 +87,8 @@
 (comment
   (def zap-options-filename "./resources/zap_options.edn")
 
-  #_ @registry
-  #_(run-one-defined-benchmark zap.benchmarks/zap-inc :lightning)
-  #_(run-one-defined-benchmark zap.benchmarks/zap-uc :lightning)
+  #_(run-one-defined-benchmark zap-inc :lightning)
+  #_(run-one-defined-benchmark zap-uc :lightning)
   #_(run-benchmarks zap-options-filename)
   #_(generate-documents zap-options-filename)
   )
@@ -101,13 +96,13 @@
 
 ;; Unit test the benchmark functions
 
-#_(deftest benchmark-fn-tests
+(deftest benchmark-fn-tests
   (are [x y] (= x y)
     [1 2 3 4 5 6 7 8 9 10]
-    ((benchmark-fn zap-inc) 10)
+    ((zap-inc :f) 10)
 
     ["A" "B" "C" "A" "B" "C" "A" "B" "C" "A"]
-    ((benchmark-fn zap-uc) 10)))
+    ((zap-uc :f) 10)))
 
 #_(run-tests)
 

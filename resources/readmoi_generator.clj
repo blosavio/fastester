@@ -4,6 +4,7 @@
   CIDER eval buffer C-c C-k generates an html page and a markdown chunk."
   {:no-doc true}
   (:require
+   [clojure.string :as str]
    [com.hypirion.clj-xchart :as xc]
    [criterium.core :as crit]
    [fastester.display :refer [fastester-defaults]]

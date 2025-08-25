@@ -33,7 +33,7 @@
 (defn delayed-+
   [& args]
   (do
-    (Thread/sleep (dly ver))
+    (Thread/sleep (get dly ver 0))
     (apply + args)))
 
 (def group-1 "plus, vary number of digits in args")
@@ -69,7 +69,8 @@
   [coll x]
   (case ver
     "5" (conj coll x)
-    "6" (persistent! (conj! (transient coll) x))))
+    "6" (persistent! (conj! (transient coll) x))
+    (identity x)))
 
 
 (def seq-of-n-rand-ints

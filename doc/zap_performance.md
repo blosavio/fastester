@@ -8,16 +8,46 @@
     </div>
     <div>
       <p>
-        Follow-along with ReadMe...
+        This page follows the <code>zap</code> function benchmark example from the <a href="https://github.com/blosavio/fastester">Fastester ReadMe</a>. The
+        benchmarks are defined in <a href="https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj">this file</a>, while the options (including
+        this very text you are now reading) are defined in <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">this file</a>.
+        To generate this <span class="small-caps">html</span> page, run this.
+      </p>
+      <pre><code>$ lein run :documents &lt;zap_options.edn&gt;</code></pre>
+      <p>
+        The hyperlink immediately preceding this preamble (&apos;faster `zap` implementation&apos;) whisks us to the <span class="small-caps">html</span>
+        section with that <em>group</em> name. In a performance document with only one group like this one, it&apos;s not terribly useful. Still, you can try
+        clicking it anyways; it won&apos;t scroll you too far.
       </p>
     </div>
     <section>
       <h3 id="group-0">
         faster `zap` implementation
       </h3>
-      <p>
-        `zap` comments... `inc*` and `upper-case*` are special versions which simiulate new implementation with performance improvements.
-      </p>
+      <div>
+        <p>
+          This is the comments section for our single benchmark <em>group</em>, &apos;faster `zap` implementation&apos;. We designated two benchmarks to that
+          group, <code>zap-inc</code> and <code>zap-uc</code>. We don&apos;t see those names here because they are merely bookeeping and not relevant for
+          communicating the performance changes between version&nbsp;11 and version&nbsp;12.
+        </p>
+        <p>
+          What we <strong>can</strong> see are the actual benchmark function expressions that were measured by Criterium, i.e., the <code>doall/zap</code>
+          expressions. We defined two benchmarks, and after running the benchmarks and generating the documents, we see two charts summarizing the results.
+        </p>
+        <p>
+          We simulated a performance improvement from version&nbsp;11 to version&nbsp;12 by giving the older version more work to do at each step. In both
+          charts, all of version&nbsp;12&apos;s data points are lower, i.e., shorter evaluation times, than version&nbsp;11&apos;s respective data points,
+          across the full range of argument sequence lengths (which span one element to ten-thousand elements). Given this, in the release notes, we might say:
+        </p>
+        <blockquote>
+          <em>The new implementation of <code>zap</code> offers more than 25% speedup across four orders of magnitude input length for processing both integers
+          and strings.</em>
+        </blockquote>
+        <p>
+          This page merely shows an example. Actual performance reports ought to involve a wider span of inputs, and additional benchmarks to cover the
+          majority of common use cases.
+        </p>
+      </div>
       <div>
         <h4 id="group-0-fexpr-0">
           (fn [i] (doall (zap str/upper-case (abc-cycle-of-length-i i))))
@@ -183,7 +213,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 22.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 23.<span id="uuid"><br>
       3615ae1c-d196-4cb0-bb4c-b4f29a8e2501</span>
     </p>
   </body>

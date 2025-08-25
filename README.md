@@ -56,95 +56,82 @@
       </blockquote>
       <p>
         And then show this.
-      </p>
-      <div>
-        <img alt=
-        "Chart of synthetic performance benchmark of function `zap`, &nbsp;comparing versions 11 and 12; version 12 demonstrates approximately 25% faster &nbsp;performance across a specific range of arguments."
-        src="synthetic-benchmark-chart.svg">
-        <table>
-          <thead>
-            <tr>
-              <th colspan="7">
-                arg, n
-              </th>
-            </tr>
-            <tr>
-              <th>
-                version
-              </th>
-              <th>
-                1
-              </th>
-              <th>
-                10
-              </th>
-              <th>
-                100
-              </th>
-              <th>
-                1000
-              </th>
-              <th>
-                10000
-              </th>
-              <th>
-                100000
-              </th>
-            </tr>
-          </thead>
+      </p><img alt=
+      "Chart of synthetic performance benchmark of function `zap`, &nbsp;comparing versions 11 and 12; version 12 demonstrates approximately 25% faster &nbsp;performance across a specific range of arguments."
+      src="zap_img/group-0-fexpr-0.svg">
+      <table>
+        <caption>
+          times in seconds, <em>mean±std</em>
+        </caption>
+        <thead>
           <tr>
-            <td>
-              11
-            </td>
-            <td>
-              5.3±0.1
-            </td>
-            <td>
-              7.6±0.3
-            </td>
-            <td>
-              10.0±0.2
-            </td>
-            <td>
-              11.3±0.0
-            </td>
-            <td>
-              13.2±0.2
-            </td>
-            <td>
-              15.0±0.3
-            </td>
-          </tr>
-          <tr>
-            <td>
-              12
-            </td>
-            <td>
-              4.1±0.3
-            </td>
-            <td>
-              5.9±0.1
-            </td>
-            <td>
-              6.9±0.3
-            </td>
-            <td>
-              8.4±0.2
-            </td>
-            <td>
-              9.9±0.3
-            </td>
-            <td>
-              11.4±0.1
-            </td>
-          </tr>
-          <tr>
-            <th colspan="7">
-              simulated time in nanoseconds <em>(mean±std)</em>
+            <td></td>
+            <th colspan="5">
+              arg, n
             </th>
           </tr>
-        </table>
-      </div>
+          <tr>
+            <th>
+              version
+            </th>
+            <th>
+              1
+            </th>
+            <th>
+              10
+            </th>
+            <th>
+              100
+            </th>
+            <th>
+              1000
+            </th>
+            <th>
+              10000
+            </th>
+          </tr>
+        </thead>
+        <tr>
+          <td>
+            12
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">1.8e-04±1.5e-06</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">1.8e-03±3.8e-05</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">1.9e-02±4.6e-04</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">1.8e-01±1.4e-03</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">1.8e+00±1.9e-02</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            11
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">2.6e-04±5.9e-06</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">2.7e-03±1.6e-04</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">2.6e-02±9.1e-04</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">2.7e-01±7.0e-03</a>
+          </td>
+          <td>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">2.6e+00±2.2e-02</a>
+          </td>
+        </tr>
+      </table>
       <p>
         The Fastester library streamlines the tasks of writing benchmarks for a &nbsp;function, objectively measuring evaluation times of different versions of
         that &nbsp;function, and concisely communicating how performance changes between &nbsp;versions.
@@ -1048,7 +1035,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 22.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 23.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

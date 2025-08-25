@@ -34,12 +34,71 @@
  :tidy-html? true
 
  :preamble [:div
-            [:p "Follow-along with ReadMe..."]]
+            [:p "This page follows the "
+             [:code "zap"]
+             " function benchmark example from the "
+             [:a {:href "https://github.com/blosavio/fastester"}
+              "Fastester ReadMe"]
+             ". The benchmarks are defined in "
+             [:a {:href "https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj"}
+              "this file"]
+             ", while the options (including this very text you are now reading)
+ are defined in "
+             [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn"}
+              "this file"]
+             ". To generate this "
+             [:span.small-caps "html"]
+             " page, run this."]
+            
+            [:pre [:code "$ lein run :documents <zap_options.edn>"]]
+
+            [:p "The hyperlink immediately preceding this preamble ('faster
+ `zap` implementation') whisks us to the "
+             [:span.small-caps "html"]
+             " section with that "
+             [:em "group"]
+             " name. In a performance document with only one group like this
+ one, it's not terribly useful. Still, you can try clicking it anyways; it won't
+ scroll you too far."]]
 
  :comments
  {"faster `zap` implementation"
-  [:p "`zap` comments... `inc*` and `upper-case*` are special versions which
- simiulate new implementation with performance improvements."]}
+  [:div
+   [:p "This is the comments section for our single benchmark "
+    [:em "group"]
+    ", 'faster `zap` implementation'. We designated two benchmarks to that
+ group, "
+    [:code "zap-inc"]
+    " and "
+    [:code "zap-uc"]
+    ". We don't see those names here because they are merely bookeeping and not
+ relevant for communicating the performance changes between version 11 and
+ version 12."]
+   
+   [:p "What we "
+    [:strong "can"]
+    " see are the actual benchmark function expressions that were measured by
+ Criterium, i.e., the "
+    [:code "doall/zap"]
+    " expressions. We defined two benchmarks, and after running the benchmarks
+ and generating the documents, we see two charts summarizing the results."]
+
+   [:p "We simulated a performance improvement from version 11 to version 12 by
+ giving the older version more work to do at each step. In both charts, all of
+ version 12's data points are lower, i.e., shorter evaluation times, than
+ version 11's respective data points, across the full range of argument sequence
+ lengths (which span one element to ten-thousand elements). Given this, in the
+ release notes, we might say:"]
+
+   [:blockquote
+    [:em "The new implementation of "
+     [:code "zap"]
+     " offers more than 25% speedup across four orders of magnitude input length
+ for processing both integers and strings."]]
+
+   [:p "This page merely shows an example. Actual performance reports ought to
+ involve a wider span of inputs, and additional benchmarks to cover the majority
+ of common use cases."]]}
 
  :chart-settings
  {"(fn [n] (doall (zap inc (range-of-length-n n))))"
