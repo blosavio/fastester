@@ -40,18 +40,18 @@
  measurable affects on performance."]
 
  [:p "Follow along with this "
-  [:a {:href "https://blosavio.github.io/"}
-   "TODO:update-link example options file"]
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn"}
+   "example options file"]
   " and this "
-  [:a {:href "https://blosavio.github.io/"}
-   "TODO:update-link example benchmark definition file"]
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj"}
+   "example benchmark definition file"]
   "."]
 
  [:h3#set-options "1. Set the options"]
 
  [:p "We must first set the options that govern how Fastester behaves. Options
- live in the file (defaulting to"
-  [:code "fastester_options.edn"]
+ live in a file (defaulting to "
+  [:code "resources/fastester_options.edn"]
   ") as a Clojure map. One way to get up and running quickly is to copy-paste
  Fastester's "
   [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/fastester_options.edn"}
@@ -97,7 +97,7 @@
      [:a {:href "#hierarchy"} "discussion"]
      "."]
 
-    [:p "Note: This setting only affects benchmark running. It does not affect
+    [:p "Note: This setting only affects running benchmarks. It does not affect
  which data sets are used to generate the "
      [:span.small-caps "html"]
      " documents."]])
@@ -168,9 +168,9 @@
    :save-benchmark-fn-results?
    [:p "When assigned "
     [:code "true"]
-    ", includes the value returned from evaluating the benchmark expression.
- Useful during development to check the correctness of the benchmark expression.
- However, file sizes grow unwieldy. Setting to "
+    ", the results file will include the value returned from evaluating the
+ benchmark expression. Useful during development to check the correctness of the
+ benchmark expression. However, file sizes grow unwieldy. Setting to "
     [:code "false"]
     " replaces the data with "
     [:code ":fastester/benchmark-fn-results-elided"]
@@ -178,8 +178,9 @@
 
   (opts-table-row
    :tidy-html?
-   [:p "Default setting causes html to be written to file with no line breaks.
- If set to "
+   [:p "Default setting causes "
+    [:span.small-caps "html"]
+    " to be written to file with no line breaks. If set to "
     [:code "true"]
     " line breaks are inserted for readability, and for smaller version
  control diffs."])
@@ -187,7 +188,9 @@
   (opts-table-row
    :preamble
    [:div "..."]
-   [:p "A hiccup/html block inserted at the top of the results document."])]
+   [:p "A hiccup/"
+    [:span.small-caps "html"]
+    " block inserted at the top of the results document."])]
 
  [:p "The following options have no defaults."]
 
@@ -215,9 +218,9 @@
   (opts-table-row
    :fastester-UUID
    #uuid "de280faa-ebc5-4d75-978a-0a2b2dd8558b"
-   [:p "A version 4 Universally unique ID listed in the footer of the document.
+   [:p "A version 4 Universally Unique ID listed in the footer of the document.
  To generate a new UUID, evaluate "
-    [:code "(random-uuid)"]
+    [:code "(random‑uuid)"]
     ". Associate to "
     [:code "nil"]
     " to skip."])
@@ -228,10 +231,10 @@
    [:p "Declares preference for source of project version. If "
     [:code ":lein"]
     ", consults 'project.clj'. If "
-    [:code ":pom-xml"]
+    [:code ":pom‑xml"]
     ", consults 'pom.xml'. If both files exist, a preference must be declared.
  If only one file exists, "
-    [:code ":preferred-version-info"]
+    [:code ":preferred‑version‑info"]
     " may be omitted."])]
 
  [:h3#write-benchmarks "2. Write benchmarks"]
@@ -252,8 +255,7 @@
     [:code "(benchmark (zap inc [1]))"] [:br]
     [:code "(benchmark (zap inc [1 2]))"] [:br]
     [:code "(benchmark (zap inc [1 2 3]))"] [:br]
-    [:code "(benchmark (zap inc [1 2 3 4]))"] [:br]
-    [:code "(benchmark (zap inc [1 2 3 4 ...]))"]]
+    [:code "(benchmark (zap inc [1 2 3 ...]))"]]
    [:p "We'll label this series of benchmark runs with the name "
     [:code "zap-inc"]
     " ."]]
@@ -271,17 +273,9 @@
     "."]]]
 
  [:p "Writing benchmarks follows a similar pattern to writing unit tests. We
- create a file (defaulting to "
-  [:code "resources/fastester_options.edn"]
-  "), topped with a namespace declaration. For organizing purposes, we may write
- more than one benchmarks file if, for example, we'd like to write one benchmark
- file per source namespace. See these "
-  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks.clj"}
-   "two"]
-  " "
-  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks_mapping.clj"}
-   "examples"]
-  "."]
+ create a file topped with a namespace declaration. For organizing purposes, we
+ may write more than one benchmarks file if, for example, we'd like to write one
+ benchmark file per source namespace."]
 
  [:p "Within a benchmarks file, we use "
   [:code "defbench"]
@@ -299,46 +293,47 @@
   [:code "defbench"]
   " with a "
   [:em "name"]
-  ", an unquoted symbol. The name provides the lookup key for benchmark
- definition in the registry. We've chosen "
+  ", an unquoted symbol. The name resolves the benchmark definition in a
+ namespace. We've chosen "
   [:code "zap-inc"]
   " and "
   [:code "zap-uc"]
-  ". The names don't have any functional significance (we could have named the
+  ". The names don't have any functional significance. We could have named the
  benchmarks "
   [:code "Romeo"]
   " and "
   [:code "Juliet"]
-  "), but it's nice if the names have some semantic meaning."]
+  " without affecting the measurements, but like any other Clojure symbol, it's
+ nice if the names have some semantic meaning."]
 
  [:p "So far, we have the following two incomplete benchmark definitions: "
   [:code "defbench"]
-  " and a name."]
+  " followed by a name."]
 
  [:pre
   [:code "(defbench zap-inc ...)"] [:br]
   [:code "(defbench zap-uc ...)"]]
 
- [:p#hierarchy "Note that all benchmarks are added to a singular "
-  [:a {:href "#registry"} "registry"]
-  ", so if we write two "
+ [:p "When we evaluate a "
   [:code "defbench"]
-  " expressions using the same name in the same namespace, one definition will
- overwrite the other (any particular ordering is an implementation detail and
- not guaranteed). If we'd like to give the same name to two different
+  " expression, Fastester binds a hashmap to the "
+  [:em "name"]
+  " in the namespace where we evaluated the expression. If two expressions use
+ the same name in the same namespace, the later-evaluated definition will
+ overwrite the earlier. If we'd like to give the same name to two different
  benchmarks, we could isolate the definitions into two different namespaces. For
- this scenario benchmarking "
+ our demonstration benchmarking "
   [:code "zap"]
   ", we've chosen two different names, so we won't worry about overwriting."]
 
  [:p "After the name, we supply a "
   [:em "group"] ", a string that associates one benchmark with other
- conceptually-related benchmarks. The "
+ conceptually-related benchmarks. Later, while generating the "
   [:span.small-caps "html"]
-  " document will aggregate the benchmarks sharing a group. For "
+  " results document, Fastester will aggregate benchmarks sharing a group. For "
   [:code "zap"]
-  ", we have our two related benchmarks. Let's assign both our benchmarks to
- the "
+  ", we have our two related benchmarks. Let's assign both of those benchmarks
+ to the "
   [:code "\"faster zap implementation\""]
   " group."]
 
@@ -353,7 +348,7 @@
   [:em  "fn-expression"]
   " and "
   [:em "args"]
-  ", do the heavy lifting. The next step of thw workflow, "
+  ", do the heavy lifting. The next step of the workflow, "
   [:a {:href "#run-benchmarks"} [:em "running the benchmarks"]]
   ", involves serially supplying elements of "
   [:code "args"]
@@ -391,7 +386,7 @@
 
  [:pre [:code "(fn [i] (zap str/upper-case (take i (cycle [\"a\" \"b\" \"c\"]))))"]]
 
- [:p "And with the addition of their function expressions, our two
+ [:p "And with the addition of their respective function expressions, our two
  almost-complete benchmark definitions look like this."]
 
  [:pre
@@ -406,21 +401,34 @@
   " uses "
   [:code "n"]
   ", while "
-  [:code "zap-us"]
+  [:code "zap-uc"]
   " uses "
   [:code "i"]
   "."]
 
- [:p "'Running' a benchmark with those function expresions means thatarguments
+ [:p "'Running' a benchmark with those function expresions means that arguments
  are serially passed to the expression, measuring the evaluation times for each.
- The arguments are supplied by the final element of the benchmark definition, a
- sequence. For "
+ The arguments are supplied by the final component of the benchmark definition,
+ a sequence. For "
   [:code "zap-inc"]
   ", let's explore "
   [:code "range"]
   "s from ten to one-hundred thousand."]
 
+ [:p "An argument sequence like this…"]
+
  [:pre [:code "[10 100 1000 10000 100000]"]]
+
+ [:p "…produces the following series of sequences to feed to "
+  [:code "zap"]
+  " for benchmarking."]
+
+ [:pre
+  [:code "[0 ... 9]"] [:br]
+  [:code "[0 ... 99]"] [:br]
+  [:code "[0 ... 999]"] [:br]
+  [:code "[0 ... 9999]"] [:br]
+  [:code "[0 ... 99999]"]]
 
  [:p "Ratcheting "
   [:code "(range n)"]
@@ -443,9 +451,9 @@
           (fn [n] (zap inc (range n)))
           [10 100 1000 10000 100000])"]]
 
- [:p "Likewise, we'd like "
+ [:p "Similarly, we'd like "
   [:code "zap-uc"]
-  " to exercise a similar span of strings."]
+  " to exercise a span of strings."]
 
  [:pre
   [:code "(benchmark (zap str/upper-case (take 10 (cycle \"a\" \"b\" \"c\"))))"] [:br]
@@ -454,7 +462,7 @@
   [:code "(benchmark (zap str/upper-case (take 10000 (cycle \"a\" \"b\" \"c\"))))"] [:br]
   [:code "(benchmark (zap str/upper-case (take 100000 (cycle \"a\" \"b\" \"c\"))))"] [:br]]
 
- [:p "The complete benchmark definition looks like this."]
+ [:p "That completed benchmark definition looks like this."]
 
  [:pre [:code
         "(defbench zap-uc
@@ -470,8 +478,8 @@
   [:code "range"]
   "'s and "
   [:code "cycle"]
-  "'s processing times. We may want to do that in some cases, but in this
- scenario, it would be misleading. We want to focus solely on how fast "
+  "'s processing times. We may want to do that in some other scenarios, but in
+ this case, it would be misleading. We want to focus solely on how fast "
   [:code "zap"]
   " can process its elements. Let's extract "
   [:code "range"]
@@ -494,11 +502,11 @@
   [:code "zap"]
   " itself. "]
 
- [:p "Perhaps you anticipated a remaining problem if you extrapolated that "
+ [:p "If you extrapolated that "
   [:code "zap"]
   " behaves like "
   [:code "map"]
-  ". If we were to run the "
+  ", perhaps you anticipated a remaining problem. If we were to run the "
   [:code "zap-inc"]
   " benchmarks as defined above, we'd notice that the evaluation times were
  suspiciously consistent, no matter how many integers the sequence contained. "
@@ -508,7 +516,7 @@
   [:code "zap-inc"]
   " measures "
   [:code "zap"]
-  " actually doing something. "
+  " actually doing work. "
   [:code "doall"]
   " is handy for that."]
 
@@ -518,10 +526,14 @@
           (fn [n] (doall (zap inc (range-of-length-n n))))
           [10 100 1000 10000 100000])"]]
 
- [:p "We would handle "
-  [:code "zap-us"]
-  " similarly. First, we'll pre-compute the test sequences so that running the benchmark doesn't measure evaluating "
+ [:p "We handle "
+  [:code "zap-uc"]
+  " similarly. First, we'll pre-compute the test sequences so that running the benchmark doesn't measure "
   [:code "cycle"]
+  ". Then we'll wrap the "
+  [:code "zap"]
+  " expression in a "
+  [:code "doall"]
   "."]
 
  [:pre
@@ -541,18 +553,17 @@
 
  [:p "So what happens when we evaluate a "
   [:code "defbench"]
-  " expression? Doing that places an entry in the benchmark "
-  [:a {:href "#registry"} "registry"]
-  ". The registry is an atom-wrapped hashmap whose keys are namespace-qualified
- symbols (the "
-  [:em "name"]
-  ") associated to values that are benchmark metadata (group, function
- expression, arguments, etc.). Soon, in the "
+  " expression? It binds the benchmark name to a hashmap of group, function expression, arguments, and some metadata. Soon, in the "
   [:a {:href "#run-benchmarks"} "run benchmarks"]
-  " step, Fastester will rip through the registry and run a Criterium benchmark
- for every element in the registry."]
+  " step, Fastester will rip through the benchmark names declared in the options
+ hashmap key "
+  [:code ":benchmarks"]
+  " and run a Criterium benchmark for every name."]
 
- [:p "The registry now contains two benchmarks that will demonstrate "
+ [:p "Once we evaluate the two "
+  [:code "defbench"]
+  " expressions, the namespace contains two benchmark defintions that will
+ demonstrate "
   [:code "zap"]
   "'s performance: one incrementing sequences of integers, named "
   [:code "zap-inc"]
@@ -560,10 +571,19 @@
   [:code "zap-uc"]
   "."]
 
+ [:h4 "Helper utilities"]
+
  [:p "Fastester provides a few helper utilities. If we want to see how a
  benchmark would work, we can invoke "
-  [:code "run-one-registered-benchmark"]
-  ". In the course of writing benchmarks, we often need a sequence of
+  [:code "run-one-defineed-benchmark"]
+  "."]
+
+ [:pre
+  [:code "(run-one-defined-benchmark zap-inc :quick)"]
+  [:br]
+  [:code ";; => ...output elided for brevity..."]]
+
+ [:p  "In the course of writing benchmarks, we often need a sequence of
  exponentially-growing integers. For that, Fastester offers "
   [:code "range‑pow‑10"]
   " and "
@@ -578,18 +598,19 @@
 
  [:p "Sometimes, we'll want to remove a defined benchmark, which we can do
  with "
-  [:code "undefbench"]
-  ". And when we need to tear everything down and start defining from scratch,
- we have "
-  [:code "clear‑registry!"]
+  [:code "clojure.core/ns-unmap"]
   "."]
 
- [:p "Before we go to the next step, let's double-check the options. We need
- Fastester to find our two benchmark definitions, so we must correctly
- set the "
+ [:pre [:code "(ns-unmap *ns* 'zap-something-else)"]]
+
+ [:p#hierarchy "Before we go to the next step, running the benchmarks, let's
+ double-check the options. We need Fastester to find our two benchmark
+ definitions, so we must correctly set "
   [:code ":benchmarks"]
-  ". The keys are simple symbols indicating the namespace, in our example,
- we have one namespace, and therefore one key, "
+  ". This options key is associated to a hashmap."]
+ 
+ [:p "That nested hashmap's keys are symbols indicating the namespace. In our
+ example, we have one namespace, and therefore one key, "
   [:code "'zap-benchmarks"]
   ". Associated to that one key is a set of simple symbols indicating the
  benchmark names, in our example, "
@@ -602,8 +623,10 @@
         ":benchmarks {'zap-benchmarks #{'zap-inc
                                'zap-uc}}"]]
 
- [:p "Also, saving the function expression results (i.e., one-hundred-thousand
- incremented inegers) blows up the file sizes, so let's set "
+ [:p "We should also be on guard: saving "
+  [:code "zap"]
+  "'s results (e.g., one-hundred-thousand incremented integers) blows up the
+ file sizes, so let's set "
   [:code ":save-benchmark-fn-results?"]
   " to "
   [:code "false"]
@@ -632,8 +655,8 @@
 
  [:p "We should see one "
   [:code "edn"]
-  " file per benchmark. If not, double check the options hashmap to make sure
- all the namespace and name symbols within  "
+  " file per function-expression/argument pairing. If not, double check the
+ options hashmap to make sure all the namespace and name symbols within  "
   [:code ":benchmarks"]
   " are complete and correct."]
 
@@ -723,19 +746,38 @@
 
  [:pre [:code "(doall (map inc ninety-nine-rands))"]]
 
- [:p "One final "
-  [:em "gotcha"]
-  ", particular to Fastester itself, will be familiar to Clojurists programming
+ [:p "Regarding Fastester itself, three final "
+  [:em "gotchas"]
+  "  will be familiar to Clojurists programming
  at the "
   [:span.small-caps "repl"]
   ". During development, it's typical to define and re-define benchmarks with "
   [:code "defbench"]
-  ". It's not difficult for the namespace to hold stale benchmark definitions
- that are not apparent from visual inspection of the current state of the text
- in the file. Fastester provides a pair of tools to help with this. The "
-  [:code "undefbench"]
-  " utility undefines a benchmark by name. "
-  [:code "clear-registry!"]
-  " undefines all benchmarks, and a quick re-evaluation of the entire text
- buffer redefines only the benchmarks currently expressed in the file."]]
+  ". It's not difficult for the namespace to get out of sync with the visual
+ appearance of the text represented in the file. Maybe we renamed a benchmark,
+ and the old benchmark is still floating around invisibly. Such an orphaned
+ definition won't hurt anything because Fastester will only run benchmarks
+ explicitly listed in the option's "
+  [:code ":benchmarks"]
+  ". If we want to actively remove the benchmark, we can use "
+  [:code "clojure.core/ns-unmap"]
+  "."]
+
+ [:p "Perhaps more dangerous, maybe we edited a "
+  [:code "defbench"]
+  "'s textual expression, but failed to re-evaluate it. What we see with our
+ eyes won't accurately reflect the benchmark definition that Fastester actually
+ runs. To fix this problem, a quick re-evaluation of the entire text buffer
+ redefines all the benchmarks currently expressed in the namespace."]
+
+ [:p "Finally, we need to remember that when running from the command line,
+ Fastester consults only the options and benchmark defintions from the file
+contents "
+  [:strong "as they exist on disk"]
+  ". A "
+  [:span.small-caps "repl"]
+  "-attached editor with unsaved options or definitions, even with a
+ freshly-evaluated namespace, will not affect the results from a command line
+ invocation. Saving the files to disk synchronizes what we see in the editor
+ and what is consumed by command line-initiated actions."]]
 

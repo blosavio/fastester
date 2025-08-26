@@ -53,12 +53,9 @@
       <blockquote>
         <em>Version&nbsp;12 of function <code>zap</code> is 20 to 30&nbsp;percent faster than version&nbsp;11 for integers spanning five &nbsp;orders of
         magnitude. This implementation change will improve performance for &nbsp;the vast majority of intended use cases.</em>
-      </blockquote>
-      <p>
-        And then show this.
-      </p><img alt=
-      "Chart of synthetic performance benchmark of function `zap`, &nbsp;comparing versions 11 and 12; version 12 demonstrates approximately 25% faster &nbsp;performance across a specific range of arguments."
-      src="zap_img/group-0-fexpr-0.svg">
+      </blockquote><img alt=
+      "Chart of synthetic performance benchmark of function `zap`, &nbsp; comparing versions 11 and 12; version 12 demonstrates &nbsp; approximately 25% faster performance across a specific range of &nbsp; arguments."
+      src="doc/zap_img/group-0-fexpr-0.svg">
       <table>
         <caption>
           times in seconds, <em>mean±std</em>
@@ -149,15 +146,15 @@
         But, how fast is &quot;fast&quot;? It&apos;s not terribly convincing to say <em>Our software is fast.</em> We&apos;d like some objective measure of
         fast. Fortunately, the <a href="https://github.com/hugoduncan/criterium">Criterium library</a> provides a handy group of benchmarking utilities that
         measures the &nbsp;evaluation time of a Clojure expression. We could use Criterium to learn that <code>(zap inc [1 2 3])</code> requires
-        19.6±0.6&nbsp;nanoseconds to evaluate.
+        183±2&nbsp;microseconds to evaluate.
       </p>
       <p>
-        Is…that good? Difficult to say. What we&apos;d really like to know is how &nbsp;19.6&nbsp;nanoseconds compares to some previous version. So if, for
-        example, &nbsp;version&nbsp;12 of <code>zap</code> evaluates in 19.6&nbsp;nanoseconds, whereas version&nbsp;11 required &nbsp;24.5&nbsp;nanoseconds, we
+        Is…that good? Difficult to say. What we&apos;d really like to know is how &nbsp;183&nbsp;microseconds compares to some previous version. So if, for
+        example, &nbsp;version&nbsp;12 of <code>zap</code> evaluates in 183&nbsp;microseconds, whereas version&nbsp;11 required &nbsp;264&nbsp;microseconds, we
         have good reason to believe the later implementation is &nbsp;faster.
       </p>
       <p>
-        Beyond that, tossing out raw numbers like &quot;19.6&quot; and &quot;24.5&quot; requires &nbsp;people to juggle arithmetic in their head. Not ideal.
+        Beyond that, tossing out raw numbers like &quot;183&quot; and &quot;264&quot; requires &nbsp;people to juggle arithmetic in their head. Not ideal.
       </p>
       <p>
         A Fastester performance report intends to be objective, relative, and &nbsp;comprehensible.
@@ -173,17 +170,13 @@
         Relative
       </h3>
       <p>
-        A single, isolated timing measurement doesn&apos;t mean much to a person, even &nbsp;if it is <a href="#objective">objective</a>. Humans simply
-        don&apos;t have everyday intuition for an event that occurs in a &nbsp;few nanoseconds. So when we discuss the concept of &apos;fast&apos;, we&apos;re
-        often &nbsp;implicitly speaking in relative terms.
+        A single, isolated timing measurement doesn&apos;t mean much to a person, even &nbsp;if it is <a href="#objective">objective</a>. People simply
+        don&apos;t have everyday intuition for an event that occurs in a &nbsp;nanoseconds or microseconds. So when we discuss the concept of &apos;fast&apos;,
+        we&apos;re &nbsp;often implicitly speaking in relative terms.
       </p>
       <p>
         Fastester focuses on comparing the speed of one function to a previous &nbsp;version of itself.
       </p>
-      <aside>
-        (I am sorely tempted to remove all absolute units by normalizing time &nbsp;measurements to some arbitrary reference, but I am reluctant to treat the
-        &nbsp;benchmark results so casually.)
-      </aside>
       <h3 id="comprehensible">
         Comprehensible
       </h3>
@@ -208,7 +201,7 @@
         </li>
         <li>
           <p>
-            The performance data is objective, but people may interpret it to &nbsp;suit their tastes. 19.6&nbsp;nanoseconds may be fast enough for one person,
+            The performance data is objective, but people may interpret it to &nbsp;suit their tastes. 183&nbsp;microseconds may be fast enough for one person,
             but not &nbsp;another. The accompanying commentary may express the library author&apos;s opinions. &nbsp;That&apos;s okay. The author is merely
             communicating that opinion to the person &nbsp;considering switching versions. The author may consider a particular version <em>fast</em>, but the
             person using the software may not.
@@ -267,15 +260,15 @@
         implementation changes with &nbsp;measurable affects on performance.
       </p>
       <p>
-        Follow along with this <a href="https://blosavio.github.io/">TODO:update-link example options file</a> and this <a href=
-        "https://blosavio.github.io/">TODO:update-link example benchmark definition file</a>.
+        Follow along with this <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">example options file</a> and this <a href=
+        "https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj">example benchmark definition file</a>.
       </p>
       <h3 id="set-options">
         1. Set the options
       </h3>
       <p>
-        We must first set the options that govern how Fastester behaves. Options &nbsp;live in the file (defaulting to<code>fastester_options.edn</code>) as a
-        Clojure map. One way to get up and running quickly is to copy-paste &nbsp;Fastester&apos;s <a href=
+        We must first set the options that govern how Fastester behaves. Options &nbsp;live in a file (defaulting to
+        <code>resources/fastester_options.edn</code>) as a Clojure map. One way to get up and running quickly is to copy-paste &nbsp;Fastester&apos;s <a href=
         "https://github.com/blosavio/fastester/blob/main/resources/fastester_options.edn">sample options file</a> and edit as needed.
       </p>
       <p>
@@ -307,7 +300,7 @@
                 quoted &nbsp;symbols) represent benchmark names. See <a href="#hierarchy">discussion</a>.
               </p>
               <p>
-                Note: This setting only affects benchmark running. It does not affect &nbsp;which data sets are used to generate the <span class=
+                Note: This setting only affects running benchmarks. It does not affect &nbsp;which data sets are used to generate the <span class=
                 "small-caps">html</span> documents.
               </p>
             </div>
@@ -458,9 +451,9 @@
           </td>
           <td>
             <p>
-              When assigned <code>true</code>, includes the value returned from evaluating the benchmark expression. &nbsp;Useful during development to check
-              the correctness of the benchmark expression. &nbsp;However, file sizes grow unwieldy. Setting to <code>false</code> replaces the data with
-              <code>:fastester/benchmark-fn-results-elided</code>.
+              When assigned <code>true</code>, the results file will include the value returned from evaluating the &nbsp;benchmark expression. Useful during
+              development to check the correctness of the &nbsp;benchmark expression. However, file sizes grow unwieldy. Setting to <code>false</code> replaces
+              the data with <code>:fastester/benchmark-fn-results-elided</code>.
             </p>
           </td>
         </tr>
@@ -473,8 +466,8 @@
           </td>
           <td>
             <p>
-              Default setting causes html to be written to file with no line breaks. &nbsp;If set to <code>true</code> line breaks are inserted for
-              readability, and for smaller version &nbsp;control diffs.
+              Default setting causes <span class="small-caps">html</span> to be written to file with no line breaks. If set to <code>true</code> line breaks
+              are inserted for readability, and for smaller version &nbsp;control diffs.
             </p>
           </td>
         </tr>
@@ -487,7 +480,7 @@
           </td>
           <td>
             <p>
-              A hiccup/html block inserted at the top of the results document.
+              A hiccup/<span class="small-caps">html</span> block inserted at the top of the results document.
             </p>
           </td>
         </tr>
@@ -542,8 +535,8 @@
           </td>
           <td>
             <p>
-              A version 4 Universally unique ID listed in the footer of the document. &nbsp;To generate a new UUID, evaluate <code>(random-uuid)</code>.
-              Associate to <code>nil</code> to skip.
+              A version&nbsp;4 Universally Unique&nbsp;ID listed in the footer of the document. &nbsp;To generate a new UUID, evaluate
+              <code>(random‑uuid)</code>. Associate to <code>nil</code> to skip.
             </p>
           </td>
         </tr>
@@ -556,8 +549,8 @@
           </td>
           <td>
             <p>
-              Declares preference for source of project version. If <code>:lein</code>, consults &apos;project.clj&apos;. If <code>:pom-xml</code>, consults
-              &apos;pom.xml&apos;. If both files exist, a preference must be declared. &nbsp;If only one file exists, <code>:preferred-version-info</code> may
+              Declares preference for source of project version. If <code>:lein</code>, consults &apos;project.clj&apos;. If <code>:pom‑xml</code>, consults
+              &apos;pom.xml&apos;. If both files exist, a preference must be declared. &nbsp;If only one file exists, <code>:preferred‑version‑info</code> may
               be omitted.
             </p>
           </td>
@@ -576,7 +569,7 @@
           <p>
             The first benchmark will measure the evaluation times of incrementing &nbsp;increasingly-lengthy sequences of integers.
           </p>
-          <pre><code>(benchmark (zap inc [1]))</code><br><code>(benchmark (zap inc [1 2]))</code><br><code>(benchmark (zap inc [1 2 3]))</code><br><code>(benchmark (zap inc [1 2 3 4]))</code><br><code>(benchmark (zap inc [1 2 3 4 ...]))</code></pre>
+          <pre><code>(benchmark (zap inc [1]))</code><br><code>(benchmark (zap inc [1 2]))</code><br><code>(benchmark (zap inc [1 2 3]))</code><br><code>(benchmark (zap inc [1 2 3 ...]))</code></pre>
           <p>
             We&apos;ll label this series of benchmark runs with the name <code>zap-inc</code> .
           </p>
@@ -592,42 +585,40 @@
         </li>
       </ol>
       <p>
-        Writing benchmarks follows a similar pattern to writing unit tests. We &nbsp;create a file (defaulting to
-        <code>resources/fastester_options.edn</code>), topped with a namespace declaration. For organizing purposes, we may write &nbsp;more than one
-        benchmarks file if, for example, we&apos;d like to write one benchmark &nbsp;file per source namespace. See these <a href=
-        "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks.clj">two</a>&nbsp;<a href=
-        "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks_mapping.clj">examples</a>.
+        Writing benchmarks follows a similar pattern to writing unit tests. We &nbsp;create a file topped with a namespace declaration. For organizing
+        purposes, we &nbsp;may write more than one benchmarks file if, for example, we&apos;d like to write one &nbsp;benchmark file per source namespace.
       </p>
       <p>
         Within a benchmarks file, we use <code>defbench</code> to <strong>def</strong>ine a <strong>bench</strong>mark. Here is its signature.
       </p>
       <pre><code>(defbench <em>name &quot;group&quot; fn-expression args</em>)</code></pre>
       <p>
-        For the first argument, we supply <code>defbench</code> with a <em>name</em>, an unquoted symbol. The name provides the lookup key for benchmark
-        &nbsp;definition in the registry. We&apos;ve chosen <code>zap-inc</code> and <code>zap-uc</code>. The names don&apos;t have any functional significance
-        (we could have named the &nbsp;benchmarks <code>Romeo</code> and <code>Juliet</code>), but it&apos;s nice if the names have some semantic meaning.
+        For the first argument, we supply <code>defbench</code> with a <em>name</em>, an unquoted symbol. The name resolves the benchmark definition in a
+        &nbsp;namespace. We&apos;ve chosen <code>zap-inc</code> and <code>zap-uc</code>. The names don&apos;t have any functional significance. We could have
+        named the &nbsp;benchmarks <code>Romeo</code> and <code>Juliet</code> without affecting the measurements, but like any other Clojure symbol, it&apos;s
+        &nbsp;nice if the names have some semantic meaning.
       </p>
       <p>
-        So far, we have the following two incomplete benchmark definitions: <code>defbench</code> and a name.
+        So far, we have the following two incomplete benchmark definitions: <code>defbench</code> followed by a name.
       </p>
       <pre><code>(defbench zap-inc ...)</code><br><code>(defbench zap-uc ...)</code></pre>
-      <p id="hierarchy">
-        Note that all benchmarks are added to a singular <a href="#registry">registry</a>, so if we write two <code>defbench</code> expressions using the same
-        name in the same namespace, one definition will &nbsp;overwrite the other (any particular ordering is an implementation detail and &nbsp;not
-        guaranteed). If we&apos;d like to give the same name to two different &nbsp;benchmarks, we could isolate the definitions into two different namespaces.
-        For &nbsp;this scenario benchmarking <code>zap</code>, we&apos;ve chosen two different names, so we won&apos;t worry about overwriting.
+      <p>
+        When we evaluate a <code>defbench</code> expression, Fastester binds a hashmap to the <em>name</em> in the namespace where we evaluated the expression.
+        If two expressions use &nbsp;the same name in the same namespace, the later-evaluated definition will &nbsp;overwrite the earlier. If we&apos;d like to
+        give the same name to two different &nbsp;benchmarks, we could isolate the definitions into two different namespaces. For &nbsp;our demonstration
+        benchmarking <code>zap</code>, we&apos;ve chosen two different names, so we won&apos;t worry about overwriting.
       </p>
       <p>
-        After the name, we supply a <em>group</em>, a string that associates one benchmark with other &nbsp;conceptually-related benchmarks. The <span class=
-        "small-caps">html</span> document will aggregate the benchmarks sharing a group. For <code>zap</code>, we have our two related benchmarks. Let&apos;s
-        assign both our benchmarks to &nbsp;the <code>&quot;faster zap implementation&quot;</code> group.
+        After the name, we supply a <em>group</em>, a string that associates one benchmark with other &nbsp;conceptually-related benchmarks. Later, while
+        generating the <span class="small-caps">html</span> results document, Fastester will aggregate benchmarks sharing a group. For <code>zap</code>, we
+        have our two related benchmarks. Let&apos;s assign both of those benchmarks &nbsp;to the <code>&quot;faster zap implementation&quot;</code> group.
       </p>
       <p>
         Now, we have the following two incomplete benchmark definitions, with the &nbsp;addition of the group.
       </p>
       <pre><code>(defbench zap-inc &quot;faster zap implementation&quot; ...)</code><br><code>(defbench zap-uc &quot;faster zap implementation&quot; ...)</code></pre>
       <p>
-        The final two arguments, <em>fn-expression</em> and <em>args</em>, do the heavy lifting. The next step of thw workflow, <a href=
+        The final two arguments, <em>fn-expression</em> and <em>args</em>, do the heavy lifting. The next step of the workflow, <a href=
         "#run-benchmarks"><em>running the benchmarks</em></a>, involves serially supplying elements of <code>args</code> to the function expression.
       </p>
       <p>
@@ -650,19 +641,26 @@
       </p>
       <pre><code>(fn [i] (zap str/upper-case (take i (cycle [&quot;a&quot; &quot;b&quot; &quot;c&quot;]))))</code></pre>
       <p>
-        And with the addition of their function expressions, our two &nbsp;almost-complete benchmark definitions look like this.
+        And with the addition of their respective function expressions, our two &nbsp;almost-complete benchmark definitions look like this.
       </p>
       <pre><code>(defbench zap-inc &quot;faster zap implementation&quot; (fn [n] (zap inc (range n))) ...)</code><br><br><code>(defbench zap-uc &quot;faster zap implementation&quot; (fn [i] (zap str/upper-case (take i (cycle [&quot;a&quot; &quot;b&quot; &quot;c&quot;])))) ...)</code></pre>
       <p>
         Note that there is nothing special about the function expression&apos;s &nbsp;parameter. <code>zap-inc</code> uses <code>n</code>, while
-        <code>zap-us</code> uses <code>i</code>.
+        <code>zap-uc</code> uses <code>i</code>.
       </p>
       <p>
-        &apos;Running&apos; a benchmark with those function expresions means thatarguments &nbsp;are serially passed to the expression, measuring the
-        evaluation times for each. &nbsp;The arguments are supplied by the final element of the benchmark definition, a &nbsp;sequence. For
+        &apos;Running&apos; a benchmark with those function expresions means that arguments &nbsp;are serially passed to the expression, measuring the
+        evaluation times for each. &nbsp;The arguments are supplied by the final component of the benchmark definition, &nbsp;a sequence. For
         <code>zap-inc</code>, let&apos;s explore <code>range</code>s from ten to one-hundred thousand.
       </p>
+      <p>
+        An argument sequence like this…
+      </p>
       <pre><code>[10 100 1000 10000 100000]</code></pre>
+      <p>
+        …produces the following series of sequences to feed to <code>zap</code> for benchmarking.
+      </p>
+      <pre><code>[0 ... 9]</code><br><code>[0 ... 99]</code><br><code>[0 ... 999]</code><br><code>[0 ... 9999]</code><br><code>[0 ... 99999]</code></pre>
       <p>
         Ratcheting <code>(range n)</code> by powers of ten stresses <code>zap&apos;s</code> performance. Roughly speaking, we&apos;ll be doing this.
       </p>
@@ -675,11 +673,11 @@
 &nbsp;         (fn [n] (zap inc (range n)))
 &nbsp;         [10 100 1000 10000 100000])</code></pre>
       <p>
-        Likewise, we&apos;d like <code>zap-uc</code> to exercise a similar span of strings.
+        Similarly, we&apos;d like <code>zap-uc</code> to exercise a span of strings.
       </p>
       <pre><code>(benchmark (zap str/upper-case (take 10 (cycle &quot;a&quot; &quot;b&quot; &quot;c&quot;))))</code><br><code>(benchmark (zap str/upper-case (take 100 (cycle &quot;a&quot; &quot;b&quot; &quot;c&quot;))))</code><br><code>(benchmark (zap str/upper-case (take 1000 (cycle &quot;a&quot; &quot;b&quot; &quot;c&quot;))))</code><br><code>(benchmark (zap str/upper-case (take 10000 (cycle &quot;a&quot; &quot;b&quot; &quot;c&quot;))))</code><br><code>(benchmark (zap str/upper-case (take 100000 (cycle &quot;a&quot; &quot;b&quot; &quot;c&quot;))))</code><br></pre>
       <p>
-        The complete benchmark definition looks like this.
+        That completed benchmark definition looks like this.
       </p>
       <pre><code>(defbench zap-uc
 &nbsp;         &quot;faster zap implementation&quot;
@@ -687,9 +685,9 @@
 &nbsp;         [10 100 1000 10000 100000])</code></pre>
       <p>
         However, there&apos;s a problem. The function expressions contain <code>range</code> or <code>cycle</code>. If we run these benchmarks as is, the
-        evaluation times would include <code>range</code>&apos;s and <code>cycle</code>&apos;s processing times. We may want to do that in some cases, but in
-        this &nbsp;scenario, it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let&apos;s extract
-        <code>range</code> to an external expression.
+        evaluation times would include <code>range</code>&apos;s and <code>cycle</code>&apos;s processing times. We may want to do that in some other
+        scenarios, but in &nbsp;this case, it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let&apos;s
+        extract <code>range</code> to an external expression.
       </p>
       <pre><code>(def range-of-length-n (reduce #(assoc %1 %2 (range %2)) {} [10 100 1000 10000 100000]))</code><br><br><br><code>(defbench zap-inc
 &nbsp;         &quot;faster zap implementation&quot;
@@ -700,18 +698,18 @@
         time measurement will mainly reflect &nbsp;the work done by <code>zap</code> itself.
       </p>
       <p>
-        Perhaps you anticipated a remaining problem if you extrapolated that <code>zap</code> behaves like <code>map</code>. If we were to run the
+        If you extrapolated that <code>zap</code> behaves like <code>map</code>, perhaps you anticipated a remaining problem. If we were to run the
         <code>zap-inc</code> benchmarks as defined above, we&apos;d notice that the evaluation times were &nbsp;suspiciously consistent, no matter how many
         integers the sequence contained. <code>zap</code>, like many core sequence functions, returns a lazy sequence. We must force &nbsp;the return sequence
-        to be realized so that <code>zap-inc</code> measures <code>zap</code> actually doing something. <code>doall</code> is handy for that.
+        to be realized so that <code>zap-inc</code> measures <code>zap</code> actually doing work. <code>doall</code> is handy for that.
       </p>
       <pre><code>(defbench zap-inc
 &nbsp;         &quot;faster zap implementation&quot;
 &nbsp;         (fn [n] (doall (zap inc (range-of-length-n n))))
 &nbsp;         [10 100 1000 10000 100000])</code></pre>
       <p>
-        We would handle <code>zap-us</code> similarly. First, we&apos;ll pre-compute the test sequences so that running the benchmark doesn&apos;t measure
-        evaluating <code>cycle</code>.
+        We handle <code>zap-uc</code> similarly. First, we&apos;ll pre-compute the test sequences so that running the benchmark doesn&apos;t measure
+        <code>cycle</code>. Then we&apos;ll wrap the <code>zap</code> expression in a <code>doall</code>.
       </p>
       <pre><code>(def abc-cycle-of-length-n
 &nbsp;    (reduce #(assoc %1 %2 (take %2 (cycle [&quot;a&quot; &quot;b&quot; &quot;c&quot;])))
@@ -721,36 +719,45 @@
 &nbsp;         (fn [n] (doall (zap str/upper-case (abc-cycle-of-length-n n))))
 &nbsp;         [10 100 1000 10000 10000])</code></pre>
       <p>
-        So what happens when we evaluate a <code>defbench</code> expression? Doing that places an entry in the benchmark <a href="#registry">registry</a>. The
-        registry is an atom-wrapped hashmap whose keys are namespace-qualified &nbsp;symbols (the <em>name</em>) associated to values that are benchmark
-        metadata (group, function &nbsp;expression, arguments, etc.). Soon, in the <a href="#run-benchmarks">run benchmarks</a> step, Fastester will rip
-        through the registry and run a Criterium benchmark &nbsp;for every element in the registry.
+        So what happens when we evaluate a <code>defbench</code> expression? It binds the benchmark name to a hashmap of group, function expression, arguments,
+        and some metadata. Soon, in the <a href="#run-benchmarks">run benchmarks</a> step, Fastester will rip through the benchmark names declared in the
+        options &nbsp;hashmap key <code>:benchmarks</code> and run a Criterium benchmark for every name.
       </p>
       <p>
-        The registry now contains two benchmarks that will demonstrate <code>zap</code>&apos;s performance: one incrementing sequences of integers, named
-        <code>zap-inc</code>, and one upper-casing sequences of strings, named <code>zap-uc</code>.
+        Once we evaluate the two <code>defbench</code> expressions, the namespace contains two benchmark defintions that will &nbsp;demonstrate
+        <code>zap</code>&apos;s performance: one incrementing sequences of integers, named <code>zap-inc</code>, and one upper-casing sequences of strings,
+        named <code>zap-uc</code>.
       </p>
+      <h4>
+        Helper utilities
+      </h4>
       <p>
-        Fastester provides a few helper utilities. If we want to see how a &nbsp;benchmark would work, we can invoke <code>run-one-registered-benchmark</code>.
+        Fastester provides a few helper utilities. If we want to see how a &nbsp;benchmark would work, we can invoke <code>run-one-defineed-benchmark</code>.
+      </p>
+      <pre><code>(run-one-defined-benchmark zap-inc :quick)</code><br><code>;; =&gt; ...output elided for brevity...</code></pre>
+      <p>
         In the course of writing benchmarks, we often need a sequence of &nbsp;exponentially-growing integers. For that, Fastester offers
         <code>range‑pow‑10</code> and <code>range‑pow‑2</code>.
       </p>
       <pre><code>(range-pow-10 5) ;; =&gt; (1 10 100 1000 10000 100000)</code><br><br><code>(range-pow-2 5) ;; =&gt; (1 2 4 8 16 32)</code></pre>
       <p>
-        Sometimes, we&apos;ll want to remove a defined benchmark, which we can do &nbsp;with <code>undefbench</code>. And when we need to tear everything down
-        and start defining from scratch, &nbsp;we have <code>clear‑registry!</code>.
+        Sometimes, we&apos;ll want to remove a defined benchmark, which we can do &nbsp;with <code>clojure.core/ns-unmap</code>.
+      </p>
+      <pre><code>(ns-unmap *ns* &apos;zap-something-else)</code></pre>
+      <p id="hierarchy">
+        Before we go to the next step, running the benchmarks, let&apos;s &nbsp;double-check the options. We need Fastester to find our two benchmark
+        &nbsp;definitions, so we must correctly set <code>:benchmarks</code>. This options key is associated to a hashmap.
       </p>
       <p>
-        Before we go to the next step, let&apos;s double-check the options. We need &nbsp;Fastester to find our two benchmark definitions, so we must correctly
-        &nbsp;set the <code>:benchmarks</code>. The keys are simple symbols indicating the namespace, in our example, &nbsp;we have one namespace, and
-        therefore one key, <code>&apos;zap-benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in
-        our example, <code>&apos;zap-inc</code> and <code>&apos;zap-uc</code>. Altogether, that section of the options looks like this.
+        That nested hashmap&apos;s keys are symbols indicating the namespace. In our &nbsp;example, we have one namespace, and therefore one key,
+        <code>&apos;zap-benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in our example,
+        <code>&apos;zap-inc</code> and <code>&apos;zap-uc</code>. Altogether, that section of the options looks like this.
       </p>
       <pre><code>:benchmarks {&apos;zap-benchmarks #{&apos;zap-inc
 &nbsp;                              &apos;zap-uc}}</code></pre>
       <p>
-        Also, saving the function expression results (i.e., one-hundred-thousand &nbsp;incremented inegers) blows up the file sizes, so let&apos;s set
-        <code>:save-benchmark-fn-results?</code> to <code>false</code>.
+        We should also be on guard: saving <code>zap</code>&apos;s results (e.g., one-hundred-thousand incremented integers) blows up the &nbsp;file sizes, so
+        let&apos;s set <code>:save-benchmark-fn-results?</code> to <code>false</code>.
       </p>
       <h3 id="run-benchmarks">
         3. Run benchmarks
@@ -768,8 +775,8 @@
         multi-core &nbsp;machine with minimal competing processes, network activity, etc.
       </p>
       <p>
-        We should see one <code>edn</code> file per benchmark. If not, double check the options hashmap to make sure &nbsp;all the namespace and name symbols
-        within <code>:benchmarks</code> are complete and correct.
+        We should see one <code>edn</code> file per function-expression/argument pairing. If not, double check the &nbsp;options hashmap to make sure all the
+        namespace and name symbols within <code>:benchmarks</code> are complete and correct.
       </p>
       <h3 id="generate">
         4. Generate the <span class="small-caps">html</span>
@@ -822,11 +829,22 @@
       </p>
       <pre><code>(doall (map inc ninety-nine-rands))</code></pre>
       <p>
-        One final <em>gotcha</em>, particular to Fastester itself, will be familiar to Clojurists programming at the <span class="small-caps">repl</span>.
-        During development, it&apos;s typical to define and re-define benchmarks with <code>defbench</code>. It&apos;s not difficult for the namespace to hold
-        stale benchmark definitions that are not apparent from visual inspection of the current state of the text in the file. Fastester provides a pair of
-        tools to help with this. The <code>undefbench</code> utility undefines a benchmark by name. <code>clear-registry!</code> undefines all benchmarks, and
-        a quick re-evaluation of the entire text buffer redefines only the benchmarks currently expressed in the file.
+        Regarding Fastester itself, three final <em>gotchas</em> will be familiar to Clojurists programming at the <span class="small-caps">repl</span>. During
+        development, it&apos;s typical to define and re-define benchmarks with <code>defbench</code>. It&apos;s not difficult for the namespace to get out of
+        sync with the visual appearance of the text represented in the file. Maybe we renamed a benchmark, and the old benchmark is still floating around
+        invisibly. Such an orphaned definition won&apos;t hurt anything because Fastester will only run benchmarks explicitly listed in the option&apos;s
+        <code>:benchmarks</code>. If we want to actively remove the benchmark, we can use <code>clojure.core/ns-unmap</code>.
+      </p>
+      <p>
+        Perhaps more dangerous, maybe we edited a <code>defbench</code>&apos;s textual expression, but failed to re-evaluate it. What we see with our eyes
+        won&apos;t accurately reflect the benchmark definition that Fastester actually runs. To fix this problem, a quick re-evaluation of the entire text
+        buffer redefines all the benchmarks currently expressed in the namespace.
+      </p>
+      <p>
+        Finally, we need to remember that when running from the command line, Fastester consults only the options and benchmark defintions from the file
+        contents <strong>as they exist on disk</strong>. A <span class="small-caps">repl</span>-attached editor with unsaved options or definitions, even with
+        a freshly-evaluated namespace, will not affect the results from a command line invocation. Saving the files to disk synchronizes what we see in the
+        editor and what is consumed by command line-initiated actions.
       </p>
     </section>
     <section id="limits">
@@ -997,20 +1015,7 @@
         </dt>
         <dd>
           <p>
-            A tag that refers to a benchmark definition. Supplied to <code>defbench</code> as a simple symbol. Insertion into the registry prepends the
-            namespace (making it namespace-qualified), to which a benchmark definition is associated.
-          </p>
-        </dd>
-      </dl>
-      <dl>
-        <dt id="registry">
-          registry
-        </dt>
-        <dd>
-          <p>
-            A singular collection of benchmark definitions. An atom-wrapped hashmap whose keys are namespace-qualified symbols (<a href="#name">names</a>)
-            associated to a set of benchmark definitions (<a href="#group">group</a>, function expression, arguments). Any other property of the registry is an
-            implementation detail an not guaranteed.
+            A Clojure symbol that refers to a benchmark definition. <code>defbench</code> binds a name to benchmark <a href="#benchmark">defintion</a>.
           </p>
         </dd>
       </dl>
@@ -1035,7 +1040,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 23.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 26.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

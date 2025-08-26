@@ -9,15 +9,12 @@
    [criterium.core :as crit]
    [fastester.display :refer [fastester-defaults]]
    [fastester.measure :refer [*lightning-benchmark-opts*
-                              clear-registry!
                               defbench
                               range-pow-10
                               range-pow-2
-                              registry
                               run-benchmarks
                               run-manual-benchmark
-                              run-one-defined-benchmark
-                              undefbench]]
+                              run-one-defined-benchmark]]
    [readmoi.core :refer [*project-group*
                          *project-name*
                          *project-version*
@@ -31,7 +28,14 @@
 (def readmoi-options (load-file "resources/readmoi_options.edn"))
 
 
-(generate-all project-metadata readmoi-options)
+(do
+  (generate-all project-metadata readmoi-options)
+  (let [fname "doc/readme.html"
+        page (slurp fname)
+        match #"doc/zap_img/group-0-fexpr-0.svg"
+        replacement "zap_img/group-0-fexpr-0.svg"
+        replaced (str/replace page match replacement)]
+    (spit fname replaced)))
 
 
 (defn -main

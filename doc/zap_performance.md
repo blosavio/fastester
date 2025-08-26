@@ -15,9 +15,10 @@
       </p>
       <pre><code>$ lein run :documents &lt;zap_options.edn&gt;</code></pre>
       <p>
-        The hyperlink immediately preceding this preamble (&apos;faster `zap` implementation&apos;) whisks us to the <span class="small-caps">html</span>
-        section with that <em>group</em> name. In a performance document with only one group like this one, it&apos;s not terribly useful. Still, you can try
-        clicking it anyways; it won&apos;t scroll you too far.
+        The hyperlink immediately preceding this preamble (&apos;faster `zap` implementation&apos;) is a one-element table of contents. Clicking that link
+        whisks us to the <span class="small-caps">html</span> section for that benchmark <em>group</em> name. In a performance document like this one with only
+        one group, it&apos;s not terribly useful. Real life documents will have multiple groups with longer sections and that table of contents will provide
+        some handy navigation. Try clicking the link; it won&apos;t scroll you too far.
       </p>
     </div>
     <section>
@@ -213,7 +214,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 23.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 25.<span id="uuid"><br>
       3615ae1c-d196-4cb0-bb4c-b4f29a8e2501</span>
     </p>
   </body>

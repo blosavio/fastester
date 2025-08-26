@@ -28,21 +28,11 @@
 
  [:dl
   [:dt#name "name"]
-  [:dd [:p "A tag that refers to a benchmark definition. Supplied to "
+  [:dd [:p "A Clojure symbol that refers to a benchmark definition. "
         [:code "defbench"]
-        " as a simple symbol. Insertion into the registry prepends the namespace
- (making it namespace-qualified), to which a benchmark definition is
- associated."]]]
-
- [:dl
-  [:dt#registry "registry"]
-  [:dd [:p "A singular collection of benchmark definitions. An atom-wrapped
- hashmap whose keys are namespace-qualified symbols ("
-        [:a {:href "#name"} "names"]
-        ") associated to a set of benchmark definitions ("
-        [:a {:href "#group"} "group"]
-        ", function expression, arguments). Any other property of the registry
- is an implementation detail an not guaranteed."]]]
+        " binds a name to benchmark"
+        [:a {:href "#benchmark"} " defintion"]
+        "."]]]
 
  [:dl
   [:dt#version "version"]

@@ -53,13 +53,15 @@
             [:pre [:code "$ lein run :documents <zap_options.edn>"]]
 
             [:p "The hyperlink immediately preceding this preamble ('faster
- `zap` implementation') whisks us to the "
+ `zap` implementation') is a one-element table of contents. Clicking that link
+ whisks us to the "
              [:span.small-caps "html"]
-             " section with that "
+             " section for that benchmark "
              [:em "group"]
-             " name. In a performance document with only one group like this
- one, it's not terribly useful. Still, you can try clicking it anyways; it won't
- scroll you too far."]]
+             " name. In a performance document like this one with only one
+ group, it's not terribly useful. Real life documents will have multiple
+ groups with longer sections and that table of contents will provide some handy
+ navigation. Try clicking the link; it won't scroll you too far."]]
 
  :comments
  {"faster `zap` implementation"

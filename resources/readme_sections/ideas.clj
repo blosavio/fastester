@@ -12,17 +12,17 @@
   " provides a handy group of benchmarking utilities that measures the
  evaluation time of a Clojure expression. We could use Criterium to learn that "
   [:code "(zap inc [1 2 3])"]
-  " requires 19.6±0.6 nanoseconds to evaluate."]
+  " requires 183±2 microseconds to evaluate."]
 
  [:p "Is…that good? Difficult to say. What we'd really like to know is how
- 19.6 nanoseconds compares to some previous version. So if, for example,
+ 183 microseconds compares to some previous version. So if, for example,
  version 12 of "
   [:code "zap"]
-  " evaluates in 19.6 nanoseconds, whereas version 11 required
- 24.5 nanoseconds, we have good reason to believe the later implementation is
+  " evaluates in 183 microseconds, whereas version 11 required
+ 264 microseconds, we have good reason to believe the later implementation is
  faster."]
 
- [:p "Beyond that, tossing out raw numbers like \"19.6\" and \"24.5\" requires
+ [:p "Beyond that, tossing out raw numbers like \"183\" and \"264\" requires
  people to juggle arithmetic in their head. Not ideal."]
 
  [:p "A Fastester performance report intends to be objective, relative, and
@@ -39,14 +39,14 @@
  [:p "A single, isolated timing measurement doesn't mean much to a person, even
  if it is "
   [:a {:href "#objective"} "objective"]
-  ". Humans simply don't have everyday intuition for an event that occurs in a
- few nanoseconds. So when we discuss the concept of 'fast', we're often
- implicitly speaking in relative terms."]
+  ". People simply don't have everyday intuition for an event that occurs in a
+ nanoseconds or microseconds. So when we discuss the concept of 'fast', we're
+ often implicitly speaking in relative terms."]
 
  [:p "Fastester focuses on comparing the speed of one function to a previous
  version of itself."]
 
- [:aside "(I am sorely tempted to remove all absolute units by normalizing time
+ #_[:aside "(I am sorely tempted to remove all absolute units by normalizing time
  measurements to some arbitrary reference, but I am reluctant to treat the
  benchmark results so casually.)"]
 
@@ -72,7 +72,7 @@
  version-control."]]
 
   [:li [:p "The performance data is objective, but people may interpret it to
- suit their tastes. 19.6 nanoseconds may be fast enough for one person, but not
+ suit their tastes. 183 microseconds may be fast enough for one person, but not
  another. The accompanying commentary may express the library author's opinions.
  That's okay. The author is merely communicating that opinion to the person
  considering switching versions. The author may consider a particular version "

@@ -1,11 +1,8 @@
 (ns fastester.performance.benchmarks
-  "Beware: When actively developing a benchmarking namespace, the registry may
-  become stale. Use
-
-  1. [[undefbench]] to undefine a single benchmark, or
-
-  2. [[clear-registry!]] to return the registry to an empty state, before
-  re-evaluating the entire namespace."
+  "Beware: When actively developing benchmarks, the namespace may become stale.
+  Use [`ns-unmap`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/ns-unmap)
+  to undefine a single benchmark. Re-evaluate the buffer to refresh all
+  definitions."
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
@@ -90,25 +87,19 @@
 
 ;; Demonstrate dev helpers
 
-#_(require '[fastester.measure :refer [benchmark-fn
-                                       clear-registry!
-                                       registry
-                                       run-manual-benchmark
+#_(require '[fastester.measure :refer [run-manual-benchmark
                                        run-one-defined-benchmark]])
 
-#_(clear-registry!)
-#_ @registry
 #_(run-manual-benchmark (fn [w] (my-conj [1 2 3] w)) :foo :lightning)
 #_(run-one-defined-benchmark fastester.performance.benchmarks/add-3-arg :lightning)
 #_(run-one-defined-benchmark add-1-arg :lightning)
-#_((benchmark-fn add-2-arg) 55)
+#_((add-2-arg :f) 55)
 
 
-#_(deftest benchmark-function-tests
-  (testing "demonstrate using `benchmark-fn` to compose a benchmark unit test"
-    (is (= 110 ((benchmark-fn add-2-arg) 55)))
-    (is (= 64000 ((benchmark-fn add-many-args) 1000)))
-    (is (= :tail-value (last ((benchmark-fn conj-onto-rands) 1))))))
+(deftest benchmark-function-tests
+  (testing "demonstrate composing a benchmark unit test"
+    (is (= 110 ((add-2-arg :f) 55)))
+    (is (= 64000 ((add-many-args :f) 1000)))))
 
 
 #_(run-tests)

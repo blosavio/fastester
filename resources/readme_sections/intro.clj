@@ -20,22 +20,28 @@
    " is 20 to 30 percent faster than version 11 for integers spanning five
  orders of magnitude. This implementation change will improve performance for
  the vast majority of intended use cases."]]
- 
- [:p "And then show this."]
 
  (let [img-alt "Chart of synthetic performance benchmark of function `zap`,
- comparing versions 11 and 12; version 12 demonstrates approximately 25% faster
- performance across a specific range of arguments."]
-   (hiccup.element/image "zap_img/group-0-fexpr-0.svg" img-alt))
+                comparing versions 11 and 12; version 12 demonstrates
+                approximately 25% faster performance across a specific range of
+                arguments."]
+   (hiccup.element/image "doc/zap_img/group-0-fexpr-0.svg" img-alt))
+
+ ;; Need to load the image for both the html in 'doc' and markdown in root
+ ;; directory. Could abuse the browswer's attempt to load multiple images, but
+ ;; that tactic shows broken link icons. Instead, insert the image link so that
+ ;; the markdown file works, then use the generator script to hack the html file
+ ;; after generation so that the image file is loaded from the directory one
+ ;; level down.
 
  (let [page (slurp "./doc/zap_performance.html")
-      start-tag "<table>"
-      end-tag "</table>"
-      start-tables (str/index-of page start-tag)
-        end-tables (str/index-of page end-tag)]
-  (hiccup.util/raw-string (subs page
-                                start-tables
-                                (+ end-tables (count end-tag)))))
+       start-tag "<table>"
+       end-tag "</table>"
+       start-tables (str/index-of page start-tag)
+       end-tables (str/index-of page end-tag)]
+   (hiccup.util/raw-string (subs page
+                                 start-tables
+                                 (+ end-tables (count end-tag)))))
 
  [:p "The Fastester library streamlines the tasks of writing benchmarks for a
  function, objectively measuring evaluation times of different versions of that

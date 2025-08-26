@@ -10,24 +10,7 @@
   actual performance measurements.
 
   See [[fastester.display]] for utilities that generate an html document with
-  charts and tables that communicate those results.
-
-  For functions that are intended for developement time, Fastester handles
-  simple symbols for convenience. Use explicit, qualified symbols when running
-  (i.e., `:benchmarks` section of the options hashmap).
-
-  Functions that consume symbols for the purposes of binding a name
-  ([[defbench]] and [[defbench*]]) may be either simple or qualified. Qualified
-  symbols are used as-is to bind the name. Simple symbols are automatically
-  prepended with `*ns*` for binding purposes.
-
-  Functions that consume symbols for name lookup ([[undefbench]],
-  [[undefbench*]], [[benchmark-fn]], and [[run-one-defined-benchmark]]) may be
-  either simple or qualified. Qualified symbols are used as-is for the lookup.
-  If a simple symbol is used for lookup, there must be only one qualified name
-  with the given simple part, otherwise an exception is thrown.
-
-  In all cases, it is recommended to use the namespace as the qualifier."
+  charts and tables that communicate those results."
   (:require
    [clojure.edn :as edn]
    [clojure.java.io :as io]
@@ -106,12 +89,10 @@
 
 
 (defmacro defbench
-  "Define a benchmark by adding a name, a group, a function, and arguments
-  sequence to the  [[registry]].
+  "Define a benchmark by binding a hashmap containing a function, arguments
+  sequence, and group to a name.
 
-  * `name` is a symbol that labels the benchmark. If supplied as a qualified
-  symbol, `name` is used as-is. If supplied as a simple symbol, `name` is
-  appended with `*ns*` when benchmark definition is added to the registry.
+  * `name` is a symbol that labels the benchmark.
   * `group` is a string, shared between multiple conceptually-related
   benchmarks.
   * `f` is a 1-arity function that measures some performance aspect. Its single
@@ -144,15 +125,13 @@
 
   Note: Invoking a `defbench` expression, editing the `name`, followed by
   invoking `defbench` a second time, defines two unique benchmarks.
-  When developing at the REPL, be aware that the registry may become 'stale'
-  with outdated tests.
+  When developing at the REPL, be aware that the namespace may become 'stale'
+  with orphaned or otherwise outdated benchmarks. Fastester will run benchmarks
+  only explicity assoiciated to the `:benchmarks` options key, defined as the
+  namespace exists in the file on the disk.
 
-  1. To remove a single, unwanted test, use [[undefbench]].
-  2. To put the registry into a state that reflects only the current
-  definitions, use [[clear-registry!]] and re-evaluate the namespace to invoke
-  all the current `defbench`s .
-
-  See [[defbench*]] for the function version."
+  To undefine a single, unwanted test, use
+  [`clojure.core/ns-unmap`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/ns-unmap)."
   {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
   [name group f n]
   `(def ~name {:group ~group
@@ -217,7 +196,7 @@
 
 
 (defmacro run-manual-benchmark
-  "Given 1-arity, S-expression `fexpr` representing a function and one argument
+  "Given 1-arity S-expression `fexpr` representing a function and one argument
   `arg`, run one benchmark test using keyword `thoroughness` to designate the
   Criterium options, sending result to &ast;`out`&ast;.
 
@@ -284,9 +263,9 @@
 (defn run-save-benchmark
   "Given string `ver`, symbol `name`, namespace `namespace`, string `group`,
   function object `f`, function S-expression `fexpr`, test argument `arg`,
-  option hashmap `opts`, and index integer `idx`, measures the evaluation time
-  under the current Criterium benchmark settings and saves results to file
-  system.
+  index integer `idx`, and option hashmap `opts`, measures the evaluation time
+  according to the option's `:testing-thoroughness` for Criterium benchmark
+  settings and saves results to file system.
 
   Example:
   ```clojure
@@ -340,13 +319,10 @@
   the Fastester options `:benchmarks`."
   {:UUIDv4 #uuid "f15a8cff-88dd-4c71-81b5-dab61bfeaffc"
    :no-doc true
-   :implementation-note "Use `require` to affect compiling the namespaces, while
-                         aliasing to a gensym so that the names don't pollute
-                         elsewhere.
-
-                         Don't feel great about abusing `require` like this, but
-                         it appears to work okay, and it seems how Leiningen
-                         gets tasks done, too. See
+   :implementation-note "Use `require` to affect compiling the namespaces. Don't
+                         feel great about abusing `require` like this, but it
+                         appears to work okay, and it seems how Leiningen gets
+                         tasks done, too. See
                          `leiningen.core.utils/require-resolve`."}
   [opt]
   (doseq [fname (keys (opt :benchmarks))]
@@ -382,8 +358,7 @@
   benchmark hashmap definitions,
   `{:name ... :ns ... :group ... :fexpr ... :f ... :n ...}`."
   {:UUIDv4 #uuid "01ae3707-ba31-4f89-a222-e85c0a7b804d"
-   :no-doc true
-   :implementation-note "2-arity `symbol` only accepts string args"}
+   :no-doc true}
   [s]
   (map (fn [[nspace sym]] @(requiring-resolve (sym-sym nspace sym))) s))
 
@@ -392,6 +367,10 @@
   "Execute benchmarks associated to option key `:benchmarks`, saving results to
   a version-specific directory. If `explicit-options-filename` is not supplied,
   defaults to `./resources/fastester_options.edn`.
+
+  Upon invocation, reads options file and any benchmarks definition namespace
+  files from the disk. Ensure that the state of the file on disk and that same
+  file opened in a REPL-attached editor is what you intend.
 
   If option `:parallel?` is `true`, runs tests in parallel. Warning: Running
   tests in parallel results in inconsistent time measurements. Use
@@ -491,12 +470,16 @@
 
   Example:
   ```clojure
+  ;; define a benchmark
   (defbench my-bench \"my-group\" (fn [x] (inc x)) [97 98 99])
 
   (run-one-defined-benchmark my-bench :lightning)
+  ;; => {97 {:mean ... :var ...}
+  ;;     98 {:mean ... :var ...}
+  ;;     99 {:mean ... :var ...}}
   ```
-  Returns a hashmap with three key+vals: keys `97`, `98`, and `99`, each
-  associated with its respective benchmark result.
+  The above example returns a hashmap with three key+vals: keys `97`, `98`, and
+  `99`, each associated with its respective benchmark result.
 
   See also [[run-manual-benchmark]] and [[*lightning-benchmark-opts*]]."
   {:UUIDv4 #uuid "c2b4860d-3a46-44be-8ea1-ab97b282dfae"}
@@ -508,4 +491,5 @@
                     (crit/benchmark (f %2) th))
             {}
             (benchmark :n))))
+
 
