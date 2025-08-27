@@ -15,11 +15,11 @@
                 'add-3-arg
                 'add-many-args
                 'conj-onto-rands}
-              
+
               'fastester.performance.benchmarks-mapping
               #{'map-inc-across-a-sequence
                 'map-UC-over-a-cycle}}
- 
+
  ;; output directories and filenames
  :html-directory "doc/"
  :html-filename "performance.html"
@@ -41,24 +41,115 @@
  :tidy-html? true
 
  :preamble [:div
-            [:p "Preamble comments..."]
+            [:p "Welcome to the preamble! Each performance document contains a
+ section just below the table of contents that may be used to give introductory
+ text to the sections that follow. We write in hiccup/"
+             [:span.small-caps "html"]
+             ", so we can include elements like code examples."]
 
             [:pre [:code "(+ 1 2) ;; => 3"]]
 
-            [:p "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."]]
+            [:p "To include multiple "
+             [:span.small-caps "html"]
+             " elements, we simply wrap them all in a hiccup "
+             [:code "[:div ...]"]
+             ". The text you are reading is sourced from the "
+             [:a {:href "https://github.com/blosavio/fastester/blob/243713d69e283a954dc88492b18eef0ea216177e/resources/fastester_options.edn#L43"}
+              "options file"]
+             ", associated to the "
+             [:code ":preamble"]
+             " key."]
+
+            [:p "This performance document reports the results from running the
+ benchmarks defines in these "
+             [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks.clj"}
+              "two"]
+             " "
+             [:a {:href "https://github.com/blosavio/fastester/blob/main/test/fastester/performance/benchmarks_mapping.clj"}
+              "namespaces"]
+             ". Don't take the data too seriously; the benchmarks are merely
+ demonstrations."]]
 
  :comments
  {"mapping stuff"
-  [:p "Note: Skipped version 5..."]
+  [:div
+   [:p "This benchmark group demonstrates that the relative comparisons do not
+ necessarily have be be sequential. In this case, we skipped version 5. Note
+ the logarithmic scales on both the x- and y-axes. Also note the "
+    [:code "doall"]
+    " to force realization of the sequence."]
+
+   [:p "This benchmark group does not involve any actual implementation change,
+ so we don't see any significant performance difference between versions 4
+ and 6."]
+
+   [:p "Another thing to note is that this group contains two benchmarks, the
+ first incrementing numbers, the second upper-casing strings. It's intended to
+ demonstrate "
+    [:code "map"]
+    "'s performance spanning six orders of magnitude, with mapping functions
+ handling two differernt data types."]]
 
   "plus, vary number of digits in args"
-  [:p "Plus vary args comments..."]
+  [:div
+   [:p "The three benchmarks in this group "
+    [:strong "simulate"]
+    " performance enchancements to the addition function. To simulate this, "
+    [:code "delayed-+"]
+    " is merely that: "
+    [:code "clojure.core/+"]
+    " with an intentional delay that decreases from 60 milliseconds in version 3
+to 10 milliseconds in version 6."]
+
+   [:p "The group contains benchmarks measuring the  addition of one, two, and
+ three operands. For each of those three cases, we measure the evaluation times
+ of integers of different sizes."]
+
+   [:p "We don't expect addition to be dependent on the size of the operands,
+ and in fact that's what we see, particularly since the intentional delay
+ utterly swamps any other factor that might cause a measurable difference."]]
 
   "plus, vary number of operands"
-  [:p "Note: Added this test starting with version 4"]
+  [:div
+   [:p "Because the sequences grow from one element to one-hundred thousand
+ elements long, the evaluation times of this group's single benchmark increase.
+ We didn't change the implementation from versions 4 through 6 for this
+ demonstration, so all three curves are stacked atop one another."]]
 
   "custom `conj`"
-  [:p "Version 6 implemented `conj` with transients, so should be faster..."]}
+  [:div
+   [:p "In addition to the preamble, we may add text comments to each "
+    [:em "group"]
+    ", in this case, the group called 'custom `conj`', which Fastester uses for
+ the section heading. Group comments are sourced from the "
+    [:code ":comments"]
+    " key of the options."]
+
+   [:p "This group happens to involve only a single benchmark, but later groups
+ will contain more than one. The version 5 "
+    [:code "conj"]
+    " function was implemented as usual, while the version 6 implementation
+ uses "
+    [:a {:href "https://clojure.org/reference/transients"}
+     " transients"]
+    " for improved performance."]
+
+   [:p "Interestingly, the transient conjoin implementation is always slower,
+ for vectors spanning one to ten million elements. This represents a
+ performance "
+    [:em "regression"]
+    ". We should consider leaving the original implementation as-is, and make an
+ entirely new function for situations where the transient implementation is
+ actually faster."]
+
+   [:p "One final note: Fastester displays error bars indicating the standard
+ deviation of the sampled measurements. This gives a sense of how tightly the
+ data clusters. When the the error bars go negative and the y-axis is
+ logarithmic, Fastester suppresses that particular error bar because it can not
+ be displayed. A note highlights this occurance below the chart, and the datum
+ in the details table is called out."]
+
+   [:p "Linear y-axes always display all error bars."]]}
 
  :chart-settings
  {"(fn [n] (delayed-+ n n n))"

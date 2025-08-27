@@ -484,6 +484,21 @@
             </p>
           </td>
         </tr>
+        <tr>
+          <td>
+            <code>:sort-comparator</code>
+          </td>
+          <td>
+            <code>clojure.core/compare</code>
+          </td>
+          <td>
+            <p>
+              Comparator used for sorting versions in the performance document chart &nbsp;legends and table rows. Comparator must accept two strings
+              representing &nbsp;version entries extracted from either a Leiningen &apos;project.clj&apos; or a &nbsp;&apos;pom.xml&apos;. <a href=
+              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution.</a>
+            </p>
+          </td>
+        </tr>
       </table>
       <p>
         The following options have no defaults.
@@ -805,6 +820,38 @@
         with version&nbsp;11&apos;s, similar to the <a href="#intro">introduction example</a>. We can clearly see that the new <code>zap</code> implementation
         executes faster across a wide range of sequence lengths, both &nbsp;for incrementing integers and upper-casing strings.
       </p>
+      <p>
+        The charts and tables present strong evidence, but a morsel of explanatory &nbsp;text enhances our story. Fastester provides two opportunities to add
+        text. Near &nbsp;the top, between the table of contents and the first group&apos;s section, we can &nbsp;insert some introductory text by associating a
+        hiccup/<span class="small-caps">html</span> block to the <code>:preamble</code> key in the options hashmap.
+      </p>
+      <p>
+        Also, we can insert text after each group&apos;s section heading by creating an entry in the <code>:comments</code> part of the options hashmap. The
+        comments option is a nested hashmap whose &nbsp;keys are the group (a string) and the values are hiccup/<span class="small-caps">html</span> blocks.
+      </p>
+      <p>
+        For example, what we read in the <a href="https://blosavio.github.io/fastester/zap_performance.html"><code>zap</code> performance document</a> derives
+        from the <code>:preamble</code> and <code>:comments</code> options defined roughly like this.
+      </p>
+      <pre><code>:preamble [:div
+&nbsp;           [:p &quot;This page follows the &quot;
+&nbsp;             [:code &quot;zap&quot;]
+&nbsp;             &quot; function benchmark example from the &quot;
+&nbsp;             [:a {:href &quot;https://github.com/blosavio/fastester&quot;}
+&nbsp;              &quot;Fastester ReadMe&quot;]
+&nbsp;             ...]]
+
+:comments {&quot;faster `zap` implementation&quot; [:div
+&nbsp;                                          [:p &quot;This is the comments section... &quot;
+&nbsp;                                            [:em &quot;group&quot;]
+&nbsp;                                            &quot;, &apos;faster `zap` implementation&apos;...&quot;
+&nbsp;                                            [:code &quot;zap-inc&quot;]
+&nbsp;                                            &quot; and &quot;]
+&nbsp;                                            ...]}</code></pre>
+      <p>
+        For both the preamble and group comments, we can insert more than one <span class="small-caps">html</span> element by wrapping them with a <code>[:div
+        ...]</code>.
+      </p>
       <h3 id="gotchas">
         Gotchas
       </h3>
@@ -970,8 +1017,12 @@
         Examples
       </h2>
       <p>
-        Here is an <a href="https://github.io/blosavio/fastester/performance.html">example</a> that simulates performance changes of a few
+        An artificial <a href="https://github.io/blosavio/fastester/performance.html">example</a> that simulates performance changes of a few
         <code>clojure.core</code> functions across several versions, and demonstrates many of Fastester&apos;s features.
+      </p>
+      <p>
+        An example that <a href="https://github.io/blosavio/fastester/zap_performance.html">follows-along</a> benchmarking <code>zap</code>, the scenario
+        presented <a href="#usage">above</a> in this <em>ReadMe</em>.
       </p>
     </section>
     <section id="glossary">
@@ -1015,7 +1066,7 @@
         </dt>
         <dd>
           <p>
-            A Clojure symbol that refers to a benchmark definition. <code>defbench</code> binds a name to benchmark <a href="#benchmark">defintion</a>.
+            A Clojure symbol that refers to a benchmark definition. <code>defbench</code> binds a name to benchmark <a href="#benchmark">definition</a>.
           </p>
         </dd>
       </dl>
@@ -1040,7 +1091,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 26.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 27.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

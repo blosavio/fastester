@@ -190,7 +190,17 @@
    [:div "..."]
    [:p "A hiccup/"
     [:span.small-caps "html"]
-    " block inserted at the top of the results document."])]
+    " block inserted at the top of the results document."])
+
+  (opts-table-row
+   :sort-comparator
+   'clojure.core/compare
+   [:p "Comparator used for sorting versions in the performance document chart
+ legends and table rows. Comparator must accept two strings representing
+ version entries extracted from either a Leiningen 'project.clj' or a
+ 'pom.xml'. "
+    [:a {:href "https://clojure.org/guides/comparators#_mistakes_to_avoid"}
+     "Write custom comparators with caution."]])]
 
  [:p "The following options have no defaults."]
 
@@ -703,6 +713,56 @@
   [:code "zap"]
   " implementation executes faster across a wide range of sequence lengths, both
  for incrementing integers and upper-casing strings."]
+
+ [:p "The charts and tables present strong evidence, but a morsel of explanatory
+ text enhances our story. Fastester provides two opportunities to add text. Near
+ the top, between the table of contents and the first group's section, we can
+ insert some introductory text by associating a hiccup/"
+  [:span.small-caps "html"]
+  " block to the "
+  [:code ":preamble"]
+  " key in the options hashmap."]
+
+ [:p "Also, we can insert text after each group's section heading by creating an entry in the "
+  [:code ":comments"]
+  " part of the options hashmap. The comments option is a nested hashmap whose
+ keys are the group (a string) and the values are hiccup/"
+  [:span.small-caps "html"]
+  " blocks."]
+
+ [:p "For example, what we read in the "
+  [:a {:href "https://blosavio.github.io/fastester/zap_performance.html"}
+   [:code "zap"]
+   " performance document"]
+  " derives from the "
+  [:code ":preamble"]
+  " and "
+  [:code ":comments"]
+  " options defined roughly like this."]
+
+ [:pre
+  [:code
+   ":preamble [:div
+            [:p \"This page follows the \"
+              [:code \"zap\"]
+              \" function benchmark example from the \"
+              [:a {:href \"https://github.com/blosavio/fastester\"}
+               \"Fastester ReadMe\"]
+              ...]]
+
+:comments {\"faster `zap` implementation\" [:div
+                                           [:p \"This is the comments section... \"
+                                             [:em \"group\"]
+                                             \", 'faster `zap` implementation'...\"
+                                             [:code \"zap-inc\"]
+                                             \" and \"]
+                                             ...]}"]]
+
+ [:p "For both the preamble and group comments, we can insert more than one "
+  [:span.small-caps "html"]
+  " element by wrapping them with a "
+  [:code "[:div ...]"]
+  "."]
 
  [:h3#gotchas "Gotchas"]
 

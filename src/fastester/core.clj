@@ -3,10 +3,10 @@
 
   High-level workflow:
 
-  1. Write benchmarks in a dedicated namespace.
-  2. Run performance benchmarks with, e.g., [[run-benchmarks]].
-  3. Create an html document with charts and tables with, e.g.,
-  [[generate-documents]]."
+  1. Set options.
+  2. Write benchmarks with [[defbench]].
+  3. Run benchmarks with [[run-benchmarks]].
+  4. Generate html document with [[generate-documents]]."
   (:require
    [fastester.measure :refer [run-benchmarks]]
    [fastester.display :refer [generate-documents]]))

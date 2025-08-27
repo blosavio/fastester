@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
-    <meta charset="utf-8" compile-date="2025-08-26 20:33:12" content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8" compile-date="2025-08-27 16:11:30" content="width=device-width, initial-scale=1" name="viewport">
     <link href="project.css" rel="stylesheet" type="text/css">
     <title>
       Fastester — A Clojure library for measuring and displaying performance changes
@@ -490,6 +490,21 @@
             </p>
           </td>
         </tr>
+        <tr>
+          <td>
+            <code>:sort-comparator</code>
+          </td>
+          <td>
+            <code>clojure.core/compare</code>
+          </td>
+          <td>
+            <p>
+              Comparator used for sorting versions in the performance document chart legends and table rows. Comparator must accept two strings representing
+              version entries extracted from either a Leiningen 'project.clj' or a 'pom.xml'. <a href=
+              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution.</a>
+            </p>
+          </td>
+        </tr>
       </table>
       <p>
         The following options have no defaults.
@@ -806,6 +821,38 @@
         version&nbsp;11's, similar to the <a href="#intro">introduction example</a>. We can clearly see that the new <code>zap</code> implementation executes
         faster across a wide range of sequence lengths, both for incrementing integers and upper-casing strings.
       </p>
+      <p>
+        The charts and tables present strong evidence, but a morsel of explanatory text enhances our story. Fastester provides two opportunities to add text.
+        Near the top, between the table of contents and the first group's section, we can insert some introductory text by associating a hiccup/<span class=
+        "small-caps">html</span> block to the <code>:preamble</code> key in the options hashmap.
+      </p>
+      <p>
+        Also, we can insert text after each group's section heading by creating an entry in the <code>:comments</code> part of the options hashmap. The
+        comments option is a nested hashmap whose keys are the group (a string) and the values are hiccup/<span class="small-caps">html</span> blocks.
+      </p>
+      <p>
+        For example, what we read in the <a href="https://blosavio.github.io/fastester/zap_performance.html"><code>zap</code> performance document</a> derives
+        from the <code>:preamble</code> and <code>:comments</code> options defined roughly like this.
+      </p>
+      <pre><code>:preamble [:div
+            [:p "This page follows the "
+              [:code "zap"]
+              " function benchmark example from the "
+              [:a {:href "https://github.com/blosavio/fastester"}
+               "Fastester ReadMe"]
+              ...]]
+
+:comments {"faster `zap` implementation" [:div
+                                           [:p "This is the comments section... "
+                                             [:em "group"]
+                                             ", 'faster `zap` implementation'..."
+                                             [:code "zap-inc"]
+                                             " and "]
+                                             ...]}</code></pre>
+      <p>
+        For both the preamble and group comments, we can insert more than one <span class="small-caps">html</span> element by wrapping them with a <code>[:div
+        ...]</code>.
+      </p>
       <h3 id="gotchas">
         Gotchas
       </h3>
@@ -971,8 +1018,12 @@
         Examples
       </h2>
       <p>
-        Here is an <a href="https://github.io/blosavio/fastester/performance.html">example</a> that simulates performance changes of a few
+        An artificial <a href="https://github.io/blosavio/fastester/performance.html">example</a> that simulates performance changes of a few
         <code>clojure.core</code> functions across several versions, and demonstrates many of Fastester's features.
+      </p>
+      <p>
+        An example that <a href="https://github.io/blosavio/fastester/zap_performance.html">follows-along</a> benchmarking <code>zap</code>, the scenario
+        presented <a href="#usage">above</a> in this <em>ReadMe</em>.
       </p>
     </section>
     <section id="glossary">
@@ -1016,7 +1067,7 @@
         </dt>
         <dd>
           <p>
-            A Clojure symbol that refers to a benchmark definition. <code>defbench</code> binds a name to benchmark <a href="#benchmark">defintion</a>.
+            A Clojure symbol that refers to a benchmark definition. <code>defbench</code> binds a name to benchmark <a href="#benchmark">definition</a>.
           </p>
         </dd>
       </dl>
@@ -1041,7 +1092,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 26.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 27.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

@@ -31,7 +31,7 @@
   [:dd [:p "A Clojure symbol that refers to a benchmark definition. "
         [:code "defbench"]
         " binds a name to benchmark"
-        [:a {:href "#benchmark"} " defintion"]
+        [:a {:href "#benchmark"} " definition"]
         "."]]]
 
  [:dl
