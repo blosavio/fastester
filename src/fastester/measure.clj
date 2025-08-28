@@ -17,129 +17,9 @@
    [clojure.math :as math]
    [clojure.pprint :as pp]
    [clojure.string :as str]
-   [clojure.xml :as xml]
-   [criterium.core :as crit]))
-
-
-(defn project-version-pom-xml
-  "Queries 'pom.xml' file a returns version element as a string."
-  {:UUIDv4 #uuid "63bc2597-1575-48bf-b444-09bca5115df7"
-   :no-doc true}
-  []
-  (->> (xml/parse "pom.xml")
-       :content
-       (filter #(= (:tag %) :version))
-       first
-       :content
-       first))
-
-
-(defn project-version-lein
-  "Queries the Leiningen 'project.clj' file's `defproject` expression and
-  returns a string."
-  {:UUIDv4 #uuid "9d8409a9-89ad-4567-9572-65c1e456cbb0"
-   :no-doc true
-   :implementation-note "Would prefer to use `clojure.edn/read-string` to
- minimize security issues with reading strings, but Leiningen 'project.clj'
- files are open-ended collections, and may contain, e.g., regular expressions
- `#\"...\"` in codox's section or backslahses, which are not members of edn.
- Must presume that a user's local 'project.clj' is trustworthy."}
-  []
-  (let [project-metadata (read-string (slurp "project.clj"))]
-    (nth project-metadata 2)))
-
-
-(defn project-version
-  "Given options hashmap `opt`, returns the project version as a string.
-
-  * If `opt` declares a preference by associating either `:lein` or `:pom-xml`
-  to key `:preferred-version-info`, queries only that preference.
-  * If a preference is not specified and both sources exists, throws.
-  * If a preference is not specified and only one source exists, returns that
-  version.
-  * If neither 'project.clj' nor 'pom.xml' exists, throws."
-  {:UUIDv4 #uuid "c5bd643f-73d8-4bc6-9506-8e59ba32f9fe"
-   :no-doc true}
-  [opts]
-  (case (opts :preferred-version-info)
-    :lein (project-version-lein)
-    :pom-xml (project-version-pom-xml)
-    nil (let [exists? #(.exists (io/file %))
-              lein? (exists? "project.clj")
-              pom-xml? (exists? "pom.xml")
-              both-err "Both 'project.clj' and 'pom.xml' exist, but `:preferred-version-info` not set in options hashmap."
-              neither-err "Neither 'project.clj' nor 'pom.xml' exist."]
-          (cond
-            (and lein? pom-xml?) (throw (Exception. both-err))
-            lein? (project-version-lein)
-            pom-xml? (project-version-pom-xml)
-            :default (throw (Exception. neither-err))))))
-
-
-(defn get-options
-  "With no argument, reads Fastester options hashmap from file
-  'resources/fastester_options.edn', otherwise, reads from file
-  `explicit-options-filename`."
-  {:UUIDv4 #uuid "3fe666a0-2aa4-4777-a88f-056824bbed2f"
-   :no-doc true}
-  ([] (load-file "resources/fastester_options.edn"))
-  ([explicit-options-filename] (if explicit-options-filename
-                                 (load-file explicit-options-filename)
-                                 (get-options))))
-
-
-(defmacro defbench
-  "Define a benchmark by binding a hashmap containing a function, arguments
-  sequence, and group to a name.
-
-  * `name` is a symbol that labels the benchmark.
-  * `group` is a string, shared between multiple conceptually-related
-  benchmarks.
-  * `f` is a 1-arity function that measures some performance aspect. Its single
-  argument is the \"n\" in *big-O* notation. `f` may be supplied as an
-  S-expression or a function object. Supplying `f` as an S-expression has the
-  advantage that the definition may later convey some meaning, e.g.,
-  `(fn [n] (+ n n))`, in the html charts and tables, whereas a function object
-  will render less meaningfully, e.g.,
-  `#function[fastester.measure/eval11540/fn--11541]`.
-  * `n` is a sequence of one or more arguments. During performance testing,
-  elements of `n` will be individually supplied to the benchmarking utility.
-
-  Example, supplying `f` as an S-expression:
-  ```clojure
-  (defbench add-two \"benchmarking addition\" (fn [n] (+ n n)) [1 10 100 1000])
-  ```
-
-  Example, supplying `f` as a function object:
-  ```clojure
-  (defn my-fn-obj [q] (+ q q q))
-
-  (defbench add-three \"benchmarking addition\" my-fn-obj [2 20 200 2000])
-  ```
-
-  Both examples above share the same `group` label (\"benchmarking addition\"),
-  as both are concerned with measuring the performance of `+`. Putting them in
-  the same group signifies that they are conceptually-related, and the html
-  document will aggregate them under a single subsection. Also notice that the
-  `n` sequences need not be identical.
-
-  Note: Invoking a `defbench` expression, editing the `name`, followed by
-  invoking `defbench` a second time, defines two unique benchmarks.
-  When developing at the REPL, be aware that the namespace may become 'stale'
-  with orphaned or otherwise outdated benchmarks. Fastester will run benchmarks
-  only explicity associated to the `:benchmarks` options key, defined as the
-  namespace exists in the file on the disk.
-
-  To undefine a single, unwanted test, use
-  [`clojure.core/ns-unmap`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/ns-unmap)."
-  {:UUIDv4 #uuid "a02dc349-e964-41d9-b704-39f7d685109a"}
-  [name group f n]
-  `(def ~name {:group ~group
-               :fexpr '~f
-               :f ~(eval f)
-               :n ~n
-               :name ~(str name)
-               :ns ~(str *ns*)}))
+   [criterium.core :as crit]
+   [fastester.options :refer [get-options
+                              project-version]]))
 
 
 (defn create-results-directories
@@ -256,7 +136,7 @@
             pp/*print-miser-width* 40
             pp/*print-right-margin* 72
             *print-length* nil]
-    (with-open [writer (clojure.java.io/writer filepath)]
+    (with-open [writer (io/writer filepath)]
       (pp/pprint content writer))))
 
 

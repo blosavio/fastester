@@ -14,7 +14,7 @@
    [clojure.inspector :refer :all]
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [fastester.measure :refer [get-options]]
+   [fastester.options :refer [get-options]]
    [readmoi.core :refer :all]))
 
 
@@ -627,9 +627,6 @@ position, plot border, etc.")
                   (conj (fastester-md-footer opt)))))))
 
 
-(load "fastester_defaults")
-
-
 (defn generate-documents
   "Write-to-file html and markdown documents that show performance measurements
   across a library's versions.
@@ -640,17 +637,16 @@ position, plot border, etc.")
   details on the structure of the options map."
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
   [& [explicit-options-filename]]
-  (let [opt (get-options explicit-options-filename)
-        options-n-defaults (merge fastester-defaults opt)
-        data (load-results (get-result-filenames opt))
+  (let [opts (get-options explicit-options-filename)
+        data (load-results (get-result-filenames opts))
         organized-data (organize-data data)]
-    (do (generate-html options-n-defaults organized-data)
-        (generate-markdown options-n-defaults organized-data)
-        (if (options-n-defaults :tidy-html?)
+    (do (generate-html opts organized-data)
+        (generate-markdown opts organized-data)
+        (if (opts :tidy-html?)
           (do (tidy-html-document
-               (str (options-n-defaults :html-directory)
-                    (options-n-defaults :html-filename)))
+               (str (opts :html-directory)
+                    (opts :html-filename)))
               (tidy-html-body
-               (str (options-n-defaults :markdown-directory)
-                    (options-n-defaults :markdown-filename))))))))
+               (str (opts :markdown-directory)
+                    (opts :markdown-filename))))))))
 

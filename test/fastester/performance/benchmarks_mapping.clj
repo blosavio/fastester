@@ -5,8 +5,8 @@
   (:require
    [clojure.math :refer :all]
    [clojure.string :as str]
-   [fastester.measure :refer [defbench
-                              range-pow-10]]))
+   [fastester.define :refer [defbench]]
+   [fastester.measure :refer [range-pow-10]]))
 
 
 ;;;; 3a. Testing basic mapping over a sequence of numbers

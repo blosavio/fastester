@@ -6,31 +6,8 @@
                          run-test
                          run-tests
                          testing]]
+   [fastester.define :refer [defbench]]
    [fastester.measure :refer :all]))
-
-
-(deftest project-version-tests
-  (is (= java.lang.String (type (project-version (get-options))))))
-
-
-(deftest get-options-tests
-  (let [req-options-keys #{:project-formatted-name
-                           :responsible
-                           :copyright-holder
-                           :fastester-UUID
-                           :benchmarks
-                           :html-directory
-                           :html-filename
-                           :img-subdirectory
-                           :markdown-directory
-                           :markdown-filename
-                           :results-url
-                           :results-directory
-                           :verbose?
-                           :testing-thoroughness
-                           :parallel?
-                           :save-benchmark-fn-results?}]
-    (is (every? (set (keys (get-options))) req-options-keys))))
 
 
 (deftest date-tests

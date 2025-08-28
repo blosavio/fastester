@@ -12,9 +12,9 @@
                          run-test
                          run-tests
                          testing]]
-   [fastester.measure :refer [project-version
-                              defbench
-                              range-pow-10]]))
+   [fastester.define :refer [defbench]]
+   [fastester.measure :refer [range-pow-10]]
+   [fastester.options :refer [project-version]]))
 
 
 (def ver (project-version {:preferred-version-info :lein}))

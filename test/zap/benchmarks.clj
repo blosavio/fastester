@@ -8,12 +8,12 @@
                                   run-test
                                   run-tests
                                   testing]]
+            [fastester.define :refer [defbench]]
             [fastester.display :refer [generate-documents]]
-            [fastester.measure :refer [defbench
-                                       project-version
-                                       range-pow-10
+            [fastester.measure :refer [range-pow-10
                                        run-benchmarks
-                                       run-one-defined-benchmark]]))
+                                       run-one-defined-benchmark]]
+            [fastester.options :refer [project-version]]))
 
 
 ;; Strategy: Instead of changing the implementation of `zap`, we will *simulate*
