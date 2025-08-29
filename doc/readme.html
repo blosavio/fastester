@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
-    <meta charset="utf-8" compile-date="2025-08-27 16:11:30" content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8" compile-date="2025-08-29 16:42:02" content="width=device-width, initial-scale=1" name="viewport">
     <link href="project.css" rel="stylesheet" type="text/css">
     <title>
       Fastester — A Clojure library for measuring and displaying performance changes
@@ -40,7 +40,10 @@
       <h3>
         Require
       </h3>
-      <pre><code>(require '[fastester.measure :refer [defbench run-one-defined-benchmark]])</code></pre>
+      <pre><code>(require '[fastester.define :refer [defbench]]
+         '[fastester.display :refer [generate-documents]]
+         '[fastester.measure :refer [run-benchmarks]])
+</code></pre>
     </section>
     <section id="intro">
       <h2>
@@ -274,11 +277,11 @@
       </h3>
       <p>
         We must first set the options that govern how Fastester behaves. Options live in a file (defaulting to <code>resources/fastester_options.edn</code>) as
-        a Clojure map. One way to get up and running quickly is to copy-paste Fastester's <a href=
-        "https://github.com/blosavio/fastester/blob/main/resources/fastester_options.edn">sample options file</a> and edit as needed.
+        a Clojure map. One way to get up and running quickly is to copy-paste a <a href=
+        "https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">sample options file</a> and edit as needed.
       </p>
       <p>
-        The following options have <a href="https://blosavio.github.io/fastester.display.html#var-fastester-defaults">default values</a>.
+        The following options have <a href="https://blosavio.github.io/fastester.options.html#var-fastester-defaults">default values</a>.
       </p>
       <table>
         <tr>
@@ -302,7 +305,7 @@
           <td>
             <div>
               <p>
-                Hashmap arranging a hierarchichy of namespaces and benchmark definitions. Keys (quoted symbols) represent namespaces. Values (sets of quoted
+                Hashmap arranging a hierarchy of namespaces and benchmark definitions. Keys (quoted symbols) represent namespaces. Values (sets of quoted
                 symbols) represent benchmark names. See <a href="#hierarchy">discussion</a>.
               </p>
               <p>
@@ -425,7 +428,12 @@
           </td>
           <td>
             <p>
-              Assigns Criterium benchmark settings. One of <code>:default</code>, <code>:quick</code>, <code>:lightning</code>.
+              Assigns Criterium benchmark settings. One of <code><a href=
+              "https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83">:default</a></code>,
+              <code><a href=
+              "https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92">:quick</a></code>,
+              <code><a href=
+              "https://github.com/blosavio/fastester/blob/d1fccf5e3acfb056ecd9d2e775d62d91b55b04c8/src/fastester/measure.clj#L61">:lightning</a></code>.
             </p>
           </td>
         </tr>
@@ -604,11 +612,12 @@
         </li>
       </ol>
       <p>
-        Writing benchmarks follows a similar pattern to writing unit tests. We create a file topped with a namespace declaration. For organizing purposes, we
-        may write more than one benchmarks file if, for example, we'd like to write one benchmark file per source namespace.
+        Writing benchmarks follows a similar pattern to writing unit tests. We create a file, perhaps named <a href=
+        "https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj">benchmarks.clj</a>, topped with a namespace declaration. For organizing
+        purposes, we may write more than one benchmarks file if, for example, we'd like to write one benchmark file per source namespace.
       </p>
       <p>
-        Within a benchmarks file, we use <code>defbench</code> to <strong>def</strong>ine a <strong>bench</strong>mark. Here is its signature.
+        Within our benchmarks file, we use <code>defbench</code> to <strong>def</strong>ine a <strong>bench</strong>mark. Here is its signature.
       </p>
       <pre><code>(defbench <em>name "group" fn-expression args</em>)</code></pre>
       <p>
@@ -647,7 +656,7 @@
       </p>
       <pre><code>(fn [n] (zap inc (range n)))</code></pre>
       <p>
-        In addition to incrementing integers, we wanted to demonstrate upper-casing strings. Clojure's <code>clojure.string/upper-case</code> performns that
+        In addition to incrementing integers, we wanted to demonstrate upper-casing strings. Clojure's <code>clojure.string/upper-case</code> performs that
         operation on a single string.
       </p>
       <pre><code>(require '[clojure.string :as str])</code></pre>
@@ -668,7 +677,7 @@
         <code>i</code>.
       </p>
       <p>
-        'Running' a benchmark with those function expresions means that arguments are serially passed to the expression, measuring the evaluation times for
+        'Running' a benchmark with those function expressions means that arguments are serially passed to the expression, measuring the evaluation times for
         each. The arguments are supplied by the final component of the benchmark definition, a sequence. For <code>zap-inc</code>, let's explore
         <code>range</code>s from ten to one-hundred thousand.
       </p>
@@ -743,21 +752,21 @@
         options hashmap key <code>:benchmarks</code> and run a Criterium benchmark for every name.
       </p>
       <p>
-        Once we evaluate the two <code>defbench</code> expressions, the namespace contains two benchmark defintions that will demonstrate <code>zap</code>'s
+        Once we evaluate the two <code>defbench</code> expressions, the namespace contains two benchmark definitions that will demonstrate <code>zap</code>'s
         performance: one incrementing sequences of integers, named <code>zap-inc</code>, and one upper-casing sequences of strings, named <code>zap-uc</code>.
       </p>
       <h4>
         Helper utilities
       </h4>
       <p>
-        Fastester provides a few helper utilities. If we want to see how a benchmark would work, we can invoke <code>run-one-defineed-benchmark</code>.
+        Fastester provides a few helper utilities. If we want to see how a benchmark would work, we can invoke <code>run-one-defined-benchmark</code>.
       </p>
-      <pre><code>(run-one-defined-benchmark zap-inc :quick)</code><br><code>;; =&gt; ...output elided for brevity...</code></pre>
+      <pre><code>(require '[fastester.measure :refer [run-one-defined-benchmark]])</code><br><br><code>(run-one-defined-benchmark zap-inc :quick)</code><br><code>;; =&gt; ...output elided for brevity...</code></pre>
       <p>
         In the course of writing benchmarks, we often need a sequence of exponentially-growing integers. For that, Fastester offers <code>range‑pow‑10</code>
         and <code>range‑pow‑2</code>.
       </p>
-      <pre><code>(range-pow-10 5) ;; =&gt; (1 10 100 1000 10000 100000)</code><br><br><code>(range-pow-2 5) ;; =&gt; (1 2 4 8 16 32)</code></pre>
+      <pre><code>(require '[fastester.measure :refer [range-pow-2 range-pow-10]])</code><br><br><code>(range-pow-10 5) ;; =&gt; (1 10 100 1000 10000 100000)</code><br><code>(range-pow-2 5) ;; =&gt; (1 2 4 8 16 32)</code></pre>
       <p>
         Sometimes, we'll want to remove a defined benchmark, which we can do with <code>clojure.core/ns-unmap</code>.
       </p>
@@ -786,7 +795,8 @@
       </p>
       <pre><code>$ lein run :benchmarks</code></pre>
       <p>
-        has the same effect.
+        has the same effect. <a href="#affinity">Later</a>, we'll discuss a modification of this invocation that attempts to address a possible issue with
+        contemporary CPUs.
       </p>
       <p>
         We should expect each benchmark to take about a minute with the default benchmark settings. To minimize timing variance, we ought to use a multi-core
@@ -801,7 +811,7 @@
       </h3>
       <p>
         When the benchmarks are finished running, we can generate the performance report. Sometimes it's useful to have an <span class="small-caps">html</span>
-        file to quickly view in the browser, and other times it's useful to have a markdown file (i.e., to show on Github), so Fastester generates one of each.
+        file to quickly view in the browser, and other times it's useful to have a markdown file (i.e., to show on GitHub), so Fastester generates one of each.
       </p>
       <p>
         To generate the documents, we can invoke <code>(generate‑documents)</code> at the <span class="small-caps">repl</span>, or
@@ -889,10 +899,24 @@
         redefines all the benchmarks currently expressed in the namespace.
       </p>
       <p>
-        Finally, we need to remember that when running from the command line, Fastester consults only the options and benchmark defintions from the file
+        Finally, we need to remember that when running from the command line, Fastester consults only the options and benchmark definitions from the file
         contents <strong>as they exist on disk</strong>. A <span class="small-caps">repl</span>-attached editor with unsaved options or definitions, even with
         a freshly-evaluated namespace, will not affect the results from a command line invocation. Saving the files to disk synchronizes what we see in the
         editor and what is consumed by command line-initiated actions.
+      </p>
+      <p>
+        When displaying relative performance comparisons, it's crucial to hold the environment as consistent as possible. If a round of benchmarks are run when
+        the CPU, RAM, operating system, Java version, or Clojure version are changes, we need to re-run <strong>all</strong> previous benchmarks. Or, maybe
+        better, we ought to make a new options file and generate a completely different performance document, while keeping the old around.
+      </p>
+      <p id="affinity">
+        <em>Unresolved:</em> Contemporary systems often use multiple, heterogeneous CPU cores, i.e., X&nbsp;efficiency cores running light tasks at low power
+        and Y&nbsp;high-performance cores running intense tasks. Linux provides a utility, <code>taskset</code>, that explicitly sets CPU affinity. Invoking
+      </p>
+      <pre><code>$ taskset --cpu-list 3 lein run :benchmarks</code></pre>
+      <p>
+        from the command line pins the benchmark process to the fourth CPU. Fastester does not provide a turn-key solution for setting CPU affinity for other
+        operating systems such as Windows or MacOS.
       </p>
     </section>
     <section id="limits">
@@ -1092,7 +1116,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 27.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 29.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

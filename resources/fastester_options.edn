@@ -88,13 +88,13 @@
  demonstrate "
     [:code "map"]
     "'s performance spanning six orders of magnitude, with mapping functions
- handling two differernt data types."]]
+ handling two different data types."]]
 
   "plus, vary number of digits in args"
   [:div
    [:p "The three benchmarks in this group "
     [:strong "simulate"]
-    " performance enchancements to the addition function. To simulate this, "
+    " performance enhancements to the addition function. To simulate this, "
     [:code "delayed-+"]
     " is merely that: "
     [:code "clojure.core/+"]
@@ -146,7 +146,7 @@ to 10 milliseconds in version 6."]
  deviation of the sampled measurements. This gives a sense of how tightly the
  data clusters. When the the error bars go negative and the y-axis is
  logarithmic, Fastester suppresses that particular error bar because it can not
- be displayed. A note highlights this occurance below the chart, and the datum
+ be displayed. A note highlights this occurence below the chart, and the datum
  in the details table is called out."]
 
    [:p "Linear y-axes always display all error bars."]]}

@@ -5,5 +5,11 @@
  [:h3 "Clojure CLI/deps.edn"]
  [:pre [:code (str *project-group* "/" *project-name* " {:mvn/version \"" *project-version* "\"}")]]
  [:h3 "Require"]
- [:pre (print-form-then-eval "(require '[fastester.measure :refer [defbench run-one-defined-benchmark]])")]]
+ [:pre
+  (-> "(require
+ '[fastester.define :refer [defbench]]
+ '[fastester.display :refer [generate-documents]]
+ '[fastester.measure :refer [run-benchmarks]])"
+      print-form-then-eval
+      (update-in [1] #(str/replace % #";; => nil" "")))]]
 

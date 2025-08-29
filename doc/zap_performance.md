@@ -28,7 +28,7 @@
       <div>
         <p>
           This is the comments section for our single benchmark <em>group</em>, &apos;faster `zap` implementation&apos;. We designated two benchmarks to that
-          group, <code>zap-inc</code> and <code>zap-uc</code>. We don&apos;t see those names here because they are merely bookeeping and not relevant for
+          group, <code>zap-inc</code> and <code>zap-uc</code>. We don&apos;t see those names here because they are merely bookkeeping and not relevant for
           communicating the performance changes between version&nbsp;11 and version&nbsp;12.
         </p>
         <p>
@@ -214,7 +214,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 28.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 29.<span id="uuid"><br>
       3615ae1c-d196-4cb0-bb4c-b4f29a8e2501</span>
     </p>
   </body>

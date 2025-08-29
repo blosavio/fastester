@@ -53,13 +53,13 @@
  live in a file (defaulting to "
   [:code "resources/fastester_options.edn"]
   ") as a Clojure map. One way to get up and running quickly is to copy-paste
- Fastester's "
-  [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/fastester_options.edn"}
+ a "
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn"}
    "sample options file"]
   " and edit as needed."]
 
  [:p "The following options have "
-  [:a {:href "https://blosavio.github.io/fastester.display.html#var-fastester-defaults"}
+  [:a {:href "https://blosavio.github.io/fastester.options.html#var-fastester-defaults"}
    "default values"]
   "."]
 
@@ -91,7 +91,7 @@
   (opts-table-row
    :benchmarks
    [:div
-    [:p "Hashmap arranging a hierarchichy of namespaces and benchmark
+    [:p "Hashmap arranging a hierarchy of namespaces and benchmark
  definitions. Keys (quoted symbols) represent namespaces. Values (sets of quoted
  symbols) represent benchmark names. See "
      [:a {:href "#hierarchy"} "discussion"]
@@ -145,11 +145,20 @@
   (opts-table-row
    :testing-thoroughness
    [:p "Assigns Criterium benchmark settings. One of "
-    [:code ":default"]
+    [:code
+     [:a
+      {:href "https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L83"}
+      ":default"]]
     ", "
-    [:code ":quick"]
+    [:code
+     [:a
+      {:href "https://github.com/hugoduncan/criterium/blob/bb10582ded6de31b4b985dc31d501db604c0e461/src/criterium/core.clj#L92"}
+      ":quick"]]
     ", "
-    [:code ":lightning"]
+    [:code
+     [:a
+      {:href "https://github.com/blosavio/fastester/blob/d1fccf5e3acfb056ecd9d2e775d62d91b55b04c8/src/fastester/measure.clj#L61"}
+      ":lightning"]]
     "."])
 
   (opts-table-row
@@ -283,11 +292,14 @@
     "."]]]
 
  [:p "Writing benchmarks follows a similar pattern to writing unit tests. We
- create a file topped with a namespace declaration. For organizing purposes, we
- may write more than one benchmarks file if, for example, we'd like to write one
- benchmark file per source namespace."]
+ create a file, perhaps named "
+  [:a {:href "https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj"}
+   "benchmarks.clj"]
+  ", topped with a namespace declaration. For organizing purposes, we may write
+ more than one benchmarks file if, for example, we'd like to write one benchmark
+ file per source namespace."]
 
- [:p "Within a benchmarks file, we use "
+ [:p "Within our benchmarks file, we use "
   [:code "defbench"]
   " to "
   [:strong "def"]
@@ -377,7 +389,7 @@
  [:p "In addition to incrementing integers, we wanted to demonstrate
  upper-casing strings. Clojure's "
   [:code "clojure.string/upper-case"] "
- performns that operation on a single string."]
+ performs that operation on a single string."]
 
  [:pre (print-form-then-eval "(require '[clojure.string :as str])")]
 
@@ -416,7 +428,7 @@
   [:code "i"]
   "."]
 
- [:p "'Running' a benchmark with those function expresions means that arguments
+ [:p "'Running' a benchmark with those function expressions means that arguments
  are serially passed to the expression, measuring the evaluation times for each.
  The arguments are supplied by the final component of the benchmark definition,
  a sequence. For "
@@ -563,7 +575,8 @@
 
  [:p "So what happens when we evaluate a "
   [:code "defbench"]
-  " expression? It binds the benchmark name to a hashmap of group, function expression, arguments, and some metadata. Soon, in the "
+  " expression? It binds the benchmark name to a hashmap of group, function
+ expression, arguments, and some metadata. Soon, in the "
   [:a {:href "#run-benchmarks"} "run benchmarks"]
   " step, Fastester will rip through the benchmark names declared in the options
  hashmap key "
@@ -572,7 +585,7 @@
 
  [:p "Once we evaluate the two "
   [:code "defbench"]
-  " expressions, the namespace contains two benchmark defintions that will
+  " expressions, the namespace contains two benchmark definitions that will
  demonstrate "
   [:code "zap"]
   "'s performance: one incrementing sequences of integers, named "
@@ -585,10 +598,13 @@
 
  [:p "Fastester provides a few helper utilities. If we want to see how a
  benchmark would work, we can invoke "
-  [:code "run-one-defineed-benchmark"]
+  [:code "run-one-defined-benchmark"]
   "."]
 
  [:pre
+  [:code "(require '[fastester.measure :refer [run-one-defined-benchmark]])"]
+  [:br]
+  [:br]
   [:code "(run-one-defined-benchmark zap-inc :quick)"]
   [:br]
   [:code ";; => ...output elided for brevity..."]]
@@ -601,8 +617,10 @@
   "."]
 
  [:pre
-  (print-form-then-eval "(range-pow-10 5)")
+  [:code "(require '[fastester.measure :refer [range-pow-2 range-pow-10]])"]
   [:br]
+  [:br]
+  (print-form-then-eval "(range-pow-10 5)")
   [:br]
   (print-form-then-eval "(range-pow-2 5)")]
 
@@ -618,7 +636,7 @@
  definitions, so we must correctly set "
   [:code ":benchmarks"]
   ". This options key is associated to a hashmap."]
- 
+
  [:p "That nested hashmap's keys are symbols indicating the namespace. In our
  example, we have one namespace, and therefore one key, "
   [:code "'zap-benchmarks"]
@@ -657,7 +675,10 @@
 
  [:pre [:code "$ lein run :benchmarks"]]
 
- [:p " has the same effect."]
+ [:p " has the same effect. "
+  [:a {:href "#affinity"} "Later"]
+  ", we'll discuss a modification of this invocation that attempts to address a
+ possible issue with contemporary CPUs."]
 
  [:p "We should expect each benchmark to take about a minute with the default
  benchmark settings. To minimize timing variance, we ought to use a multi-core
@@ -676,7 +697,7 @@
  report. Sometimes it's useful to have an "
   [:span.small-caps "html"]
   " file to quickly view in the browser, and other times it's useful to have a
- markdown file (i.e., to show on Github), so Fastester generates one of each."]
+ markdown file (i.e., to show on GitHub), so Fastester generates one of each."]
 
  [:p "To generate the documents, we can invoke "
   [:code "(generate‑documents)"]
@@ -723,7 +744,8 @@
   [:code ":preamble"]
   " key in the options hashmap."]
 
- [:p "Also, we can insert text after each group's section heading by creating an entry in the "
+ [:p "Also, we can insert text after each group's section heading by creating an
+ entry in the "
   [:code ":comments"]
   " part of the options hashmap. The comments option is a nested hashmap whose
  keys are the group (a string) and the values are hiccup/"
@@ -831,7 +853,7 @@
  redefines all the benchmarks currently expressed in the namespace."]
 
  [:p "Finally, we need to remember that when running from the command line,
- Fastester consults only the options and benchmark defintions from the file
+ Fastester consults only the options and benchmark definitions from the file
 contents "
   [:strong "as they exist on disk"]
   ". A "
@@ -839,5 +861,27 @@ contents "
   "-attached editor with unsaved options or definitions, even with a
  freshly-evaluated namespace, will not affect the results from a command line
  invocation. Saving the files to disk synchronizes what we see in the editor
- and what is consumed by command line-initiated actions."]]
+ and what is consumed by command line-initiated actions."]
+
+ [:p "When displaying relative performance comparisons, it's crucial to
+ hold the environment as consistent as possible. If a round of benchmarks are
+ run when the CPU, RAM, operating system, Java version, or Clojure version are
+ changes, we need to re-run "
+  [:strong "all"]
+  " previous benchmarks. Or, maybe better, we ought to make a new options file
+ and generate a completely different performance document, while keeping the old
+ around."]
+
+ [:p#affinity [:em "Unresolved: "]
+  "Contemporary systems often use multiple, heterogeneous CPU cores, i.e.,
+ X efficiency cores running light tasks at low power and Y high-performance
+ cores running intense tasks. Linux provides a utility, "
+  [:code "taskset"]
+  ", that explicitly sets CPU affinity. Invoking"]
+
+ [:pre [:code "$ taskset --cpu-list 3 lein run :benchmarks"]]
+
+ [:p "from the command line pins the benchmark process to the fourth CPU.
+ Fastester does not provide a turn-key solution for setting CPU affinity for
+ other operating systems such as Windows or MacOS."]]
 

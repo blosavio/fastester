@@ -7,14 +7,14 @@
    [clojure.string :as str]
    [com.hypirion.clj-xchart :as xc]
    [criterium.core :as crit]
-   [fastester.display :refer [fastester-defaults]]
+   [fastester.define :refer [defbench]]
    [fastester.measure :refer [*lightning-benchmark-opts*
-                              defbench
                               range-pow-10
                               range-pow-2
                               run-benchmarks
                               run-manual-benchmark
                               run-one-defined-benchmark]]
+   [fastester.options :refer [fastester-defaults]]
    [readmoi.core :refer [*project-group*
                          *project-name*
                          *project-version*

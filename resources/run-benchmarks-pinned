@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Attempt to minimize benchmark variance by explicitly setting CPU affinity.
+
+set -eu
+
+taskset --cpu-list 3 lein run :benchmarks
+
+exit 0

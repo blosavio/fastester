@@ -50,7 +50,7 @@
         <p>
           One final note: Fastester displays error bars indicating the standard deviation of the sampled measurements. This gives a sense of how tightly the
           data clusters. When the the error bars go negative and the y-axis is logarithmic, Fastester suppresses that particular error bar because it can not
-          be displayed. A note highlights this occurance below the chart, and the datum in the details table is called out.
+          be displayed. A note highlights this occurence below the chart, and the datum in the details table is called out.
         </p>
         <p>
           Linear y-axes always display all error bars.
@@ -179,7 +179,7 @@
         </p>
         <p>
           Another thing to note is that this group contains two benchmarks, the first incrementing numbers, the second upper-casing strings. It&apos;s intended
-          to demonstrate <code>map</code>&apos;s performance spanning six orders of magnitude, with mapping functions handling two differernt data types.
+          to demonstrate <code>map</code>&apos;s performance spanning six orders of magnitude, with mapping functions handling two different data types.
         </p>
       </div>
       <div>
@@ -367,7 +367,7 @@
       </h3>
       <div>
         <p>
-          The three benchmarks in this group <strong>simulate</strong> performance enchancements to the addition function. To simulate this,
+          The three benchmarks in this group <strong>simulate</strong> performance enhancements to the addition function. To simulate this,
           <code>delayed-+</code> is merely that: <code>clojure.core/+</code> with an intentional delay that decreases from 60&nbsp;milliseconds in
           version&nbsp;3 to 10&nbsp;milliseconds in version&nbsp;6.
         </p>
@@ -956,7 +956,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 28.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 29.<span id="uuid"><br>
       50c7eada-f96d-41bf-aed0-47d386e61136</span>
     </p>
   </body>

@@ -44,7 +44,7 @@
   invoking `defbench` a second time, defines two unique benchmarks.
   When developing at the REPL, be aware that the namespace may become 'stale'
   with orphaned or otherwise outdated benchmarks. Fastester will run benchmarks
-  only explicity associated to the `:benchmarks` options key, defined as the
+  only explicitly associated to the `:benchmarks` options key, defined as the
   namespace exists in the file on the disk.
 
   To undefine a single, unwanted test, use

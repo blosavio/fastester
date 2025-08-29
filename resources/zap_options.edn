@@ -73,7 +73,7 @@
     [:code "zap-inc"]
     " and "
     [:code "zap-uc"]
-    ". We don't see those names here because they are merely bookeeping and not
+    ". We don't see those names here because they are merely bookkeeping and not
  relevant for communicating the performance changes between version 11 and
  version 12."]
    
