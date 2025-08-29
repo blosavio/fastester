@@ -33,7 +33,7 @@
     (Thread/sleep (get dly ver 0))
     (apply + args)))
 
-(def group-1 "plus, vary number of digits in args")
+(def group-1 "Plus, vary number of digits in args")
 
 (defbench add-1-arg group-1 (fn [n] (delayed-+ n))     (range-pow-10 6))
 (defbench add-2-arg group-1 (fn [n] (delayed-+ n n))   (range-pow-10 6))
@@ -43,7 +43,7 @@
 
 ;;;; 2. Testing regular addition with different-sized operands
 
-(def group-2 "plus, vary number of operands")
+(def group-2 "Plus, vary number of operands")
 
 (def seq-of-n-repeats
   (doall (reduce #(assoc %1 %2 (take %2 (repeat 64))) {} (range-pow-10 5))))
@@ -79,7 +79,7 @@
 
 (defbench
   conj-onto-rands
-  "custom `conj`"
+  "Custom `conj`"
   (fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))
   (range-pow-10 7))
 

@@ -1,5 +1,5 @@
-{:overhead 1.828305909376011E-8,
- :samples (93632665 93838033 93184784 94146214 93410225 93156837),
+{:overhead 1.0665251925161485E-8,
+ :samples (97050277 98091791 97123997 98118742 97252151 97937869),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,41 +12,41 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [3.5051175309326435E-7 (3.4968842346847677E-7 3.5177441552944176E-7)],
- :final-gc-time 174248251,
- :execution-count 266951,
+ [3.2524273095448413E-7 (3.2410078054254654E-7 3.2637462431181704E-7)],
+ :final-gc-time 246652177,
+ :execution-count 300005,
  :variance
- [2.1923470646153784E-18
-  (7.590353889914338E-19 3.6130283670515606E-18)],
+ [3.1118172146225215E-18
+  (1.9444082531181064E-18 3.640296011056974E-18)],
  :os-details
  {:arch "amd64",
-  :available-processors 4,
+  :available-processors 1,
   :name "Linux",
   :version "5.15.0-152-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.1388888888888889,
+ :outlier-variance 0.1388888888888888,
  :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
- :warmup-time 5134285782,
+ :warmup-time 5630678827,
  :lower-q
- [3.4896605369524746E-7 (3.4896605369524746E-7 3.490847028106282E-7)],
- :warmup-executions 13630874,
+ [3.234955317411377E-7 (3.234955317411377E-7 3.237412609789837E-7)],
+ :warmup-executions 16783529,
  :sample-count 6,
  :upper-q
- [3.5243179600376103E-7 (3.507485081531817E-7 3.526722656967009E-7)],
+ [3.2698165988900186E-7 (3.2616841135981067E-7 3.270570223829603E-7)],
  :fastester/metadata
  {:fexpr "(fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))",
-  :date {:year 2025, :month "August", :day 23},
-  :group "custom `conj`",
+  :date {:year 2025, :month "August", :day 29},
+  :group "Custom `conj`",
   :index 10,
   :ns "fastester.performance.benchmarks",
-  :UUIDv4 #uuid "71d9076d-c441-4fa0-8eac-1eb053cf785a",
+  :UUIDv4 #uuid "d15108e8-cf9b-42ab-b8d0-fe7692cc4819",
   :name "conj-onto-rands",
   :testing-thoroughness :quick,
   :arg 10000,
   :version "5",
   :parallel? false},
- :total-time 0.561368758,
- :sample-variance [2.110431358549709E-18 (0.0 0.0)],
+ :total-time 0.585574827,
+ :sample-variance [2.83273814710489E-18 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -54,7 +54,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.828305909376011E-8},
+  :overhead 1.0665251925161485E-8},
  :sample-mean
- [3.5048177256000797E-7 (3.4612357542966294E-7 3.5483996969035293E-7)],
+ [3.2531392643455945E-7 (3.202647043831991E-7 3.303631484859198E-7)],
  :results :fastester/benchmark-fn-results-elided}

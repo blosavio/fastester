@@ -71,7 +71,7 @@
  demonstrations."]]
 
  :comments
- {"mapping stuff"
+ {"Mapping stuff"
   [:div
    [:p "This benchmark group demonstrates that the relative comparisons do not
  necessarily have be be sequential. In this case, we skipped version 5. Note
@@ -90,7 +90,7 @@
     "'s performance spanning six orders of magnitude, with mapping functions
  handling two different data types."]]
 
-  "plus, vary number of digits in args"
+  "Plus, vary number of digits in args"
   [:div
    [:p "The three benchmarks in this group "
     [:strong "simulate"]
@@ -109,14 +109,14 @@ to 10 milliseconds in version 6."]
  and in fact that's what we see, particularly since the intentional delay
  utterly swamps any other factor that might cause a measurable difference."]]
 
-  "plus, vary number of operands"
+  "Plus, vary number of operands"
   [:div
    [:p "Because the sequences grow from one element to one-hundred thousand
  elements long, the evaluation times of this group's single benchmark increase.
  We didn't change the implementation from versions 4 through 6 for this
  demonstration, so all three curves are stacked atop one another."]]
 
-  "custom `conj`"
+  "Custom `conj`"
   [:div
    [:p "In addition to the preamble, we may add text comments to each "
     [:em "group"]

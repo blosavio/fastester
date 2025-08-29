@@ -1,5 +1,5 @@
-{:overhead 1.825573308515938E-8,
- :samples (95811098 93275691 96132585 94381806 95510418 100590908),
+{:overhead 1.0611896644065994E-8,
+ :samples (96640416 97047687 97544659 96948234 96605877 97009796),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,42 +12,42 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [3.6978518237482073E-7 (3.6448330579318824E-7 3.7824753390519255E-7)],
- :final-gc-time 171602119,
- :execution-count 259621,
+ [3.462403033516501E-7 (3.454392844433495E-7 3.472939617692181E-7)],
+ :final-gc-time 252097461,
+ :execution-count 280071,
  :variance
- [1.0260087163853956E-16
-  (1.4950056112432316E-17 2.020168035524383E-16)],
+ [1.5580722829802652E-18
+  (3.8040178948397785E-19 2.943557812029142E-18)],
  :os-details
  {:arch "amd64",
-  :available-processors 4,
+  :available-processors 1,
   :name "Linux",
   :version "5.15.0-152-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.13888888888888887,
- :outliers {:low-severe 0, :low-mild 0, :high-mild 1, :high-severe 0},
- :warmup-time 5087139208,
+ :outlier-variance 0.13888888888888873,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
+ :warmup-time 5217931349,
  :lower-q
- [3.59276372096248E-7 (3.59276372096248E-7 3.603523284903764E-7)],
- :warmup-executions 13031905,
+ [3.4493352399927164E-7 (3.4493352399927164E-7 3.4508632320018854E-7)],
+ :warmup-executions 14584863,
  :sample-count 6,
  :upper-q
- [3.8515155457378256E-7 (3.688974042931812E-7 3.874528947966459E-7)],
+ [3.480467493064259E-7 (3.463482500865852E-7 3.482854668994648E-7)],
  :fastester/metadata
  {:fexpr
   "(fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))",
-  :date {:year 2025, :month "August", :day 23},
-  :group "mapping stuff",
+  :date {:year 2025, :month "August", :day 29},
+  :group "Mapping stuff",
   :index 33,
   :ns "fastester.performance.benchmarks-mapping",
-  :UUIDv4 #uuid "b909180b-36e5-4798-b373-dba8efec5ed9",
+  :UUIDv4 #uuid "128b04e8-98fc-4e17-9cf9-ecd10ce309a0",
   :name "map-UC-over-a-cycle",
   :testing-thoroughness :quick,
   :arg 1,
   :version "4",
   :parallel? false},
- :total-time 0.575702506,
- :sample-variance [9.315615271340389E-17 (0.0 0.0)],
+ :total-time 0.581796669,
+ :sample-variance [1.4774296325610524E-18 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -55,7 +55,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.825573308515938E-8},
+  :overhead 1.0611896644065994E-8},
  :sample-mean
- [3.6957880012274306E-7 (3.406235696035323E-7 3.985340306419538E-7)],
+ [3.46219749634914E-7 (3.4257326273749486E-7 3.4986623653233316E-7)],
  :results :fastester/benchmark-fn-results-elided}

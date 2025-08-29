@@ -1,6 +1,5 @@
-{:overhead 1.825573308515938E-8,
- :samples
- (102870119 101676431 101899009 102086603 102077391 102484411),
+{:overhead 1.0611896644065994E-8,
+ :samples (100341357 99431336 102714095 101643137 101350215 104595690),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -13,41 +12,39 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [9.920563300970873E-4 (9.894861941747574E-4 9.95549433656958E-4)],
- :final-gc-time 155441074,
- :execution-count 103,
+ [0.001016242706666667 (0.0010044994583333334 0.0010311398000000002)],
+ :final-gc-time 235605769,
+ :execution-count 100,
  :variance
- [1.858663318068302E-11
-  (6.155142767386157E-12 3.3795636212071606E-11)],
+ [3.930881275566173E-10
+  (1.1546618104434696E-10 8.001165671194808E-10)],
  :os-details
  {:arch "amd64",
-  :available-processors 4,
+  :available-processors 1,
   :name "Linux",
   :version "5.15.0-152-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.1388888888888887,
+ :outlier-variance 0.13888888888888878,
  :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
- :warmup-time 5030406586,
- :lower-q
- [9.871498155339805E-4 (9.871498155339805E-4 9.893107669902913E-4)],
- :warmup-executions 5091,
+ :warmup-time 5031450969,
+ :lower-q [9.9431336E-4 (9.9431336E-4 0.0010034135700000002)],
+ :warmup-executions 5006,
  :sample-count 6,
- :upper-q
- [9.97788150485437E-4 (9.911320679611652E-4 9.987390194174757E-4)],
+ :upper-q [0.0010422662087500002 (0.0010160652175 0.0010459569)],
  :fastester/metadata
  {:fexpr "(fn [n] (apply + (seq-of-n-repeats n)))",
-  :date {:year 2025, :month "August", :day 23},
-  :group "plus, vary number of operands",
+  :date {:year 2025, :month "August", :day 29},
+  :group "Plus, vary number of operands",
   :index 4,
   :ns "fastester.performance.benchmarks",
-  :UUIDv4 #uuid "9dd840db-20b2-4f74-9101-95200bf60100",
+  :UUIDv4 #uuid "9a777ddb-e0b3-4464-9a1e-1623364f05e3",
   :name "add-many-args",
   :testing-thoroughness :quick,
   :arg 10000,
   :version "4",
   :parallel? false},
- :total-time 0.613093964,
- :sample-variance [1.7356717476318925E-11 (0.0 0.0)],
+ :total-time 0.61007583,
+ :sample-variance [3.3058339280628024E-10 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -55,7 +52,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.825573308515938E-8},
+  :overhead 1.0611896644065994E-8},
  :sample-mean
- [9.92061430420712E-4 (9.795630122293219E-4 0.0010045598486121022)],
+ [0.00101679305 (9.622471928222407E-4 0.0010713389071777596)],
  :results :fastester/benchmark-fn-results-elided}

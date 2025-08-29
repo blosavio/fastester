@@ -16,7 +16,7 @@
 
 (defbench
   map-inc-across-a-sequence
-  "mapping stuff"
+  "Mapping stuff"
   (fn [n] (doall (map inc (range-of-length-n n))))
   (range-pow-10 5))
 
@@ -31,7 +31,7 @@
 
 (defbench
   map-UC-over-a-cycle
-  "mapping stuff"
+  "Mapping stuff"
   (fn [n] (doall (map str/upper-case (abc-cycle-of-length-n n))))
   (range-pow-10 5))
 
