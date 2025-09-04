@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
-    <meta charset="utf-8" compile-date="2025-08-29 16:42:02" content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8" compile-date="2025-08-31 07:28:52" content="width=device-width, initial-scale=1" name="viewport">
     <link href="project.css" rel="stylesheet" type="text/css">
     <title>
       Fastester — A Clojure library for measuring and displaying performance changes
@@ -32,11 +32,11 @@
       <h3>
         Leiningen/Boot
       </h3>
-      <pre><code>[com.sagevisuals/fastester "0-SNAPSHOT0"]</code></pre>
+      <pre><code>[com.sagevisuals/fastester "0-SNAPSHOT3"]</code></pre>
       <h3>
         Clojure CLI/deps.edn
       </h3>
-      <pre><code>com.sagevisuals/fastester {:mvn/version "0-SNAPSHOT0"}</code></pre>
+      <pre><code>com.sagevisuals/fastester {:mvn/version "0-SNAPSHOT3"}</code></pre>
       <h3>
         Require
       </h3>
@@ -793,7 +793,7 @@
         Now that we've written <code>zap-inc</code> and <code>zap-uc</code>, we can run the benchmarks in two ways. If we've got our editor open with an
         attached <span class="small-caps">repl</span>, we can invoke <code>(run-benchmarks)</code>. If we're at the command line, invoking
       </p>
-      <pre><code>$ lein run :benchmarks</code></pre>
+      <pre><code>$ lein run -m fastester.core :benchmarks</code></pre>
       <p>
         has the same effect. <a href="#affinity">Later</a>, we'll discuss a modification of this invocation that attempts to address a possible issue with
         contemporary CPUs.
@@ -815,7 +815,10 @@
       </p>
       <p>
         To generate the documents, we can invoke <code>(generate‑documents)</code> at the <span class="small-caps">repl</span>, or
-        <code>$&nbsp;lein&nbsp;run&nbsp;:documents</code> from the command line.
+      </p>
+      <pre><code>$ lein run -m fastester.core :documents</code></pre>
+      <p>
+        from the command line.
       </p>
       <p>
         Note: Fastester uses all data files in the directory set by the options <code>:results-directory</code>. The <code>:benchmarks</code> setting has no
@@ -860,8 +863,8 @@
                                              " and "]
                                              ...]}</code></pre>
       <p>
-        For both the preamble and group comments, we can insert more than one <span class="small-caps">html</span> element by wrapping them with a <code>[:div
-        ...]</code>.
+        For both the preamble and group comments, we can insert more than one <span class="small-caps">html</span> element by wrapping them with a
+        <code>[:div&nbsp;...]</code>.
       </p>
       <h3 id="gotchas">
         Gotchas
@@ -1116,7 +1119,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 29.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 31.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

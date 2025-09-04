@@ -9,7 +9,8 @@
   4. Generate html document with [[generate-documents]]."
   (:require
    [fastester.measure :refer [run-benchmarks]]
-   [fastester.display :refer [generate-documents]]))
+   [fastester.display :refer [generate-documents]])
+  (:gen-class))
 
 
 (defn run-benchmarks-and-generate-documents

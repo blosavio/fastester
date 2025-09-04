@@ -673,7 +673,7 @@
   [:code "(run-benchmarks)"]
   ". If we're at the command line, invoking "]
 
- [:pre [:code "$ lein run :benchmarks"]]
+ [:pre [:code "$ lein run -m fastester.core :benchmarks"]]
 
  [:p " has the same effect. "
   [:a {:href "#affinity"} "Later"]
@@ -703,9 +703,11 @@
   [:code "(generate‑documents)"]
   " at the "
   [:span.small-caps "repl"]
-  ", or "
-  [:code "$ lein run :documents"]
-  " from the command line."]
+  ", or "]
+
+ [:pre [:code "$ lein run -m fastester.core :documents"]]
+
+ [:p " from the command line."]
 
  [:p "Note: Fastester uses all data files in the directory set by the options "
   [:code ":results-directory"]
@@ -783,7 +785,7 @@
  [:p "For both the preamble and group comments, we can insert more than one "
   [:span.small-caps "html"]
   " element by wrapping them with a "
-  [:code "[:div ...]"]
+  [:code "[:div ...]"]
   "."]
 
  [:h3#gotchas "Gotchas"]

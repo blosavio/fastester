@@ -5,17 +5,18 @@
   See [[fastester.measure]] for utilities to run the benchmarks and save the
   performance data."
   (:require
+   [clojure.java.io :as io]
+   [clojure.string :as str]
    [com.hypirion.clj-xchart :as xc]
+   [fastester.options :refer [get-options]]
    [hiccup2.core :as h2]
    [hiccup.page :as page]
    [hiccup.element :as element]
-   [hiccup.form :as form]
-   [hiccup.util :as util]
-   [clojure.inspector :refer :all]
-   [clojure.java.io :as io]
-   [clojure.string :as str]
-   [fastester.options :refer [get-options]]
-   [readmoi.core :refer :all]))
+   [readmoi.core :refer [copyright
+                         page-template
+                         short-date
+                         tidy-html-body
+                         tidy-html-document]]))
 
 
 (defn get-result-filenames

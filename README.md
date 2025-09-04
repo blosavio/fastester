@@ -23,11 +23,11 @@
       <h3>
         Leiningen/Boot
       </h3>
-      <pre><code>[com.sagevisuals/fastester &quot;0-SNAPSHOT0&quot;]</code></pre>
+      <pre><code>[com.sagevisuals/fastester &quot;0-SNAPSHOT3&quot;]</code></pre>
       <h3>
         Clojure CLI/deps.edn
       </h3>
-      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0-SNAPSHOT0&quot;}</code></pre>
+      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0-SNAPSHOT3&quot;}</code></pre>
       <h3>
         Require
       </h3>
@@ -790,7 +790,7 @@
         Now that we&apos;ve written <code>zap-inc</code> and <code>zap-uc</code>, we can run the benchmarks in two ways. If we&apos;ve got our editor open with
         an &nbsp;attached <span class="small-caps">repl</span>, we can invoke <code>(run-benchmarks)</code>. If we&apos;re at the command line, invoking
       </p>
-      <pre><code>$ lein run :benchmarks</code></pre>
+      <pre><code>$ lein run -m fastester.core :benchmarks</code></pre>
       <p>
         has the same effect. <a href="#affinity">Later</a>, we&apos;ll discuss a modification of this invocation that attempts to address a &nbsp;possible
         issue with contemporary CPUs.
@@ -813,7 +813,10 @@
       </p>
       <p>
         To generate the documents, we can invoke <code>(generate‑documents)</code> at the <span class="small-caps">repl</span>, or
-        <code>$&nbsp;lein&nbsp;run&nbsp;:documents</code> from the command line.
+      </p>
+      <pre><code>$ lein run -m fastester.core :documents</code></pre>
+      <p>
+        from the command line.
       </p>
       <p>
         Note: Fastester uses all data files in the directory set by the options <code>:results-directory</code>. The <code>:benchmarks</code> setting has no
@@ -860,8 +863,8 @@
 &nbsp;                                            &quot; and &quot;]
 &nbsp;                                            ...]}</code></pre>
       <p>
-        For both the preamble and group comments, we can insert more than one <span class="small-caps">html</span> element by wrapping them with a <code>[:div
-        ...]</code>.
+        For both the preamble and group comments, we can insert more than one <span class="small-caps">html</span> element by wrapping them with a
+        <code>[:div&nbsp;...]</code>.
       </p>
       <h3 id="gotchas">
         Gotchas
@@ -1118,7 +1121,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 29.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 31.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

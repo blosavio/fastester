@@ -1,4 +1,4 @@
-(defproject com.sagevisuals/fastester "0-SNAPSHOT0"
+(defproject com.sagevisuals/fastester "0-SNAPSHOT3"
   :description "A Clojure library for measuring and displaying performance
  changes."
   :url "https://github.com/blosavio/fastester"
@@ -7,15 +7,14 @@
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.12.1"]
                  [com.hypirion/clj-xchart "0.2.0"]
-                 [criterium "0.4.6"]]
+                 [com.sagevisuals/readmoi "4"]
+                 [criterium "0.4.6"]
+                 [hiccup "2.0.0-RC3"]]
   :repl-options {:init-ns fastester.core}
   :main fastester.core
+  :aot [fastester.core]
   :plugins []
-  :profiles {:dev {:dependencies [[org.clojure/test.check "1.1.1"]
-                                  [hiccup "2.0.0-RC3"]
-                                  [zprint "1.2.9"]
-                                  [com.sagevisuals/chlog "1"]
-                                  [com.sagevisuals/readmoi "3"]]
+  :profiles {:dev {:dependencies [[com.sagevisuals/chlog "1"]]
                    :plugins [[dev.weavejester/lein-cljfmt "0.12.0"]
                              [lein-codox "0.10.8"]]}
              :repl {}}
