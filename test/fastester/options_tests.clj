@@ -14,7 +14,7 @@
 
 
 (deftest get-options-tests
-  (let [req-options-keys #{:project-formatted-name
+  (let [req-options-keys #{:title
                            :responsible
                            :copyright-holder
                            :fastester-UUID

@@ -599,11 +599,10 @@ position, plot border, etc.")
   [opt o-data]
   (spit (str (opt :html-directory) (opt :html-filename))
         (-> (page-template
-             (str (opt :project-formatted-name) " library performance")
+             (opt :title)
              (opt :fastester-UUID)
              (conj [:body
-                    [:h1 (str (opt :project-formatted-name)
-                              " library performance")]
+                    [:h1 (opt :title)]
                     (toc o-data)
                     (opt :preamble)
                     (main-section o-data opt)])
@@ -621,8 +620,7 @@ position, plot border, etc.")
   (spit (str (opt :markdown-directory) (opt :markdown-filename))
         (h2/html
          (vec (-> [:body
-                   [:h1 (str (opt :project-formatted-name)
-                             " library performance")]
+                   [:h1 (opt :title)]
                    (toc o-data)
                    (opt :preamble)
                    (main-section o-data opt)]

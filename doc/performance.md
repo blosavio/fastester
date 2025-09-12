@@ -1,7 +1,7 @@
 
   <body>
     <h1>
-      Fastester library performance
+      Example performance document
     </h1>
     <div>
       <a href="#group-0">Custom `conj`</a><br>
@@ -165,6 +165,7 @@
           </table>
         </div>
       </div>
+      <hr>
       <h3 id="group-1">
         Mapping stuff
       </h3>
@@ -362,6 +363,7 @@
           </table>
         </div>
       </div>
+      <hr>
       <h3 id="group-2">
         Plus, vary number of digits in args
       </h3>
@@ -829,6 +831,7 @@
           </table>
         </div>
       </div>
+      <hr>
       <h3 id="group-3">
         Plus, vary number of operands
       </h3>
@@ -953,10 +956,11 @@
           </table>
         </div>
       </div>
+      <hr>
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 August 30.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 12.<span id="uuid"><br>
       50c7eada-f96d-41bf-aed0-47d386e61136</span>
     </p>
   </body>

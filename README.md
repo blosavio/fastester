@@ -23,11 +23,11 @@
       <h3>
         Leiningen/Boot
       </h3>
-      <pre><code>[com.sagevisuals/fastester &quot;0-SNAPSHOT3&quot;]</code></pre>
+      <pre><code>[com.sagevisuals/fastester &quot;0-SNAPSHOT4&quot;]</code></pre>
       <h3>
         Clojure CLI/deps.edn
       </h3>
-      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0-SNAPSHOT3&quot;}</code></pre>
+      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0-SNAPSHOT4&quot;}</code></pre>
       <h3>
         Require
       </h3>
@@ -522,6 +522,19 @@
           <th>
             usage
           </th>
+        </tr>
+        <tr>
+          <td>
+            <code>:title</code>
+          </td>
+          <td>
+            <code>&quot;Taffy Yoyo Library performance&quot;</code>
+          </td>
+          <td>
+            <p>
+              A string providing the title for the performance document.
+            </p>
+          </td>
         </tr>
         <tr>
           <td>
@@ -1121,7 +1134,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 August 31.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 12.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

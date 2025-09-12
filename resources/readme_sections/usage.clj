@@ -220,6 +220,11 @@
    [:th "usage"]]
 
   (opts-table-row
+   :title
+   "Taffy Yoyo Library performance"
+   [:p "A string providing the title for the performance document."])
+
+  (opts-table-row
    :responsible
    {:name "Grace Hopper"
     :email "univac@example.com"}
