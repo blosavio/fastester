@@ -543,7 +543,8 @@ position, plot border, etc.")
     (reduce-kv (fn [acc ky vl] (conj acc
                                      [(h3-fn ky) ky]
                                      ((opt :comments) ky)
-                                     (fexpr-divs vl opt ky (group-index ky))))
+                                     (fexpr-divs vl opt ky (group-index ky))
+                                     [:hr]))
                [:section]
                organized-data)))
 
