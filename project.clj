@@ -1,4 +1,4 @@
-(defproject com.sagevisuals/fastester "0-SNAPSHOT4"
+(defproject com.sagevisuals/fastester "0"
   :description "A Clojure library for measuring and displaying performance
  changes."
   :url "https://github.com/blosavio/fastester"
