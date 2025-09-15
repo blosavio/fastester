@@ -12,8 +12,8 @@
         benchmarks are defined in <a href="https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj">this file</a>, while the options (including
         this very text you are now reading) are defined in <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">this file</a>.
         To generate this <span class="small-caps">html</span> page, evaluate Fastester&apos;s <a href=
-        "https://blosavio.github.io/fastester.core.html#var--main"><code>main</code></a> function with the <code>:documents</code> argument. For example, with
-        Leiningen, run this.
+        "https://blosavio.github.io/fastester/fastester.core.html#var--main"><code>main</code></a> function with the <code>:documents</code> argument. For
+        example, with Leiningen, run this.
       </p>
       <pre><code>$ lein run -m fastester.core :documents zap_options.edn</code></pre>
       <p>
@@ -217,7 +217,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 14.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 15.<span id="uuid"><br>
       3615ae1c-d196-4cb0-bb4c-b4f29a8e2501</span>
     </p>
   </body>

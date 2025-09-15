@@ -48,7 +48,7 @@
              ". To generate this "
              [:span.small-caps "html"]
              " page, evaluate Fastester's "
-             [:a {:href "https://blosavio.github.io/fastester.core.html#var--main"}
+             [:a {:href "https://blosavio.github.io/fastester/fastester.core.html#var--main"}
               [:code "main"]]
              " function with the "
              [:code ":documents"]
