@@ -23,11 +23,11 @@
       <h3>
         Leiningen/Boot
       </h3>
-      <pre><code>[com.sagevisuals/fastester &quot;0-SNAPSHOT4&quot;]</code></pre>
+      <pre><code>[com.sagevisuals/fastester &quot;0&quot;]</code></pre>
       <h3>
         Clojure CLI/deps.edn
       </h3>
-      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0-SNAPSHOT4&quot;}</code></pre>
+      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0&quot;}</code></pre>
       <h3>
         Require
       </h3>
