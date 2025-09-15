@@ -29,7 +29,7 @@
  approximately eighteen divided by twenty-six, which is approximately…"]
   " Not ideal."]
 
- [:p "To address these problems, a Fastester aspires to generate an objective,
+ [:p "To address these problems, Fastester aspires to generate an objective,
  relative, and comprehensible performance report."]
 
  [:h3#objective "Objective"]

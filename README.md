@@ -163,7 +163,7 @@
         twenty-six, which is approximately…</em> Not ideal.
       </p>
       <p>
-        To address these problems, a Fastester aspires to generate an objective, &nbsp;relative, and comprehensible performance report.
+        To address these problems, Fastester aspires to generate an objective, &nbsp;relative, and comprehensible performance report.
       </p>
       <h3 id="objective">
         Objective
