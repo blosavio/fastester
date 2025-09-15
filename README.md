@@ -279,7 +279,7 @@
         "https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">sample options file</a> and edit as needed.
       </p>
       <p>
-        The following options have <a href="https://blosavio.github.io/fastester.options.html#var-fastester-defaults">default values</a>.
+        The following options have <a href="https://blosavio.github.io/fastester/fastester.options.html#var-fastester-defaults">default values</a>.
       </p>
       <table>
         <tr>
@@ -1082,11 +1082,11 @@
         Examples
       </h2>
       <p>
-        An artificial <a href="https://github.io/blosavio/fastester/performance.html">example</a> that simulates performance changes of a few
+        An artificial <a href="https://blosavio.github.io/fastester/performance.html">example</a> that simulates performance changes of a few
         <code>clojure.core</code> functions across several versions, and demonstrates many of Fastester&apos;s features.
       </p>
       <p>
-        An example that <a href="https://github.io/blosavio/fastester/zap_performance.html">follows-along</a> benchmarking <code>zap</code>, the scenario
+        An example that <a href="https://blosavio.github.io/fastester/zap_performance.html">follows-along</a> benchmarking <code>zap</code>, the scenario
         presented <a href="#usage">above</a> in this <em>ReadMe</em>.
       </p>
     </section>

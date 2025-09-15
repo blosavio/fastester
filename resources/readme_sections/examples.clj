@@ -3,7 +3,7 @@
 
  [:p 
   "An artificial "
-  [:a {:href "https://github.io/blosavio/fastester/performance.html"}
+  [:a {:href "https://blosavio.github.io/fastester/performance.html"}
    " example"]
   " that simulates performance changes of a few "
   [:code "clojure.core"]
@@ -11,7 +11,7 @@
  features."]
 
  [:p "An example that "
-  [:a {:href "https://github.io/blosavio/fastester/zap_performance.html"}
+  [:a {:href "https://blosavio.github.io/fastester/zap_performance.html"}
    "follows-along"]
   " benchmarking "
   [:code "zap"]

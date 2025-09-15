@@ -60,7 +60,7 @@
   " and edit as needed."]
 
  [:p "The following options have "
-  [:a {:href "https://blosavio.github.io/fastester.options.html#var-fastester-defaults"}
+  [:a {:href "https://blosavio.github.io/fastester/fastester.options.html#var-fastester-defaults"}
    "default values"]
   "."]
 
