@@ -22,17 +22,21 @@
  264 microseconds, we have good reason to believe the later implementation is
  faster."]
 
- [:p "Beyond that, tossing out raw numbers like \"183\" and \"264\" requires
- people to juggle arithmetic in their head. Not ideal."]
+ [:p "Another problem is that tossing out raw numbers like \"183\" and \"264\"
+ requires people to perform mental arithmetic to figure out if version 12 is
+ better. "
+  [:em "One-hundred, eighty-three divided by two-hundred, sixty-four is
+ approximately eighteen divided by twenty-six, which is approximately…"]
+  " Not ideal."]
 
- [:p "A Fastester performance report intends to be objective, relative, and
- comprehensible."]
+ [:p "To address these problems, a Fastester aspires to generate an objective,
+ relative, and comprehensible performance report."]
 
  [:h3#objective "Objective"]
 
- [:p "Thanks to Criterium, we can measure, in units of seconds, how long it
- takes to evaluate a function with a particular argument, (somewhat) independent
- of vagaries of the environment."]
+ [:p "Thanks to Criterium, we can measure, in concrete, real world time units,
+ how long it takes to evaluate a function with a particular argument, (somewhat)
+ independent of vagaries of the computing environment."]
 
  [:h3#comparative "Relative"]
 
@@ -40,8 +44,8 @@
  if it is "
   [:a {:href "#objective"} "objective"]
   ". People simply don't have everyday intuition for an event that occurs in a
- nanoseconds or microseconds. So when we discuss the concept of 'fast', we're
- often implicitly speaking in relative terms."]
+ few nanoseconds or microseconds. So when we discuss the concept of 'fast',
+ we're often implicitly speaking in relative terms."]
 
  [:p "Fastester focuses on comparing the speed of one function to a previous
  version of itself."]

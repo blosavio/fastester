@@ -29,22 +29,24 @@
 (defn -main
   "Given keyword `action`, runs a Fastester task with the following mappings:
 
-  * `:benchmarks` executes `(run-benchmarks)`
-  * `:documents` executes `(generate-docs)`.
+  * `:benchmarks` executes `(`[[run-benchmarks]]`)`
+  * `:documents` executes `(`[[generate-documents]]`)`.
 
   Examples:
   ```bash
-  $ lein run :benchmarks
-  $ lein run :documents
+  $ lein run -m fastester.core :benchmarks
+  $ lein run -m fastester.core :documents
   ```
 
-  Reads options from `./resources/fastester_options.edn` unless an options
-  filename is supplied.
+  Read options from `./resources/fastester_options.edn` because explicit options
+  filename is not supplied.
 
   Example:
   ```bash
-  $ lein run :benchmarks ./foobar_options.edn
-  ```"
+  $ lein run -m fastester.core :benchmarks ./foobar_options.edn
+  ```
+
+  Reads options from explicitly-given `./foobar_options.edn`."
   {:UUIDv4 #uuid "c20e4554-c4cd-4d92-912d-4e8affb1ddc9"}
   ([action] (-main action nil))
   ([action explicit-options-filename]

@@ -634,7 +634,19 @@ position, plot border, etc.")
   See [[fastester-defaults]]
   and
   [Fastester project documentation](https://github.com/blosavio/fastester) for
-  details on the structure of the options map."
+  details on the structure of the options map.
+
+  `generate-documents` wholesale ingests all `.edn` data files in
+  `:results-directory`. The `:benchmarks` option does not affect this document
+  generation step. Make sure every `.edn` in the results directory represents
+  data intended to be displayed in the document. Errant data files produce
+  confusing charts and tables.
+
+  Similarly, `generate-documents` consumes all svg files in
+  `:img-subdirectory`. If a project's benchmarks are split among multiple
+  files/namespaces, be sure to give each file/namespace its own dedicated image
+  subdirectory with the `:img-subdirectory` option. Otherwise, one namespace's
+  svg files will be inserted into another's html document."
   {:UUIDv4 #uuid "5dda7f24-f344-4dce-96bb-51c5280c6ba9"}
   [& [explicit-options-filename]]
   (let [opts (get-options explicit-options-filename)

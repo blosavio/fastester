@@ -50,7 +50,7 @@
         <p>
           One final note: Fastester displays error bars indicating the standard deviation of the sampled measurements. This gives a sense of how tightly the
           data clusters. When the the error bars go negative and the y-axis is logarithmic, Fastester suppresses that particular error bar because it can not
-          be displayed. A note highlights this occurence below the chart, and the datum in the details table is called out.
+          be displayed. A note highlights this occurrence below the chart, and the datum in the details table is called out.
         </p>
         <p>
           Linear y-axes always display all error bars.
@@ -960,7 +960,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 12.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 15.<span id="uuid"><br>
       50c7eada-f96d-41bf-aed0-47d386e61136</span>
     </p>
   </body>

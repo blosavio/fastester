@@ -10,17 +10,18 @@
 </ol>
 </div></div><div class="public anchor" id="var--main"><h3>-main</h3><div class="usage"><code>(-main action)</code><code>(-main action explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Given keyword <code>action</code>, runs a Fastester task with the following mappings:</p>
 <ul>
-<li><code>:benchmarks</code> executes <code>(run-benchmarks)</code></li>
-<li><code>:documents</code> executes <code>(generate-docs)</code>.</li>
+<li><code>:benchmarks</code> executes <code>(</code><a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a><code>)</code></li>
+<li><code>:documents</code> executes <code>(</code><a href="fastester.display.html#var-generate-documents">generate-documents</a><code>)</code>.</li>
 </ul>
 <p>Examples:</p>
-<pre><code class="language-bash">$ lein run :benchmarks
-$ lein run :documents
+<pre><code class="language-bash">$ lein run -m fastester.core :benchmarks
+$ lein run -m fastester.core :documents
 </code></pre>
-<p>Reads options from <code>./resources/fastester_options.edn</code> unless an options filename is supplied.</p>
+<p>Read options from <code>./resources/fastester_options.edn</code> because explicit options filename is not supplied.</p>
 <p>Example:</p>
-<pre><code class="language-bash">$ lein run :benchmarks ./foobar_options.edn
+<pre><code class="language-bash">$ lein run -m fastester.core :benchmarks ./foobar_options.edn
 </code></pre>
+<p>Reads options from explicitly-given <code>./foobar_options.edn</code>.</p>
 </div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L29">view source</a></div></div><div class="public anchor" id="var-run-benchmarks-and-generate-documents"><h3>run-benchmarks-and-generate-documents</h3><div class="usage"><code>(run-benchmarks-and-generate-documents)</code><code>(run-benchmarks-and-generate-documents explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Run all benchmarks and generate an html document that displays comparisons to previous versions.</p>
 <p>See <a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a> and <a href="fastester.display.html#var-generate-documents">generate-documents</a>.</p>
 </div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L16">view source</a></div></div></div></body></html>

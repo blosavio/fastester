@@ -1,8 +1,9 @@
 [:section#usage
  [:h2 "Usage"]
 
- [:p "Prologue: We have previously profiled some execution path of version 11 of
- our library. We discovered a bottleneck in a function, "
+ [:p "Let's review our imaginary scenario. We have previously profiled some
+ execution path of version 11 of our library. We discovered a bottleneck in a
+ function, "
   [:code "zap"]
   ", which just so happens to behave exactly like "
   [:code "clojure.core/map"]
@@ -35,9 +36,9 @@
         [:span.small-caps "html"]
         " document that displays the performance data."]]]
 
- [:p "Steps 1 and 2 are done once, and only occasionally updated as needed.
- Steps 3 and 4 are done only when a function's implementation changes with
- measurable affects on performance."]
+ [:p "Keep in mind we don't need to do these steps for every function for every
+ release, but only when a function's implementation changes with measurable
+ affects on performance."]
 
  [:p "Follow along with this "
   [:a {:href "https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn"}
@@ -114,7 +115,9 @@
    :img-subdirectory
    [:p " Under "
     [:code ":html-directory"]
-    ", directory to write svg image files."])
+    ", directory to write svg image files. If a project's benchmark definitions
+ are split among multiple files/namespaces, be sure to give each file/namespace
+ their own dedicated image subdirectory."])
 
   (opts-table-row
    :markdown-directory
@@ -135,7 +138,9 @@
    :results-directory
    [:p "Directory to find benchmark data, appended to "
     [:code ":results-url"]
-    "."])
+    ". Note: Every "
+    [:code "edn"]
+    " file in this directory will be used to create a datum in the document. Errant data files will produce confusing entries in charts and tables."])
 
   (opts-table-row
    :verbose?
@@ -191,7 +196,7 @@
     [:span.small-caps "html"]
     " to be written to file with no line breaks. If set to "
     [:code "true"]
-    " line breaks are inserted for readability, and for smaller version
+    ", line breaks are inserted for readability, and for smaller version
  control diffs."])
 
   (opts-table-row
@@ -209,7 +214,8 @@
  version entries extracted from either a Leiningen 'project.clj' or a
  'pom.xml'. "
     [:a {:href "https://clojure.org/guides/comparators#_mistakes_to_avoid"}
-     "Write custom comparators with caution."]])]
+     "Write custom comparators with caution"]
+    "."])]
 
  [:p "The following options have no defaults."]
 
@@ -221,7 +227,7 @@
 
   (opts-table-row
    :title
-   "Taffy Yoyo Library performance"
+   "Taffy Yo-yo Library performance"
    [:p "A string providing the title for the performance document."])
 
   (opts-table-row
@@ -231,7 +237,7 @@
    [:p "A hashmap with "
     [:code ":name"]
     " and "
-    [:code "email"]
+    [:code ":email"]
     " strings that report a person responsible for the report."])
 
   (opts-table-row
@@ -349,7 +355,7 @@
  the same name in the same namespace, the later-evaluated definition will
  overwrite the earlier. If we'd like to give the same name to two different
  benchmarks, we could isolate the definitions into two different namespaces. For
- our demonstration benchmarking "
+ this demonstration benchmarking "
   [:code "zap"]
   ", we've chosen two different names, so we won't worry about overwriting."]
 
@@ -442,11 +448,14 @@
   [:code "range"]
   "s from ten to one-hundred thousand."]
 
- [:p "An argument sequence like this…"]
+ [:p "An "
+  [:em "args"]
+  " sequence of five integers like this…"]
 
  [:pre [:code "[10 100 1000 10000 100000]"]]
 
- [:p "…produces the following series of sequences to feed to "
+ [:p "…declares a series of five maximum values, producing the following series
+ of five sequences to feed to "
   [:code "zap"]
   " for benchmarking."]
 
@@ -499,13 +508,13 @@
 
  [:p "However, there's a problem. The function expressions contain "
   [:code "range"]
-  " or "
+  " and "
   [:code "cycle"]
   ". If we run these benchmarks as is, the evaluation times would include "
   [:code "range"]
   "'s and "
   [:code "cycle"]
-  "'s processing times. We may want to do that in some other scenarios, but in
+  "'s processing times. We might want to do that in some other scenario, but in
  this case, it would be misleading. We want to focus solely on how fast "
   [:code "zap"]
   " can process its elements. Let's extract "
@@ -581,7 +590,27 @@
  [:p "So what happens when we evaluate a "
   [:code "defbench"]
   " expression? It binds the benchmark name to a hashmap of group, function
- expression, arguments, and some metadata. Soon, in the "
+ expression, arguments, and some metadata. Let's evaluate the name "
+  [:code "zap-inc"]
+  "."]
+
+ [:pre
+  [:code
+   "zap-inc ;; => {:fexpr (fn [n] (zap inc (range-of-length-n n)))
+               :group \"faster zap implementation\"
+               :ns \"zap.benchmarks\"
+               :name \"zap-inc\"
+               :n [10 100 1000 10000 100000]
+               :f #function[fn--8882]}"]]
+
+ [:p "Yup. We can see an everyday Clojure hashmap containing all of the
+ arguments we supplied to "
+  [:code "defbench"]
+  " (some stringified), plus the namespace and the "
+  [:span.small-caps "repl"]
+  "'s rendering of the function object."]
+
+ [:p "Soon, in the "
   [:a {:href "#run-benchmarks"} "run benchmarks"]
   " step, Fastester will rip through the benchmark names declared in the options
  hashmap key "
@@ -636,6 +665,8 @@
 
  [:pre [:code "(ns-unmap *ns* 'zap-something-else)"]]
 
+ [:h4 "Final checks"]
+
  [:p#hierarchy "Before we go to the next step, running the benchmarks, let's
  double-check the options. We need Fastester to find our two benchmark
  definitions, so we must correctly set "
@@ -644,7 +675,7 @@
 
  [:p "That nested hashmap's keys are symbols indicating the namespace. In our
  example, we have one namespace, and therefore one key, "
-  [:code "'zap-benchmarks"]
+  [:code "'zap.benchmarks"]
   ". Associated to that one key is a set of simple symbols indicating the
  benchmark names, in our example, "
   [:code "'zap-inc"]
@@ -653,7 +684,7 @@
   ". Altogether, that section of the options looks like this."]
 
  [:pre [:code
-        ":benchmarks {'zap-benchmarks #{'zap-inc
+        ":benchmarks {'zap.benchmarks #{'zap-inc
                                'zap-uc}}"]]
 
  [:p "We should also be on guard: saving "
@@ -796,9 +827,9 @@
  [:h3#gotchas "Gotchas"]
 
  [:p "We must be particularly careful to define our benchmarks to test exactly
- and only what we intend to test. One danger is idiomatic Clojure patterns will
- pollute our time measurements. It's typical to compose a sequence right at the
- spot where we require it, like this."]
+ and only what we intend to test. One danger is idiomatic Clojure patterns
+ polluting our time measurements. It's typical to compose a sequence right at
+ the spot where we require it, like this."]
 
  [:pre [:code "(map inc (repeatedly 99 #(rand))"]]
 
@@ -873,7 +904,7 @@ contents "
  [:p "When displaying relative performance comparisons, it's crucial to
  hold the environment as consistent as possible. If a round of benchmarks are
  run when the CPU, RAM, operating system, Java version, or Clojure version are
- changes, we need to re-run "
+ changed, we need to re-run "
   [:strong "all"]
   " previous benchmarks. Or, maybe better, we ought to make a new options file
  and generate a completely different performance document, while keeping the old
@@ -886,7 +917,7 @@ contents "
   [:code "taskset"]
   ", that explicitly sets CPU affinity. Invoking"]
 
- [:pre [:code "$ taskset --cpu-list 3 lein run :benchmarks"]]
+ [:pre [:code "$ taskset --cpu-list 3 lein run -m fastester.core :benchmarks"]]
 
  [:p "from the command line pins the benchmark process to the fourth CPU.
  Fastester does not provide a turn-key solution for setting CPU affinity for

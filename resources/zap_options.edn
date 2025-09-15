@@ -9,9 +9,8 @@
 
  :preferred-version-info :lein
 
- :benchmarks {'zap.benchmarks
-              #{'zap-inc
-                'zap-uc}}
+ :benchmarks {'zap.benchmarks #{'zap-inc
+                                'zap-uc}}
  
  ;; output directories and filenames
  :html-directory "doc/"
@@ -48,9 +47,15 @@
               "this file"]
              ". To generate this "
              [:span.small-caps "html"]
-             " page, run this."]
+             " page, evaluate Fastester's "
+             [:a {:href "https://blosavio.github.io/fastester.core.html#var--main"}
+              [:code "main"]]
+             " function with the "
+             [:code ":documents"]
+             " argument. For example, with Leiningen, run this."]
             
-            [:pre [:code "$ lein run :documents <zap_options.edn>"]]
+            [:pre
+             [:code "$ lein run -m fastester.core :documents zap_options.edn"]]
 
             [:p "The hyperlink immediately preceding this preamble ('faster
  `zap` implementation') is a one-element table of contents. Clicking that link
@@ -61,7 +66,8 @@
              " name. In a performance document like this one with only one
  group, it's not terribly useful. Real life documents will have multiple
  groups with longer sections and that table of contents will provide some handy
- navigation. Try clicking the link; it won't scroll you too far."]]
+ navigation. Try clicking the link; it will scroll us only to the immediate next
+ section."]]
 
  :comments
  {"faster `zap` implementation"

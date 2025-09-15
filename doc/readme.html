@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
-    <meta charset="utf-8" compile-date="2025-09-12 13:08:36" content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8" compile-date="2025-09-15 08:30:34" content="width=device-width, initial-scale=1" name="viewport">
     <link href="project.css" rel="stylesheet" type="text/css">
     <title>
       Fastester — A Clojure library for measuring and displaying performance changes
@@ -165,25 +165,27 @@
         believe the later implementation is faster.
       </p>
       <p>
-        Beyond that, tossing out raw numbers like "183" and "264" requires people to juggle arithmetic in their head. Not ideal.
+        Another problem is that tossing out raw numbers like "183" and "264" requires people to perform mental arithmetic to figure out if version&nbsp;12 is
+        better. <em>One-hundred, eighty-three divided by two-hundred, sixty-four is approximately eighteen divided by twenty-six, which is approximately…</em>
+        Not ideal.
       </p>
       <p>
-        A Fastester performance report intends to be objective, relative, and comprehensible.
+        To address these problems, a Fastester aspires to generate an objective, relative, and comprehensible performance report.
       </p>
       <h3 id="objective">
         Objective
       </h3>
       <p>
-        Thanks to Criterium, we can measure, in units of seconds, how long it takes to evaluate a function with a particular argument, (somewhat) independent
-        of vagaries of the environment.
+        Thanks to Criterium, we can measure, in concrete, real world time units, how long it takes to evaluate a function with a particular argument,
+        (somewhat) independent of vagaries of the computing environment.
       </p>
       <h3 id="comparative">
         Relative
       </h3>
       <p>
         A single, isolated timing measurement doesn't mean much to a person, even if it is <a href="#objective">objective</a>. People simply don't have
-        everyday intuition for an event that occurs in a nanoseconds or microseconds. So when we discuss the concept of 'fast', we're often implicitly speaking
-        in relative terms.
+        everyday intuition for an event that occurs in a few nanoseconds or microseconds. So when we discuss the concept of 'fast', we're often implicitly
+        speaking in relative terms.
       </p>
       <p>
         Fastester focuses on comparing the speed of one function to a previous version of itself.
@@ -229,8 +231,9 @@
         Usage
       </h2>
       <p>
-        Prologue: We have previously profiled some execution path of version&nbsp;11 of our library. We discovered a bottleneck in a function,
-        <code>zap</code>, which just so happens to behave exactly like <code>clojure.core/map</code>: apply some function to every element of a collection.
+        Let's review our imaginary scenario. We have previously profiled some execution path of version&nbsp;11 of our library. We discovered a bottleneck in a
+        function, <code>zap</code>, which just so happens to behave exactly like <code>clojure.core/map</code>: apply some function to every element of a
+        collection.
       </p>
       <pre><code>(zap inc [1 2 3]) ;; =&gt; (2 3 4)</code></pre>
       <p>
@@ -265,8 +268,8 @@
         </li>
       </ol>
       <p>
-        Steps&nbsp;1 and&nbsp;2 are done once, and only occasionally updated as needed. Steps&nbsp;3 and&nbsp;4 are done only when a function's implementation
-        changes with measurable affects on performance.
+        Keep in mind we don't need to do these steps for every function for every release, but only when a function's implementation changes with measurable
+        affects on performance.
       </p>
       <p>
         Follow along with this <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">example options file</a> and this <a href=
@@ -350,7 +353,8 @@
           </td>
           <td>
             <p>
-              Under <code>:html-directory</code>, directory to write svg image files.
+              Under <code>:html-directory</code>, directory to write svg image files. If a project's benchmark definitions are split among multiple
+              files/namespaces, be sure to give each file/namespace their own dedicated image subdirectory.
             </p>
           </td>
         </tr>
@@ -402,7 +406,8 @@
           </td>
           <td>
             <p>
-              Directory to find benchmark data, appended to <code>:results-url</code>.
+              Directory to find benchmark data, appended to <code>:results-url</code>. Note: Every <code>edn</code> file in this directory will be used to
+              create a datum in the document. Errant data files will produce confusing entries in charts and tables.
             </p>
           </td>
         </tr>
@@ -480,7 +485,7 @@
           </td>
           <td>
             <p>
-              Default setting causes <span class="small-caps">html</span> to be written to file with no line breaks. If set to <code>true</code> line breaks
+              Default setting causes <span class="small-caps">html</span> to be written to file with no line breaks. If set to <code>true</code>, line breaks
               are inserted for readability, and for smaller version control diffs.
             </p>
           </td>
@@ -509,7 +514,7 @@
             <p>
               Comparator used for sorting versions in the performance document chart legends and table rows. Comparator must accept two strings representing
               version entries extracted from either a Leiningen 'project.clj' or a 'pom.xml'. <a href=
-              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution.</a>
+              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution</a>.
             </p>
           </td>
         </tr>
@@ -534,7 +539,7 @@
             <code>:title</code>
           </td>
           <td>
-            <code>"Taffy Yoyo Library performance"</code>
+            <code>"Taffy Yo-yo Library performance"</code>
           </td>
           <td>
             <p>
@@ -551,7 +556,7 @@
           </td>
           <td>
             <p>
-              A hashmap with <code>:name</code> and <code>email</code> strings that report a person responsible for the report.
+              A hashmap with <code>:name</code> and <code>:email</code> strings that report a person responsible for the report.
             </p>
           </td>
         </tr>
@@ -646,7 +651,7 @@
       <p>
         When we evaluate a <code>defbench</code> expression, Fastester binds a hashmap to the <em>name</em> in the namespace where we evaluated the expression.
         If two expressions use the same name in the same namespace, the later-evaluated definition will overwrite the earlier. If we'd like to give the same
-        name to two different benchmarks, we could isolate the definitions into two different namespaces. For our demonstration benchmarking <code>zap</code>,
+        name to two different benchmarks, we could isolate the definitions into two different namespaces. For this demonstration benchmarking <code>zap</code>,
         we've chosen two different names, so we won't worry about overwriting.
       </p>
       <p>
@@ -695,11 +700,11 @@
         <code>range</code>s from ten to one-hundred thousand.
       </p>
       <p>
-        An argument sequence like this…
+        An <em>args</em> sequence of five integers like this…
       </p>
       <pre><code>[10 100 1000 10000 100000]</code></pre>
       <p>
-        …produces the following series of sequences to feed to <code>zap</code> for benchmarking.
+        …declares a series of five maximum values, producing the following series of five sequences to feed to <code>zap</code> for benchmarking.
       </p>
       <pre><code>[0 ... 9]</code><br><code>[0 ... 99]</code><br><code>[0 ... 999]</code><br><code>[0 ... 9999]</code><br><code>[0 ... 99999]</code></pre>
       <p>
@@ -725,10 +730,10 @@
           (fn [i] (zap str/upper-case (take i (cycle ["a" "b" "c"]))))
           [10 100 1000 10000 100000])</code></pre>
       <p>
-        However, there's a problem. The function expressions contain <code>range</code> or <code>cycle</code>. If we run these benchmarks as is, the evaluation
-        times would include <code>range</code>'s and <code>cycle</code>'s processing times. We may want to do that in some other scenarios, but in this case,
-        it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let's extract <code>range</code> to an external
-        expression.
+        However, there's a problem. The function expressions contain <code>range</code> and <code>cycle</code>. If we run these benchmarks as is, the
+        evaluation times would include <code>range</code>'s and <code>cycle</code>'s processing times. We might want to do that in some other scenario, but in
+        this case, it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let's extract <code>range</code> to
+        an external expression.
       </p>
       <pre><code>(def range-of-length-n (reduce #(assoc %1 %2 (range %2)) {} [10 100 1000 10000 100000]))</code><br><br><br><code>(defbench zap-inc
           "faster zap implementation"
@@ -761,8 +766,21 @@
           [10 100 1000 10000 10000])</code></pre>
       <p>
         So what happens when we evaluate a <code>defbench</code> expression? It binds the benchmark name to a hashmap of group, function expression, arguments,
-        and some metadata. Soon, in the <a href="#run-benchmarks">run benchmarks</a> step, Fastester will rip through the benchmark names declared in the
-        options hashmap key <code>:benchmarks</code> and run a Criterium benchmark for every name.
+        and some metadata. Let's evaluate the name <code>zap-inc</code>.
+      </p>
+      <pre><code>zap-inc ;; =&gt; {:fexpr (fn [n] (zap inc (range-of-length-n n)))
+               :group "faster zap implementation"
+               :ns "zap.benchmarks"
+               :name "zap-inc"
+               :n [10 100 1000 10000 100000]
+               :f #function[fn--8882]}</code></pre>
+      <p>
+        Yup. We can see an everyday Clojure hashmap containing all of the arguments we supplied to <code>defbench</code> (some stringified), plus the namespace
+        and the <span class="small-caps">repl</span>'s rendering of the function object.
+      </p>
+      <p>
+        Soon, in the <a href="#run-benchmarks">run benchmarks</a> step, Fastester will rip through the benchmark names declared in the options hashmap key
+        <code>:benchmarks</code> and run a Criterium benchmark for every name.
       </p>
       <p>
         Once we evaluate the two <code>defbench</code> expressions, the namespace contains two benchmark definitions that will demonstrate <code>zap</code>'s
@@ -784,16 +802,19 @@
         Sometimes, we'll want to remove a defined benchmark, which we can do with <code>clojure.core/ns-unmap</code>.
       </p>
       <pre><code>(ns-unmap *ns* 'zap-something-else)</code></pre>
+      <h4>
+        Final checks
+      </h4>
       <p id="hierarchy">
         Before we go to the next step, running the benchmarks, let's double-check the options. We need Fastester to find our two benchmark definitions, so we
         must correctly set <code>:benchmarks</code>. This options key is associated to a hashmap.
       </p>
       <p>
         That nested hashmap's keys are symbols indicating the namespace. In our example, we have one namespace, and therefore one key,
-        <code>'zap-benchmarks</code>. Associated to that one key is a set of simple symbols indicating the benchmark names, in our example,
+        <code>'zap.benchmarks</code>. Associated to that one key is a set of simple symbols indicating the benchmark names, in our example,
         <code>'zap-inc</code> and <code>'zap-uc</code>. Altogether, that section of the options looks like this.
       </p>
-      <pre><code>:benchmarks {'zap-benchmarks #{'zap-inc
+      <pre><code>:benchmarks {'zap.benchmarks #{'zap-inc
                                'zap-uc}}</code></pre>
       <p>
         We should also be on guard: saving <code>zap</code>'s results (e.g., one-hundred-thousand incremented integers) blows up the file sizes, so let's set
@@ -883,8 +904,8 @@
         Gotchas
       </h3>
       <p>
-        We must be particularly careful to define our benchmarks to test exactly and only what we intend to test. One danger is idiomatic Clojure patterns will
-        pollute our time measurements. It's typical to compose a sequence right at the spot where we require it, like this.
+        We must be particularly careful to define our benchmarks to test exactly and only what we intend to test. One danger is idiomatic Clojure patterns
+        polluting our time measurements. It's typical to compose a sequence right at the spot where we require it, like this.
       </p>
       <pre><code>(map inc (repeatedly 99 #(rand))</code></pre>
       <p>
@@ -922,14 +943,14 @@
       </p>
       <p>
         When displaying relative performance comparisons, it's crucial to hold the environment as consistent as possible. If a round of benchmarks are run when
-        the CPU, RAM, operating system, Java version, or Clojure version are changes, we need to re-run <strong>all</strong> previous benchmarks. Or, maybe
+        the CPU, RAM, operating system, Java version, or Clojure version are changed, we need to re-run <strong>all</strong> previous benchmarks. Or, maybe
         better, we ought to make a new options file and generate a completely different performance document, while keeping the old around.
       </p>
       <p id="affinity">
         <em>Unresolved:</em> Contemporary systems often use multiple, heterogeneous CPU cores, i.e., X&nbsp;efficiency cores running light tasks at low power
         and Y&nbsp;high-performance cores running intense tasks. Linux provides a utility, <code>taskset</code>, that explicitly sets CPU affinity. Invoking
       </p>
-      <pre><code>$ taskset --cpu-list 3 lein run :benchmarks</code></pre>
+      <pre><code>$ taskset --cpu-list 3 lein run -m fastester.core :benchmarks</code></pre>
       <p>
         from the command line pins the benchmark process to the fourth CPU. Fastester does not provide a turn-key solution for setting CPU affinity for other
         operating systems such as Windows or MacOS.
@@ -1132,7 +1153,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 12.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 15.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

@@ -58,77 +58,78 @@
         magnitude. This implementation change will improve performance for &nbsp;the vast majority of intended use cases.</em>
       </blockquote><img alt=
       "Chart of synthetic performance benchmark of function `zap`, &nbsp; comparing versions 11 and 12; version 12 demonstrates &nbsp; approximately 25% faster performance across a specific range of &nbsp; arguments."
-      src="doc/zap_img/group-0-fexpr-0.svg">
+      src="doc/zap_img/group-0-fexpr-0.svg">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       <table>
         <caption>
-          times in seconds, <em>mean±std</em>
+          &nbsp; times in seconds, <em>mean±std</em> &nbsp;
         </caption>
         <thead>
           <tr>
             <td></td>
             <th colspan="5">
-              arg, n
+              &nbsp; arg, n &nbsp;
             </th>
           </tr>
           <tr>
             <th>
-              version
+              &nbsp; version &nbsp;
             </th>
             <th>
-              1
+              &nbsp; 1 &nbsp;
             </th>
             <th>
-              10
+              &nbsp; 10 &nbsp;
             </th>
             <th>
-              100
+              &nbsp; 100 &nbsp;
             </th>
             <th>
-              1000
+              &nbsp; 1000 &nbsp;
             </th>
             <th>
-              10000
+              &nbsp; 10000 &nbsp;
             </th>
           </tr>
         </thead>
         <tr>
           <td>
-            12
+            &nbsp; 12 &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">1.8e-04±1.5e-06</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">1.8e-04±1.5e-06</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">1.8e-03±3.8e-05</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">1.8e-03±3.8e-05</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">1.9e-02±4.6e-04</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">1.9e-02±4.6e-04</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">1.8e-01±1.4e-03</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">1.8e-01±1.4e-03</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">1.8e+00±1.9e-02</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">1.8e+00±1.9e-02</a> &nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            11
+            &nbsp; 11 &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">2.6e-04±5.9e-06</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">2.6e-04±5.9e-06</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">2.7e-03±1.6e-04</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">2.7e-03±1.6e-04</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">2.6e-02±9.1e-04</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">2.6e-02±9.1e-04</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">2.7e-01±7.0e-03</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">2.7e-01±7.0e-03</a> &nbsp;
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">2.6e+00±2.2e-02</a>
+            &nbsp; <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">2.6e+00±2.2e-02</a> &nbsp;
           </td>
         </tr>
       </table>
@@ -157,25 +158,27 @@
         have good reason to believe the later implementation is &nbsp;faster.
       </p>
       <p>
-        Beyond that, tossing out raw numbers like &quot;183&quot; and &quot;264&quot; requires &nbsp;people to juggle arithmetic in their head. Not ideal.
+        Another problem is that tossing out raw numbers like &quot;183&quot; and &quot;264&quot; &nbsp;requires people to perform mental arithmetic to figure
+        out if version&nbsp;12 is &nbsp;better. <em>One-hundred, eighty-three divided by two-hundred, sixty-four is &nbsp;approximately eighteen divided by
+        twenty-six, which is approximately…</em> Not ideal.
       </p>
       <p>
-        A Fastester performance report intends to be objective, relative, and &nbsp;comprehensible.
+        To address these problems, a Fastester aspires to generate an objective, &nbsp;relative, and comprehensible performance report.
       </p>
       <h3 id="objective">
         Objective
       </h3>
       <p>
-        Thanks to Criterium, we can measure, in units of seconds, how long it &nbsp;takes to evaluate a function with a particular argument, (somewhat)
-        independent &nbsp;of vagaries of the environment.
+        Thanks to Criterium, we can measure, in concrete, real world time units, &nbsp;how long it takes to evaluate a function with a particular argument,
+        (somewhat) &nbsp;independent of vagaries of the computing environment.
       </p>
       <h3 id="comparative">
         Relative
       </h3>
       <p>
         A single, isolated timing measurement doesn&apos;t mean much to a person, even &nbsp;if it is <a href="#objective">objective</a>. People simply
-        don&apos;t have everyday intuition for an event that occurs in a &nbsp;nanoseconds or microseconds. So when we discuss the concept of &apos;fast&apos;,
-        we&apos;re &nbsp;often implicitly speaking in relative terms.
+        don&apos;t have everyday intuition for an event that occurs in a &nbsp;few nanoseconds or microseconds. So when we discuss the concept of
+        &apos;fast&apos;, &nbsp;we&apos;re often implicitly speaking in relative terms.
       </p>
       <p>
         Fastester focuses on comparing the speed of one function to a previous &nbsp;version of itself.
@@ -223,8 +226,9 @@
         Usage
       </h2>
       <p>
-        Prologue: We have previously profiled some execution path of version&nbsp;11 of &nbsp;our library. We discovered a bottleneck in a function,
-        <code>zap</code>, which just so happens to behave exactly like <code>clojure.core/map</code>: apply some function to every element of a collection.
+        Let&apos;s review our imaginary scenario. We have previously profiled some &nbsp;execution path of version&nbsp;11 of our library. We discovered a
+        bottleneck in a &nbsp;function, <code>zap</code>, which just so happens to behave exactly like <code>clojure.core/map</code>: apply some function to
+        every element of a collection.
       </p>
       <pre><code>(zap inc [1 2 3]) ;; =&gt; (2 3 4)</code></pre>
       <p>
@@ -259,8 +263,8 @@
         </li>
       </ol>
       <p>
-        Steps&nbsp;1 and&nbsp;2 are done once, and only occasionally updated as needed. &nbsp;Steps&nbsp;3 and&nbsp;4 are done only when a function&apos;s
-        implementation changes with &nbsp;measurable affects on performance.
+        Keep in mind we don&apos;t need to do these steps for every function for every &nbsp;release, but only when a function&apos;s implementation changes
+        with measurable &nbsp;affects on performance.
       </p>
       <p>
         Follow along with this <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">example options file</a> and this <a href=
@@ -344,7 +348,8 @@
           </td>
           <td>
             <p>
-              Under <code>:html-directory</code>, directory to write svg image files.
+              Under <code>:html-directory</code>, directory to write svg image files. If a project&apos;s benchmark definitions &nbsp;are split among multiple
+              files/namespaces, be sure to give each file/namespace &nbsp;their own dedicated image subdirectory.
             </p>
           </td>
         </tr>
@@ -396,7 +401,8 @@
           </td>
           <td>
             <p>
-              Directory to find benchmark data, appended to <code>:results-url</code>.
+              Directory to find benchmark data, appended to <code>:results-url</code>. Note: Every <code>edn</code> file in this directory will be used to
+              create a datum in the document. Errant data files will produce confusing entries in charts and tables.
             </p>
           </td>
         </tr>
@@ -474,7 +480,7 @@
           </td>
           <td>
             <p>
-              Default setting causes <span class="small-caps">html</span> to be written to file with no line breaks. If set to <code>true</code> line breaks
+              Default setting causes <span class="small-caps">html</span> to be written to file with no line breaks. If set to <code>true</code>, line breaks
               are inserted for readability, and for smaller version &nbsp;control diffs.
             </p>
           </td>
@@ -503,7 +509,7 @@
             <p>
               Comparator used for sorting versions in the performance document chart &nbsp;legends and table rows. Comparator must accept two strings
               representing &nbsp;version entries extracted from either a Leiningen &apos;project.clj&apos; or a &nbsp;&apos;pom.xml&apos;. <a href=
-              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution.</a>
+              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution</a>.
             </p>
           </td>
         </tr>
@@ -528,7 +534,7 @@
             <code>:title</code>
           </td>
           <td>
-            <code>&quot;Taffy Yoyo Library performance&quot;</code>
+            <code>&quot;Taffy Yo-yo Library performance&quot;</code>
           </td>
           <td>
             <p>
@@ -545,7 +551,7 @@
           </td>
           <td>
             <p>
-              A hashmap with <code>:name</code> and <code>email</code> strings that report a person responsible for the report.
+              A hashmap with <code>:name</code> and <code>:email</code> strings that report a person responsible for the report.
             </p>
           </td>
         </tr>
@@ -642,7 +648,7 @@
       <p>
         When we evaluate a <code>defbench</code> expression, Fastester binds a hashmap to the <em>name</em> in the namespace where we evaluated the expression.
         If two expressions use &nbsp;the same name in the same namespace, the later-evaluated definition will &nbsp;overwrite the earlier. If we&apos;d like to
-        give the same name to two different &nbsp;benchmarks, we could isolate the definitions into two different namespaces. For &nbsp;our demonstration
+        give the same name to two different &nbsp;benchmarks, we could isolate the definitions into two different namespaces. For &nbsp;this demonstration
         benchmarking <code>zap</code>, we&apos;ve chosen two different names, so we won&apos;t worry about overwriting.
       </p>
       <p>
@@ -691,11 +697,11 @@
         <code>zap-inc</code>, let&apos;s explore <code>range</code>s from ten to one-hundred thousand.
       </p>
       <p>
-        An argument sequence like this…
+        An <em>args</em> sequence of five integers like this…
       </p>
       <pre><code>[10 100 1000 10000 100000]</code></pre>
       <p>
-        …produces the following series of sequences to feed to <code>zap</code> for benchmarking.
+        …declares a series of five maximum values, producing the following series &nbsp;of five sequences to feed to <code>zap</code> for benchmarking.
       </p>
       <pre><code>[0 ... 9]</code><br><code>[0 ... 99]</code><br><code>[0 ... 999]</code><br><code>[0 ... 9999]</code><br><code>[0 ... 99999]</code></pre>
       <p>
@@ -721,9 +727,9 @@
 &nbsp;         (fn [i] (zap str/upper-case (take i (cycle [&quot;a&quot; &quot;b&quot; &quot;c&quot;]))))
 &nbsp;         [10 100 1000 10000 100000])</code></pre>
       <p>
-        However, there&apos;s a problem. The function expressions contain <code>range</code> or <code>cycle</code>. If we run these benchmarks as is, the
-        evaluation times would include <code>range</code>&apos;s and <code>cycle</code>&apos;s processing times. We may want to do that in some other
-        scenarios, but in &nbsp;this case, it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let&apos;s
+        However, there&apos;s a problem. The function expressions contain <code>range</code> and <code>cycle</code>. If we run these benchmarks as is, the
+        evaluation times would include <code>range</code>&apos;s and <code>cycle</code>&apos;s processing times. We might want to do that in some other
+        scenario, but in &nbsp;this case, it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let&apos;s
         extract <code>range</code> to an external expression.
       </p>
       <pre><code>(def range-of-length-n (reduce #(assoc %1 %2 (range %2)) {} [10 100 1000 10000 100000]))</code><br><br><br><code>(defbench zap-inc
@@ -757,8 +763,21 @@
 &nbsp;         [10 100 1000 10000 10000])</code></pre>
       <p>
         So what happens when we evaluate a <code>defbench</code> expression? It binds the benchmark name to a hashmap of group, function &nbsp;expression,
-        arguments, and some metadata. Soon, in the <a href="#run-benchmarks">run benchmarks</a> step, Fastester will rip through the benchmark names declared
-        in the options &nbsp;hashmap key <code>:benchmarks</code> and run a Criterium benchmark for every name.
+        arguments, and some metadata. Let&apos;s evaluate the name <code>zap-inc</code>.
+      </p>
+      <pre><code>zap-inc ;; =&gt; {:fexpr (fn [n] (zap inc (range-of-length-n n)))
+&nbsp;              :group &quot;faster zap implementation&quot;
+&nbsp;              :ns &quot;zap.benchmarks&quot;
+&nbsp;              :name &quot;zap-inc&quot;
+&nbsp;              :n [10 100 1000 10000 100000]
+&nbsp;              :f #function[fn--8882]}</code></pre>
+      <p>
+        Yup. We can see an everyday Clojure hashmap containing all of the &nbsp;arguments we supplied to <code>defbench</code> (some stringified), plus the
+        namespace and the <span class="small-caps">repl</span>&apos;s rendering of the function object.
+      </p>
+      <p>
+        Soon, in the <a href="#run-benchmarks">run benchmarks</a> step, Fastester will rip through the benchmark names declared in the options &nbsp;hashmap
+        key <code>:benchmarks</code> and run a Criterium benchmark for every name.
       </p>
       <p>
         Once we evaluate the two <code>defbench</code> expressions, the namespace contains two benchmark definitions that will &nbsp;demonstrate
@@ -781,16 +800,19 @@
         Sometimes, we&apos;ll want to remove a defined benchmark, which we can do &nbsp;with <code>clojure.core/ns-unmap</code>.
       </p>
       <pre><code>(ns-unmap *ns* &apos;zap-something-else)</code></pre>
+      <h4>
+        Final checks
+      </h4>
       <p id="hierarchy">
         Before we go to the next step, running the benchmarks, let&apos;s &nbsp;double-check the options. We need Fastester to find our two benchmark
         &nbsp;definitions, so we must correctly set <code>:benchmarks</code>. This options key is associated to a hashmap.
       </p>
       <p>
         That nested hashmap&apos;s keys are symbols indicating the namespace. In our &nbsp;example, we have one namespace, and therefore one key,
-        <code>&apos;zap-benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in our example,
+        <code>&apos;zap.benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in our example,
         <code>&apos;zap-inc</code> and <code>&apos;zap-uc</code>. Altogether, that section of the options looks like this.
       </p>
-      <pre><code>:benchmarks {&apos;zap-benchmarks #{&apos;zap-inc
+      <pre><code>:benchmarks {&apos;zap.benchmarks #{&apos;zap-inc
 &nbsp;                              &apos;zap-uc}}</code></pre>
       <p>
         We should also be on guard: saving <code>zap</code>&apos;s results (e.g., one-hundred-thousand incremented integers) blows up the &nbsp;file sizes, so
@@ -884,7 +906,7 @@
       </h3>
       <p>
         We must be particularly careful to define our benchmarks to test exactly &nbsp;and only what we intend to test. One danger is idiomatic Clojure
-        patterns will &nbsp;pollute our time measurements. It&apos;s typical to compose a sequence right at the &nbsp;spot where we require it, like this.
+        patterns &nbsp;polluting our time measurements. It&apos;s typical to compose a sequence right at &nbsp;the spot where we require it, like this.
       </p>
       <pre><code>(map inc (repeatedly 99 #(rand))</code></pre>
       <p>
@@ -922,7 +944,7 @@
       </p>
       <p>
         When displaying relative performance comparisons, it&apos;s crucial to &nbsp;hold the environment as consistent as possible. If a round of benchmarks
-        are &nbsp;run when the CPU, RAM, operating system, Java version, or Clojure version are &nbsp;changes, we need to re-run <strong>all</strong> previous
+        are &nbsp;run when the CPU, RAM, operating system, Java version, or Clojure version are &nbsp;changed, we need to re-run <strong>all</strong> previous
         benchmarks. Or, maybe better, we ought to make a new options file &nbsp;and generate a completely different performance document, while keeping the old
         &nbsp;around.
       </p>
@@ -931,7 +953,7 @@
         power and Y&nbsp;high-performance &nbsp;cores running intense tasks. Linux provides a utility, <code>taskset</code>, that explicitly sets CPU affinity.
         Invoking
       </p>
-      <pre><code>$ taskset --cpu-list 3 lein run :benchmarks</code></pre>
+      <pre><code>$ taskset --cpu-list 3 lein run -m fastester.core :benchmarks</code></pre>
       <p>
         from the command line pins the benchmark process to the fourth CPU. Fastester does not provide a turn-key solution for setting CPU affinity for other
         operating systems such as Windows or MacOS.
@@ -1134,7 +1156,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 12.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 15.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

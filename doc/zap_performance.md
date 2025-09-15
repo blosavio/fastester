@@ -11,14 +11,16 @@
         This page follows the <code>zap</code> function benchmark example from the <a href="https://github.com/blosavio/fastester">Fastester ReadMe</a>. The
         benchmarks are defined in <a href="https://github.com/blosavio/fastester/blob/main/test/zap/benchmarks.clj">this file</a>, while the options (including
         this very text you are now reading) are defined in <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_options.edn">this file</a>.
-        To generate this <span class="small-caps">html</span> page, run this.
+        To generate this <span class="small-caps">html</span> page, evaluate Fastester&apos;s <a href=
+        "https://blosavio.github.io/fastester.core.html#var--main"><code>main</code></a> function with the <code>:documents</code> argument. For example, with
+        Leiningen, run this.
       </p>
-      <pre><code>$ lein run :documents &lt;zap_options.edn&gt;</code></pre>
+      <pre><code>$ lein run -m fastester.core :documents zap_options.edn</code></pre>
       <p>
         The hyperlink immediately preceding this preamble (&apos;faster `zap` implementation&apos;) is a one-element table of contents. Clicking that link
         whisks us to the <span class="small-caps">html</span> section for that benchmark <em>group</em> name. In a performance document like this one with only
         one group, it&apos;s not terribly useful. Real life documents will have multiple groups with longer sections and that table of contents will provide
-        some handy navigation. Try clicking the link; it won&apos;t scroll you too far.
+        some handy navigation. Try clicking the link; it will scroll us only to the immediate next section.
       </p>
     </div>
     <section>
@@ -215,7 +217,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 12.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 14.<span id="uuid"><br>
       3615ae1c-d196-4cb0-bb4c-b4f29a8e2501</span>
     </p>
   </body>
