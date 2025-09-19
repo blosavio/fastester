@@ -95,19 +95,19 @@
                 12
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">1.8e-04±1.5e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">9.8e-05±1.1e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">1.8e-03±3.8e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">9.7e-04±1.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">1.9e-02±4.6e-04</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">9.8e-03±1.4e-04</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">1.8e-01±1.4e-03</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">9.7e-02±1.6e-03</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">1.8e+00±1.9e-02</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">9.8e-01±1.6e-02</a>
               </td>
             </tr>
             <tr>
@@ -115,19 +115,19 @@
                 11
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">2.6e-04±5.9e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">1.5e-04±1.5e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">2.7e-03±1.6e-04</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">1.5e-03±1.8e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">2.6e-02±9.1e-04</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">1.5e-02±1.7e-04</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">2.7e-01±7.0e-03</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">1.5e-01±3.2e-03</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">2.6e+00±2.2e-02</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">1.5e+00±2.1e-02</a>
               </td>
             </tr>
           </table>
@@ -175,19 +175,19 @@
                 12
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-0.edn">1.8e-04±3.3e-06</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-0.edn">9.9e-05±1.7e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-1.edn">1.8e-03±2.3e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-1.edn">9.6e-04±5.5e-06</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-2.edn">1.9e-02±3.1e-04</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-2.edn">9.6e-03±6.1e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-3.edn">1.8e-01±3.7e-03</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-3.edn">9.7e-02±1.4e-03</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-4.edn">1.8e+00±9.9e-03</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-4.edn">9.7e-01±1.4e-02</a>
               </td>
             </tr>
             <tr>
@@ -195,19 +195,19 @@
                 11
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-0.edn">2.4e-04±1.0e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-0.edn">1.3e-04±6.6e-07</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-1.edn">2.4e-03±9.4e-05</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-1.edn">1.3e-03±1.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-2.edn">2.3e-02±3.3e-04</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-2.edn">1.3e-02±6.0e-05</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-3.edn">2.4e-01±3.8e-03</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-3.edn">1.3e-01±7.4e-04</a>
               </td>
               <td>
-                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-4.edn">2.4e+00±4.7e-02</a>
+                <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-4.edn">1.3e+00±9.1e-03</a>
               </td>
             </tr>
           </table>
@@ -217,7 +217,7 @@
     </section>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 15.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/Fastester">Fastester</a> on 2025 September 19.<span id="uuid"><br>
       3615ae1c-d196-4cb0-bb4c-b4f29a8e2501</span>
     </p>
   </body>

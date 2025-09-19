@@ -8,7 +8,7 @@
 <li>Run benchmarks with <a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a>.</li>
 <li>Generate html document with <a href="fastester.display.html#var-generate-documents">generate-documents</a>.</li>
 </ol>
-</div></div><div class="public anchor" id="var--main"><h3>-main</h3><div class="usage"><code>(-main action)</code><code>(-main action explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Given keyword <code>action</code>, runs a Fastester task with the following mappings:</p>
+</div></div><div class="public anchor" id="var--main"><h3>-main</h3><div class="usage"><code>(-main action)</code><code>(-main action explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Given keyword <code>action</code>, runs a Fastester task with the following associations:</p>
 <ul>
 <li><code>:benchmarks</code> executes <code>(</code><a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a><code>)</code></li>
 <li><code>:documents</code> executes <code>(</code><a href="fastester.display.html#var-generate-documents">generate-documents</a><code>)</code>.</li>
@@ -22,6 +22,12 @@ $ lein run -m fastester.core :documents
 <pre><code class="language-bash">$ lein run -m fastester.core :benchmarks ./foobar_options.edn
 </code></pre>
 <p>Reads options from explicitly-given <code>./foobar_options.edn</code>.</p>
+<p>Note #1: Invoke the JVM with <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/performance-enhancements-7.html">tiered compilation</a> levels one or three (recommended).</p>
+<p>Example Leiningen <code>project.clj</code> entry:</p>
+<pre><code class="language-clojure">:jvm-opts ["-XX:+TieredCompilation"
+           "-XX:TieredStopAtLevel=4"]
+</code></pre>
+<p>Note #2: When running on systems with multiple, heterogeneous CPU cores, pin the benchmark process to a specified core, e.g., with Linux’s <a href="https://manpages.debian.org/bookworm/util-linux/taskset.1.en.html">taskset</a> utility.</p>
 </div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L29">view source</a></div></div><div class="public anchor" id="var-run-benchmarks-and-generate-documents"><h3>run-benchmarks-and-generate-documents</h3><div class="usage"><code>(run-benchmarks-and-generate-documents)</code><code>(run-benchmarks-and-generate-documents explicit-options-filename)</code></div><div class="doc"><div class="markdown"><p>Run all benchmarks and generate an html document that displays comparisons to previous versions.</p>
 <p>See <a href="fastester.measure.html#var-run-benchmarks">run-benchmarks</a> and <a href="fastester.display.html#var-generate-documents">generate-documents</a>.</p>
 </div></div><div class="src-link"><a href="https://github.com/blosavio/fastester/blob/main/src/fastester/core.clj#L16">view source</a></div></div></div></body></html>

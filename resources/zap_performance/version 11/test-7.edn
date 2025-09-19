@@ -1,6 +1,65 @@
-{:overhead 1.8303836940408698E-8,
+{:overhead 7.090645845177437E-9,
  :samples
- (110133365 103672636 103606340 104406475 101653538 108807160),
+ (1039342053
+  1003386094
+  1007978488
+  1005007918
+  1017048693
+  1022868448
+  1006823617
+  1004106214
+  1010017694
+  1009086793
+  1006504544
+  1017445336
+  1004884514
+  1006589460
+  1006090651
+  1003263069
+  1005545931
+  1017182028
+  1023710793
+  1010446279
+  1011821835
+  1013134671
+  1003947926
+  1006081322
+  1003695094
+  1002689819
+  1003340940
+  1004446279
+  1000753571
+  1002423635
+  1001231953
+  1002678092
+  1001441339
+  1001911508
+  998478680
+  1008572266
+  1018654385
+  1021269969
+  1001460105
+  1032431490
+  1050103940
+  1063091239
+  1019492231
+  1005603359
+  1010541025
+  1008187065
+  1006405816
+  1010556669
+  1009001570
+  1009891442
+  1001098927
+  1013684791
+  1018213543
+  1005903644
+  1005562940
+  1004232785
+  1007160808
+  1008698799
+  1005592040
+  1003332688),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,48 +71,50 @@
   {:major 1, :minor 12, :incremental 1, :qualifier nil},
   :spec-version "11",
   :sun-arch-data-model "64"},
- :mean [0.026320297833333332 (0.02580829175 0.02697026525)],
- :final-gc-time 107964621,
- :execution-count 4,
+ :mean
+ [0.014647753080676331 (0.014611414902657006 0.014710886122946862)],
+ :final-gc-time 62943619,
+ :execution-count 69,
  :variance
- [8.191307538309189E-7 (3.629447491848421E-7 1.1230622296737848E-6)],
+ [3.003615368146194E-8 (1.335290258629875E-8 6.839963473075985E-8)],
  :os-details
  {:arch "amd64",
   :available-processors 4,
   :name "Linux",
-  :version "5.15.0-151-generic"},
+  :version "5.15.0-153-generic"},
  :tail-quantile 0.025,
- :outlier-variance 0.13888888888888856,
- :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
- :warmup-time 5990079505,
- :lower-q [0.0254133845 (0.0254133845 0.0254764813125)],
- :warmup-executions 229,
- :sample-count 6,
+ :outlier-variance 0.016388888888888856,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 1, :high-severe 3},
+ :warmup-time 10227976081,
+ :lower-q
+ [0.014503674942028987 (0.014470705507246379 0.014512049439855073)],
+ :warmup-executions 701,
+ :sample-count 60,
  :upper-q
- [0.0273543759375 (0.026078686281250003 0.027533341250000003)],
+ [0.015097239510869567 (0.014824180405797104 0.015407119405797103)],
  :fastester/metadata
  {:fexpr
   "(fn [i] (doall (zap str/upper-case (abc-cycle-of-length-i i))))",
-  :date {:year 2025, :month "August", :day 22},
+  :date {:year 2025, :month "September", :day 18},
   :group "faster `zap` implementation",
   :index 7,
   :ns "zap.benchmarks",
-  :UUIDv4 #uuid "a4051882-fba4-4e10-9919-59c3dbfc4f45",
+  :UUIDv4 #uuid "41693139-37bb-4870-9888-dafecb0cb3a7",
   :name "zap-uc",
-  :testing-thoroughness :quick,
+  :testing-thoroughness :default,
   :arg 100,
   :version "11",
   :parallel? false},
- :total-time 0.632279514,
- :sample-variance [6.904392004578004E-7 (0.0 0.0)],
+ :total-time 60.634148817,
+ :sample-variance [2.8541173131981232E-8 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
-  :samples 6,
-  :target-execution-time 100000000,
-  :warmup-jit-period 5000000000,
+  :samples 60,
+  :target-execution-time 1000000000,
+  :warmup-jit-period 10000000000,
   :tail-quantile 0.025,
-  :bootstrap-size 500,
-  :overhead 1.8303836940408698E-8},
+  :bootstrap-size 1000,
+  :overhead 7.090645845177437E-9},
  :sample-mean
- [0.02634497975 (0.02385219961446454 0.028837759885535465)],
+ [0.014645929665942031 (0.014139105674611874 0.015152753657272188)],
  :results :fastester/benchmark-fn-results-elided}

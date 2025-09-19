@@ -170,7 +170,7 @@ to 10 milliseconds in version 6."]
 
   "(fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))"
   {:x-axis-logarithmic? true
-   :y-axis-logarithmic? true}
+   :y-axis-logarithmic? false}
 
   "(fn [n] (doall (map inc (range-of-length-n n))))"
   {:x-axis-logarithmic? true

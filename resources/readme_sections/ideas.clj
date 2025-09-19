@@ -12,21 +12,21 @@
   " provides a handy group of benchmarking utilities that measures the
  evaluation time of a Clojure expression. We could use Criterium to learn that "
   [:code "(zap inc [1 2 3])"]
-  " requires 183±2 microseconds to evaluate."]
+  " requires 98±1 microseconds to evaluate."]
 
  [:p "Is…that good? Difficult to say. What we'd really like to know is how
- 183 microseconds compares to some previous version. So if, for example,
+ 98 microseconds compares to some previous version. So if, for example,
  version 12 of "
   [:code "zap"]
-  " evaluates in 183 microseconds, whereas version 11 required
- 264 microseconds, we have good reason to believe the later implementation is
+  " evaluates in 98 microseconds, whereas version 11 required
+ 148 microseconds, we have good reason to believe the later implementation is
  faster."]
 
- [:p "Another problem is that tossing out raw numbers like \"183\" and \"264\"
+ [:p "Another problem is that tossing out raw numbers like \"98\" and \"148\"
  requires people to perform mental arithmetic to figure out if version 12 is
  better. "
-  [:em "One-hundred, eighty-three divided by two-hundred, sixty-four is
- approximately eighteen divided by twenty-six, which is approximately…"]
+  [:em "One-hundred, forty-eight divided by ninety-eight is
+ approximately one-hundred, fifty divided by one-hundred, which is…"]
   " Not ideal."]
 
  [:p "To address these problems, Fastester aspires to generate an objective,
@@ -76,7 +76,7 @@
  version-control."]]
 
   [:li [:p "The performance data is objective, but people may interpret it to
- suit their tastes. 183 microseconds may be fast enough for one person, but not
+ suit their tastes. 98 microseconds may be fast enough for one person, but not
  another. The accompanying commentary may express the library author's opinions.
  That's okay. The author is merely communicating that opinion to the person
  considering switching versions. The author may consider a particular version "

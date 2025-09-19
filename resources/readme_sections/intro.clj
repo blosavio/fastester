@@ -17,13 +17,13 @@
  [:blockquote
   [:em "Version 12 of function "
    [:code "zap"]
-   " is 20 to 30 percent faster than version 11 for integers spanning five
+   " is 35 percent faster than version 11 for sequence lengths spanning five
  orders of magnitude. This implementation change will improve performance for
  the vast majority of intended use cases."]]
 
  (let [img-alt "Chart of synthetic performance benchmark of function `zap`,
                 comparing versions 11 and 12; version 12 demonstrates
-                approximately 25% faster performance across a specific range of
+                approximately 35% faster performance across a wide range of
                 arguments."]
    (hiccup.element/image "doc/zap_img/group-0-fexpr-0.svg" img-alt))
 

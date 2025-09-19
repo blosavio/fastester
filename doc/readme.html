@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
-    <meta charset="utf-8" compile-date="2025-09-15 09:20:17" content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8" compile-date="2025-09-19 17:04:05" content="width=device-width, initial-scale=1" name="viewport">
     <link href="project.css" rel="stylesheet" type="text/css">
     <title>
       Fastester — A Clojure library for measuring and displaying performance changes
@@ -37,6 +37,11 @@
         Clojure CLI/deps.edn
       </h3>
       <pre><code>com.sagevisuals/fastester {:mvn/version "0"}</code></pre>
+      <h3 id="declare-compiler">
+        JVM options
+      </h3>
+      <pre><code>:jvm-opts  ["-XX:+TieredCompilation"
+            "-XX:TieredStopAtLevel=4"]</code></pre>
       <h3>
         Require
       </h3>
@@ -63,10 +68,10 @@
         Or instead, we could assert,
       </p>
       <blockquote>
-        <em>Version&nbsp;12 of function <code>zap</code> is 20 to 30&nbsp;percent faster than version&nbsp;11 for integers spanning five orders of magnitude.
+        <em>Version&nbsp;12 of function <code>zap</code> is 35&nbsp;percent faster than version&nbsp;11 for sequence lengths spanning five orders of magnitude.
         This implementation change will improve performance for the vast majority of intended use cases.</em>
       </blockquote><img alt=
-      "Chart of synthetic performance benchmark of function `zap`, comparing versions 11 and 12; version 12 demonstrates approximately 25% faster performance across a specific range of arguments."
+      "Chart of synthetic performance benchmark of function `zap`, comparing versions 11 and 12; version 12 demonstrates approximately 35% faster performance across a wide range of arguments."
       src="zap_img/group-0-fexpr-0.svg">
       <table>
         <caption>
@@ -105,19 +110,19 @@
             12
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">1.8e-04±1.5e-06</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-5.edn">9.8e-05±1.1e-06</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">1.8e-03±3.8e-05</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-6.edn">9.7e-04±1.1e-05</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">1.9e-02±4.6e-04</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-7.edn">9.8e-03±1.4e-04</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">1.8e-01±1.4e-03</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-8.edn">9.7e-02±1.6e-03</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">1.8e+00±1.9e-02</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 12/test-9.edn">9.8e-01±1.6e-02</a>
           </td>
         </tr>
         <tr>
@@ -125,19 +130,19 @@
             11
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">2.6e-04±5.9e-06</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-5.edn">1.5e-04±1.5e-06</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">2.7e-03±1.6e-04</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-6.edn">1.5e-03±1.8e-05</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">2.6e-02±9.1e-04</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-7.edn">1.5e-02±1.7e-04</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">2.7e-01±7.0e-03</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-8.edn">1.5e-01±3.2e-03</a>
           </td>
           <td>
-            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">2.6e+00±2.2e-02</a>
+            <a href="https://github.com/blosavio/fastester/blob/main/resources/zap_performance/version 11/test-9.edn">1.5e+00±2.1e-02</a>
           </td>
         </tr>
       </table>
@@ -157,17 +162,16 @@
       <p>
         But, how fast is "fast"? It's not terribly convincing to say <em>Our software is fast.</em> We'd like some objective measure of fast. Fortunately, the
         <a href="https://github.com/hugoduncan/criterium">Criterium library</a> provides a handy group of benchmarking utilities that measures the evaluation
-        time of a Clojure expression. We could use Criterium to learn that <code>(zap inc [1 2 3])</code> requires 183±2&nbsp;microseconds to evaluate.
+        time of a Clojure expression. We could use Criterium to learn that <code>(zap inc [1 2 3])</code> requires 98±1&nbsp;microseconds to evaluate.
       </p>
       <p>
-        Is…that good? Difficult to say. What we'd really like to know is how 183&nbsp;microseconds compares to some previous version. So if, for example,
-        version&nbsp;12 of <code>zap</code> evaluates in 183&nbsp;microseconds, whereas version&nbsp;11 required 264&nbsp;microseconds, we have good reason to
+        Is…that good? Difficult to say. What we'd really like to know is how 98&nbsp;microseconds compares to some previous version. So if, for example,
+        version&nbsp;12 of <code>zap</code> evaluates in 98&nbsp;microseconds, whereas version&nbsp;11 required 148&nbsp;microseconds, we have good reason to
         believe the later implementation is faster.
       </p>
       <p>
-        Another problem is that tossing out raw numbers like "183" and "264" requires people to perform mental arithmetic to figure out if version&nbsp;12 is
-        better. <em>One-hundred, eighty-three divided by two-hundred, sixty-four is approximately eighteen divided by twenty-six, which is approximately…</em>
-        Not ideal.
+        Another problem is that tossing out raw numbers like "98" and "148" requires people to perform mental arithmetic to figure out if version&nbsp;12 is
+        better. <em>One-hundred, forty-eight divided by ninety-eight is approximately one-hundred, fifty divided by one-hundred, which is…</em> Not ideal.
       </p>
       <p>
         To address these problems, Fastester aspires to generate an objective, relative, and comprehensible performance report.
@@ -213,7 +217,7 @@
         </li>
         <li>
           <p>
-            The performance data is objective, but people may interpret it to suit their tastes. 183&nbsp;microseconds may be fast enough for one person, but
+            The performance data is objective, but people may interpret it to suit their tastes. 98&nbsp;microseconds may be fast enough for one person, but
             not another. The accompanying commentary may express the library author's opinions. That's okay. The author is merely communicating that opinion to
             the person considering switching versions. The author may consider a particular version <em>fast</em>, but the person using the software may not.
           </p>
@@ -837,8 +841,8 @@
         machine with minimal competing processes, network activity, etc.
       </p>
       <p>
-        We should see one <code>edn</code> file per function-expression/argument pairing. If not, double check the options hashmap to make sure all the
-        namespace and name symbols within <code>:benchmarks</code> are complete and correct.
+        Inside the <code>:results-directory</code>, we should see ten <code>edn</code> files, one per function-expression/argument pairing. If not, double
+        check the options hashmap to make sure all the namespace and name symbols within <code>:benchmarks</code> are complete and correct.
       </p>
       <h3 id="generate">
         4. Generate the <span class="small-caps">html</span>
@@ -948,7 +952,8 @@
       </p>
       <p id="affinity">
         <em>Unresolved:</em> Contemporary systems often use multiple, heterogeneous CPU cores, i.e., X&nbsp;efficiency cores running light tasks at low power
-        and Y&nbsp;high-performance cores running intense tasks. Linux provides a utility, <code>taskset</code>, that explicitly sets CPU affinity. Invoking
+        and Y&nbsp;high-performance cores running intense tasks. Linux provides a utility, <a href=
+        "https://manpages.debian.org/bookworm/util-linux/taskset.1.en.html"><code>taskset</code></a>, that explicitly sets CPU affinity. Invoking
       </p>
       <pre><code>$ taskset --cpu-list 3 lein run -m fastester.core :benchmarks</code></pre>
       <p>
@@ -972,8 +977,13 @@
       </p>
       <p>
         Fastester delegates the benchmarking to Criterium, which fortunately goes to considerable effort to minimize this non-determinism. First, just before
-        running the benchmark, Criterium forces the GC in order to minimize the chance of it running during the benchmark itself. Furthermore, Criterium
-        includes a warm-up period to give the JIT compiler an opportunity to optimize the benchmarked code so that the evaluation times are more consistent.
+        running the benchmark, Criterium forces the GC in order to minimize the chance of it running during the benchmark itself.
+      </p>
+      <p>
+        Furthermore, Criterium includes a warm-up period to give the JIT compiler an opportunity to optimize the benchmarked code so that the evaluation times
+        are more consistent. Fastester's <a href="#declare-compiler">recommendation</a> explicitly directs the JVM to use the more sophisticated of its
+        <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/performance-enhancements-7.html">two compilers</a>, which optimizes for <a href=
+        "https://cr.openjdk.org/~iveresov/tiered/Tiered.pdf">long-running processes</a> such as benchmarks.
       </p>
       <p>
         To try to control for other sources of non-determinism, we should run each benchmark multiple times (default 60), and calculate statistics on those
@@ -1153,7 +1163,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 15.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 19.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

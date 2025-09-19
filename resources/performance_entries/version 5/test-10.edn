@@ -1,5 +1,5 @@
-{:overhead 1.0665251925161485E-8,
- :samples (97050277 98091791 97123997 98118742 97252151 97937869),
+{:overhead 1.902284866606368E-9,
+ :samples (97915695 98359956 98782085 98734888 99175465 98249623),
  :runtime-details
  {:spec-vendor "Oracle Corporation",
   :spec-name "Java Virtual Machine Specification",
@@ -12,41 +12,41 @@
   :spec-version "11",
   :sun-arch-data-model "64"},
  :mean
- [3.2524273095448413E-7 (3.2410078054254654E-7 3.2637462431181704E-7)],
- :final-gc-time 246652177,
- :execution-count 300005,
+ [1.1353457566310202E-7 (1.1318136885546209E-7 1.139444863047631E-7)],
+ :final-gc-time 217251804,
+ :execution-count 867966,
  :variance
- [3.1118172146225215E-18
-  (1.9444082531181064E-18 3.640296011056974E-18)],
+ [3.3491680173825363E-19
+  (1.1463679196050853E-19 5.617535549691931E-19)],
  :os-details
  {:arch "amd64",
   :available-processors 1,
   :name "Linux",
-  :version "5.15.0-152-generic"},
+  :version "5.15.0-153-generic"},
  :tail-quantile 0.025,
  :outlier-variance 0.1388888888888888,
  :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
- :warmup-time 5630678827,
+ :warmup-time 5031262328,
  :lower-q
- [3.234955317411377E-7 (3.234955317411377E-7 3.237412609789837E-7)],
- :warmup-executions 16783529,
+ [1.12810519075632E-7 (1.12810519075632E-7 1.1319524382291473E-7)],
+ :warmup-executions 43578236,
  :sample-count 6,
  :upper-q
- [3.2698165988900186E-7 (3.2616841135981067E-7 3.270570223829603E-7)],
+ [1.1419847422018836E-7 (1.1373202089713192E-7 1.1426192385416019E-7)],
  :fastester/metadata
  {:fexpr "(fn [n] (my-conj (seq-of-n-rand-ints n) :tail-value))",
-  :date {:year 2025, :month "August", :day 29},
+  :date {:year 2025, :month "September", :day 17},
   :group "Custom `conj`",
   :index 10,
   :ns "fastester.performance.benchmarks",
-  :UUIDv4 #uuid "d15108e8-cf9b-42ab-b8d0-fe7692cc4819",
+  :UUIDv4 #uuid "d1a5cb46-a886-41d9-9ce1-f6f6c72f0133",
   :name "conj-onto-rands",
   :testing-thoroughness :quick,
   :arg 10000,
   :version "5",
   :parallel? false},
- :total-time 0.585574827,
- :sample-variance [2.83273814710489E-18 (0.0 0.0)],
+ :total-time 0.591217712,
+ :sample-variance [2.672836835059954E-19 (0.0 0.0)],
  :options
  {:max-gc-attempts 100,
   :samples 6,
@@ -54,7 +54,7 @@
   :warmup-jit-period 5000000000,
   :tail-quantile 0.025,
   :bootstrap-size 500,
-  :overhead 1.0665251925161485E-8},
+  :overhead 1.902284866606368E-9},
  :sample-mean
- [3.2531392643455945E-7 (3.202647043831991E-7 3.303631484859198E-7)],
+ [1.1352551290411529E-7 (1.1197452832922294E-7 1.1507649747900763E-7)],
  :results :fastester/benchmark-fn-results-elided}

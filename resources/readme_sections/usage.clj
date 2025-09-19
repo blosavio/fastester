@@ -720,10 +720,12 @@
  benchmark settings. To minimize timing variance, we ought to use a multi-core
  machine with minimal competing processes, network activity, etc."]
 
- [:p "We should see one "
+ [:p "Inside the "
+  [:code ":results-directory"]
+  ", we should see ten "
   [:code "edn"]
-  " file per function-expression/argument pairing. If not, double check the
- options hashmap to make sure all the namespace and name symbols within  "
+  " files, one per function-expression/argument pairing. If not, double check
+ the options hashmap to make sure all the namespace and name symbols within  "
   [:code ":benchmarks"]
   " are complete and correct."]
 
@@ -914,7 +916,8 @@ contents "
   "Contemporary systems often use multiple, heterogeneous CPU cores, i.e.,
  X efficiency cores running light tasks at low power and Y high-performance
  cores running intense tasks. Linux provides a utility, "
-  [:code "taskset"]
+  [:a {:href "https://manpages.debian.org/bookworm/util-linux/taskset.1.en.html"}
+   [:code "taskset"]]
   ", that explicitly sets CPU affinity. Invoking"]
 
  [:pre [:code "$ taskset --cpu-list 3 lein run -m fastester.core :benchmarks"]]

@@ -17,7 +17,9 @@
   :profiles {:dev {:dependencies [[com.sagevisuals/chlog "1"]]
                    :plugins [[dev.weavejester/lein-cljfmt "0.12.0"]
                              [lein-codox "0.10.8"]]}
-             :repl {}}
+             :repl {}
+             :benchmark {:jvm-opts ["-XX:+TieredCompilation"
+                                    "-XX:TieredStopAtLevel=4"]}}
   :codox {:metadata {:doc/format :markdown}
           :namespaces [#"^fastester\.(?!scratch)"]
           :target-path "doc"

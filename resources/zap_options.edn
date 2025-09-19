@@ -24,7 +24,7 @@
  :results-directory "resources/zap_performance/"
 
  :verbose? true
- :testing-thoroughness :quick
+ :testing-thoroughness :default
  :parallel? false
  :save-benchmark-fn-results? false
 

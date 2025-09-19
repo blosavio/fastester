@@ -1,8 +1,7 @@
 [:section#limits
  [:h2 "Limitations & mitigations"]
 
- [:p "Modern operating systems (OSes) and virtual machines (VMs) provide a
- "
+ [:p "Modern operating systems (OSes) and virtual machines (VMs) provide a "
   [:a {:href "#tratt"} "perilous environment"]
   " for accurate, reliable benchmarking. They both toss an uncountable number of
  non-deterministic confounders onto our laps. The OS may host other processes
@@ -18,9 +17,20 @@
  [:p "Fastester delegates the benchmarking to Criterium, which fortunately goes
  to considerable effort to minimize this non-determinism. First, just before
  running the benchmark, Criterium forces the GC in order to minimize the chance
- of it running during the benchmark itself. Furthermore, Criterium includes a
- warm-up period to give the JIT compiler an opportunity to optimize the
- benchmarked code so that the evaluation times are more consistent."]
+ of it running during the benchmark itself."]
+
+ [:p "Furthermore, Criterium includes a warm-up period to give the JIT compiler
+ an opportunity to optimize the benchmarked code so that the evaluation times
+ are more consistent. Fastester's "
+  [:a {:href "#declare-compiler"}
+   "recommendation"]
+  " explicitly directs the JVM to use the more sophisticated of its "
+  [:a {:href "https://docs.oracle.com/javase/8/docs/technotes/guides/vm/performance-enhancements-7.html"}
+   "two compilers"]
+  ", which optimizes for "
+  [:a {:href "https://cr.openjdk.org/~iveresov/tiered/Tiered.pdf"}
+   "long-running processes"]
+  " such as benchmarks."]
 
  [:p "To try to control for other sources of non-determinism, we should run each
  benchmark multiple times (default 60), and calculate statistics on those

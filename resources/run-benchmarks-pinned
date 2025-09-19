@@ -4,6 +4,6 @@
 
 set -eu
 
-taskset --cpu-list 3 lein run -m fastester.core :benchmarks
+taskset --cpu-list 3 lein with-profiles default,benchmark run -m fastester.core :benchmarks
 
 exit 0
