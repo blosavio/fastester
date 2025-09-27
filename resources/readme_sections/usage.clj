@@ -506,7 +506,7 @@
           (fn [i] (zap str/upper-case (take i (cycle [\"a\" \"b\" \"c\"]))))
           [10 100 1000 10000 100000])"]]
 
- [:p "However, there's a problem. The function expressions contain "
+ [:p#hoist "However, there's a problem. The function expressions contain "
   [:code "range"]
   " and "
   [:code "cycle"]
@@ -564,7 +564,8 @@
 
  [:p "We handle "
   [:code "zap-uc"]
-  " similarly. First, we'll pre-compute the test sequences so that running the benchmark doesn't measure "
+  " similarly. First, we'll pre-compute the test sequences so that running the
+ benchmark doesn't measure "
   [:code "cycle"]
   ". Then we'll wrap the "
   [:code "zap"]
@@ -665,36 +666,58 @@
 
  [:pre [:code "(ns-unmap *ns* 'zap-something-else)"]]
 
- [:h4 "Final checks"]
+ [:h4 "Final checklist"]
 
- [:p#hierarchy "Before we go to the next step, running the benchmarks, let's
- double-check the options. We need Fastester to find our two benchmark
- definitions, so we must correctly set "
-  [:code ":benchmarks"]
-  ". This options key is associated to a hashmap."]
+ [:p "Before we go to the next step, running the benchmarks, let's do some
+ double-checks."]
 
- [:p "That nested hashmap's keys are symbols indicating the namespace. In our
+ [:ul
+  [:li
+   [:p [:strong "Benchmark expressions contain ancillary computations?"]
+    " We should double-check that our benchmark definitions include only
+ computations we want to measure, e.g, extract "
+    [:a {:href "#hoist"} "creating the sequences"]
+    " to the surrounding context."]]
+
+  [:li
+   [:p#hierarchy [:strong "Verify the benchmark namespace and names in the
+ options."]
+    " We need Fastester to find our two benchmark definitions, so we must correctly set "
+    [:code ":benchmarks"]
+    ". This options key is associated to a hashmap."]
+
+   [:p "That nested hashmap's keys are symbols indicating the namespace. In our
  example, we have one namespace, and therefore one key, "
-  [:code "'zap.benchmarks"]
-  ". Associated to that one key is a set of simple symbols indicating the
+    [:code "'zap.benchmarks"]
+    ". Associated to that one key is a set of simple symbols indicating the
  benchmark names, in our example, "
-  [:code "'zap-inc"]
-  " and "
-  [:code "'zap-uc"]
-  ". Altogether, that section of the options looks like this."]
+    [:code "'zap-inc"]
+    " and "
+    [:code "'zap-uc"]
+    ". Altogether, that section of the options looks like this."]
 
- [:pre [:code
-        ":benchmarks {'zap.benchmarks #{'zap-inc
-                               'zap-uc}}"]]
+   [:pre [:code
+          ":benchmarks {'zap.benchmarks #{'zap-inc
+                               'zap-uc}}"]]]
 
- [:p "We should also be on guard: saving "
-  [:code "zap"]
-  "'s results (e.g., one-hundred-thousand incremented integers) blows up the
+  [:li
+   [:p [:strong "Save the benchmark expression results?"]
+    " We should also be on guard: saving "
+    [:code "zap"]
+    "'s results (e.g., one-hundred-thousand incremented integers) blows up the
  file sizes, so let's set "
-  [:code ":save-benchmark-fn-results?"]
-  " to "
-  [:code "false"]
-  "."]
+    [:code ":save-benchmark-fn-results?"]
+    " to "
+    [:code "false"]
+    "."]]
+
+  [:li
+   [:p [:strong "Prepare the benchmarking environment."]
+    " Set the JVM for the desired level of "
+    [:a {:href "#declare-compiler"} "tiered compilation"]
+    " and "
+    [:a {:href "#affinity"} "pin"]
+    " the benchmark process to a particular CPU."]]]
 
  [:h3#run-benchmarks "3. Run benchmarks"]
 

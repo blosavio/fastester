@@ -731,7 +731,7 @@
 &nbsp;         &quot;faster zap implementation&quot;
 &nbsp;         (fn [i] (zap str/upper-case (take i (cycle [&quot;a&quot; &quot;b&quot; &quot;c&quot;]))))
 &nbsp;         [10 100 1000 10000 100000])</code></pre>
-      <p>
+      <p id="hoist">
         However, there&apos;s a problem. The function expressions contain <code>range</code> and <code>cycle</code>. If we run these benchmarks as is, the
         evaluation times would include <code>range</code>&apos;s and <code>cycle</code>&apos;s processing times. We might want to do that in some other
         scenario, but in &nbsp;this case, it would be misleading. We want to focus solely on how fast <code>zap</code> can process its elements. Let&apos;s
@@ -756,7 +756,7 @@
 &nbsp;         (fn [n] (doall (zap inc (range-of-length-n n))))
 &nbsp;         [10 100 1000 10000 100000])</code></pre>
       <p>
-        We handle <code>zap-uc</code> similarly. First, we&apos;ll pre-compute the test sequences so that running the benchmark doesn&apos;t measure
+        We handle <code>zap-uc</code> similarly. First, we&apos;ll pre-compute the test sequences so that running the &nbsp;benchmark doesn&apos;t measure
         <code>cycle</code>. Then we&apos;ll wrap the <code>zap</code> expression in a <code>doall</code>.
       </p>
       <pre><code>(def abc-cycle-of-length-n
@@ -806,23 +806,45 @@
       </p>
       <pre><code>(ns-unmap *ns* &apos;zap-something-else)</code></pre>
       <h4>
-        Final checks
+        Final checklist
       </h4>
-      <p id="hierarchy">
-        Before we go to the next step, running the benchmarks, let&apos;s &nbsp;double-check the options. We need Fastester to find our two benchmark
-        &nbsp;definitions, so we must correctly set <code>:benchmarks</code>. This options key is associated to a hashmap.
-      </p>
       <p>
-        That nested hashmap&apos;s keys are symbols indicating the namespace. In our &nbsp;example, we have one namespace, and therefore one key,
-        <code>&apos;zap.benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in our example,
-        <code>&apos;zap-inc</code> and <code>&apos;zap-uc</code>. Altogether, that section of the options looks like this.
+        Before we go to the next step, running the benchmarks, let&apos;s do some &nbsp;double-checks.
       </p>
-      <pre><code>:benchmarks {&apos;zap.benchmarks #{&apos;zap-inc
+      <ul>
+        <li>
+          <p>
+            <strong>Benchmark expressions contain ancillary computations?</strong> We should double-check that our benchmark definitions include only
+            &nbsp;computations we want to measure, e.g, extract <a href="#hoist">creating the sequences</a> to the surrounding context.
+          </p>
+        </li>
+        <li>
+          <p id="hierarchy">
+            <strong>Verify the benchmark namespace and names in the &nbsp;options.</strong> We need Fastester to find our two benchmark definitions, so we must
+            correctly set <code>:benchmarks</code>. This options key is associated to a hashmap.
+          </p>
+          <p>
+            That nested hashmap&apos;s keys are symbols indicating the namespace. In our &nbsp;example, we have one namespace, and therefore one key,
+            <code>&apos;zap.benchmarks</code>. Associated to that one key is a set of simple symbols indicating the &nbsp;benchmark names, in our example,
+            <code>&apos;zap-inc</code> and <code>&apos;zap-uc</code>. Altogether, that section of the options looks like this.
+          </p>
+          <pre><code>:benchmarks {&apos;zap.benchmarks #{&apos;zap-inc
 &nbsp;                              &apos;zap-uc}}</code></pre>
-      <p>
-        We should also be on guard: saving <code>zap</code>&apos;s results (e.g., one-hundred-thousand incremented integers) blows up the &nbsp;file sizes, so
-        let&apos;s set <code>:save-benchmark-fn-results?</code> to <code>false</code>.
-      </p>
+        </li>
+        <li>
+          <p>
+            <strong>Save the benchmark expression results?</strong> We should also be on guard: saving <code>zap</code>&apos;s results (e.g.,
+            one-hundred-thousand incremented integers) blows up the &nbsp;file sizes, so let&apos;s set <code>:save-benchmark-fn-results?</code> to
+            <code>false</code>.
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Prepare the benchmarking environment.</strong> Set the JVM for the desired level of <a href="#declare-compiler">tiered compilation</a> and
+            <a href="#affinity">pin</a> the benchmark process to a particular CPU.
+          </p>
+        </li>
+      </ul>
       <h3 id="run-benchmarks">
         3. Run benchmarks
       </h3>
@@ -1166,7 +1188,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 19.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 September 27.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>
