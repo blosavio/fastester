@@ -602,7 +602,7 @@
               </p>
               <p>
                 <code>clojure.core/compare</code> <a href=
-                "https://github.com/blosavio/fastester/blob/02b31d2c27e5b2878e5da8488cb838dfeff3f270/resources/semver_options.edn#L30">will</a> <a href=
+                "https://github.com/blosavio/fastester/blob/92bc7634007b2fad8c3ee5f2c738a318688cf005/resources/semver_options.edn#L30">will</a> <a href=
                 "https://blosavio.github.io/fastester/semver_performance.html">sort</a> simple sematic versions of &nbsp;the form <code>int.int.int</code>
                 provided they do not have trailing modifiers such &nbsp;as <code>‑SNAPSHOT</code>, <code>‑RC</code>, etc.
               </p>

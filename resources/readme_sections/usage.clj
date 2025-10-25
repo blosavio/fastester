@@ -267,7 +267,7 @@
 
     [:p [:code "clojure.core/compare"]
      " "
-     [:a {:href "https://github.com/blosavio/fastester/blob/02b31d2c27e5b2878e5da8488cb838dfeff3f270/resources/semver_options.edn#L30"}
+     [:a {:href "https://github.com/blosavio/fastester/blob/92bc7634007b2fad8c3ee5f2c738a318688cf005/resources/semver_options.edn#L30"}
       "will"]
      " "
      [:a {:href "https://blosavio.github.io/fastester/semver_performance.html"}
