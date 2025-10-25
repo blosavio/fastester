@@ -19,27 +19,9 @@
                          *project-name*
                          *project-version*
                          *wrap-at*
-                         generate-all
-                         prettyfy
+                         -main
                          print-form-then-eval]]))
 
 
-(def project-metadata (read-string (slurp "project.clj")))
-(def readmoi-options (load-file "resources/readmoi_options.edn"))
-
-
-(do
-  (generate-all project-metadata readmoi-options)
-  (let [fname "doc/readme.html"
-        page (slurp fname)
-        match #"doc/zap_img/group-0-fexpr-0.svg"
-        replacement "zap_img/group-0-fexpr-0.svg"
-        replaced (str/replace page match replacement)]
-    (spit fname replaced)))
-
-
-(defn -main
-  [& args]
-  {:UUIDv4 #uuid "053064d2-125d-48cc-8c22-1252aaffb841"}
-  (println "Generated Fastester ReadMe."))
+(-main)
 

@@ -1,0 +1,58 @@
+{:overhead 1.854405408849334E-8,
+ :samples (22366013 22064189 20678634),
+ :runtime-details
+ {:spec-vendor "Oracle Corporation",
+  :spec-name "Java Virtual Machine Specification",
+  :clojure-version-string "1.12.1",
+  :java-version "11.0.28",
+  :vm-name "OpenJDK 64-Bit Server VM",
+  :vm-vendor "Ubuntu",
+  :clojure-version
+  {:major 1, :minor 12, :incremental 1, :qualifier nil},
+  :spec-version "11",
+  :sun-arch-data-model "64"},
+ :mean
+ [1.3883062846409742E-8 (1.3289431183769372E-8 1.4309193127856245E-8)],
+ :final-gc-time 94761720,
+ :execution-count 1556021,
+ :variance [3.3441444744941506E-19 (0.0 3.919883114733478E-19)],
+ :os-details
+ {:arch "amd64",
+  :available-processors 4,
+  :name "Linux",
+  :version "5.15.0-160-generic"},
+ :tail-quantile 0.025,
+ :outlier-variance 0.22222222222222213,
+ :outliers {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
+ :warmup-time 2539589035,
+ :lower-q
+ [1.3289431183769372E-8 (1.3289431183769372E-8 1.4179878677729928E-8)],
+ :warmup-executions 77365835,
+ :sample-count 3,
+ :upper-q
+ [1.43196293944619E-8 (1.3289431183769372E-8 1.4373850352919403E-8)],
+ :fastester/metadata
+ {:fexpr "(fn [x] (inc x))",
+  :date {:year 2025, :month "October", :day 24},
+  :group "A sham group",
+  :index 0,
+  :ns "semver.benchmarks",
+  :UUIDv4 #uuid "ee660e02-258e-469b-b98a-5635baf6f4e1",
+  :name "inc-test",
+  :testing-thoroughness :lightning,
+  :arg 99,
+  :version "0.1.0",
+  :parallel? true},
+ :total-time 0.065108836,
+ :sample-variance [3.344144474494151E-19 (0.0 0.0)],
+ :options
+ {:max-gc-attempts 50,
+  :samples 3,
+  :target-execution-time 50000000,
+  :warmup-jit-period 2500000000,
+  :tail-quantile 0.025,
+  :bootstrap-size 500,
+  :overhead 1.854405408849334E-8},
+ :sample-mean
+ [1.39477200714729E-8 (1.2212862720840077E-8 1.5682577422105723E-8)],
+ :results :fastester/benchmark-fn-results-elided}

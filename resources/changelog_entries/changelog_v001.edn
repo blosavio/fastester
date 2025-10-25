@@ -1,0 +1,30 @@
+{:date {:year 2025
+        :month "October"
+        :day 24}
+ :responsible {:name "Brad Losavio"
+               :email "blosavio@sagevisuals.com"}
+ :version 1
+ :comment "When generating documents, fixed sorting with custom comparator and
+ more than eight versions."
+ :project-status :active
+ :stable false
+ :urgency :medium
+ :breaking? false
+ :changes
+ [{:description "Chart legends with more than eight versions now preserve
+ sorting with custom comparator."
+   :date {:year 2025
+          :month "October"
+          :day 25}
+   :change-type :bug-fix
+   :altered-functions ['generate-documents]
+   :breaking? false}
+
+  {:description "Added a demonstration of how built-in `clojure.core/compare`
+ sorts simple semantic versions of the form `int.int.int`."
+   :date {:year 2025
+          :month "October"
+          :day 24}
+   :change-type :documentation
+   :breaking? false}]}
+

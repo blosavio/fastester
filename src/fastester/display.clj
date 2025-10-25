@@ -479,8 +479,8 @@ position, plot border, etc.")
                                        %)
         chrt (-> o-data
                  (rearrange-chart-data opt fexpr)
-                 sort-versions-by-comparator
                  nested-maps->vecs
+                 sort-versions-by-comparator
                  (xc/xy-chart chart-style))
         img-alt-text (str "Benchmark measurements for expression `"
                           fexpr

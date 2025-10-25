@@ -3,18 +3,8 @@
   level directory and 'changelog.html' in the 'resources/' directory."
   {:no-doc true}
   (:require
-   [hiccup2.core :as h2]
-   [chlog.core :refer [generate-all-changelogs]]))
+   [chlog.core :refer [-main]]))
 
 
-(def chlog-options (load-file "resources/chlog_options.edn"))
-
-
-(generate-all-changelogs chlog-options)
-
-
-(defn -main
-  [& args]
-  {:UUIDv4 #uuid "620eb079-3c79-49e5-af3f-fb9300325b0d"}
-  (println "Generated fastester performance page"))
+(-main)
 

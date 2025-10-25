@@ -22,6 +22,8 @@
 
  :project-name-formatted "Fastester"
 
+ :preferred-project-metadata :lein
+
  :readme-UUID #uuid "a19c373d-6b51-428e-a99f-a8e89a37b60c"
 
  :readme-html-directory "doc/"
@@ -36,3 +38,4 @@
  :wrap-at 80
 
  :tidy-html? true}
+

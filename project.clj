@@ -1,4 +1,4 @@
-(defproject com.sagevisuals/fastester "0"
+(defproject com.sagevisuals/fastester "1-SNAPSHOT0"
   :description "A Clojure library for measuring and displaying performance
  changes."
   :url "https://github.com/blosavio/fastester"
@@ -7,19 +7,23 @@
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.12.1"]
                  [com.hypirion/clj-xchart "0.2.0"]
-                 [com.sagevisuals/readmoi "4"]
+                 [com.sagevisuals/readmoi "6-SNAPSHOT1"]
                  [criterium "0.4.6"]
                  [hiccup "2.0.0-RC3"]]
   :repl-options {:init-ns fastester.core}
   :main fastester.core
   :aot [fastester.core]
   :plugins []
-  :profiles {:dev {:dependencies [[com.sagevisuals/chlog "1"]]
+  :profiles {:dev {:dependencies [[com.sagevisuals/chlog "2"]]
                    :plugins [[dev.weavejester/lein-cljfmt "0.12.0"]
                              [lein-codox "0.10.8"]]}
              :repl {}
              :benchmark {:jvm-opts ["-XX:+TieredCompilation"
                                     "-XX:TieredStopAtLevel=4"]}}
+  :aliases {"readmoi" ["do"
+                       ["run" "-m" "readmoi-generator"]
+                       ["run" "-m" "redirect-svg-link"]]
+            "chlog" ["run" "-m" "chlog-generator"]}
   :codox {:metadata {:doc/format :markdown}
           :namespaces [#"^fastester\.(?!scratch)"]
           :target-path "doc"
