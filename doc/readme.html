@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
-    <meta charset="utf-8" compile-date="2025-10-15 14:22:08" content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="utf-8" compile-date="2025-10-25 11:17:02" content="width=device-width, initial-scale=1" name="viewport">
     <link href="project.css" rel="stylesheet" type="text/css">
     <title>
       Fastester — A Clojure library for measuring and displaying performance changes
@@ -32,11 +32,11 @@
       <h3>
         Leiningen/Boot
       </h3>
-      <pre><code>[com.sagevisuals/fastester "0"]</code></pre>
+      <pre><code>[com.sagevisuals/fastester "1-SNAPSHOT0"]</code></pre>
       <h3>
         Clojure CLI/deps.edn
       </h3>
-      <pre><code>com.sagevisuals/fastester {:mvn/version "0"}</code></pre>
+      <pre><code>com.sagevisuals/fastester {:mvn/version "1-SNAPSHOT0"}</code></pre>
       <h3 id="declare-compiler">
         JVM options
       </h3>
@@ -507,21 +507,6 @@
             </p>
           </td>
         </tr>
-        <tr>
-          <td>
-            <code>:sort-comparator</code>
-          </td>
-          <td>
-            <code>clojure.core/compare</code>
-          </td>
-          <td>
-            <p>
-              Comparator used for sorting versions in the performance document chart legends and table rows. Comparator must accept two strings representing
-              version entries extracted from either a Leiningen 'project.clj' or a 'pom.xml'. <a href=
-              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution</a>.
-            </p>
-          </td>
-        </tr>
       </table>
       <p>
         The following options have no defaults.
@@ -603,6 +588,31 @@
               Declares preference for source of project version. If <code>:lein</code>, consults 'project.clj'. If <code>:pom‑xml</code>, consults 'pom.xml'.
               If both files exist, a preference must be declared. If only one file exists, <code>:preferred‑version‑info</code> may be omitted.
             </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>:sort-comparator</code>
+          </td>
+          <td>
+            <code>clojure.core/compare</code>
+          </td>
+          <td>
+            <div>
+              <p>
+                Comparator used for sorting versions in the performance document chart legends and table rows. Comparator must accept two strings representing
+                version entries extracted from either a Leiningen 'project.clj' or a 'pom.xml'.
+              </p>
+              <p>
+                <code>clojure.core/compare</code> <a href=
+                "https://github.com/blosavio/fastester/blob/02b31d2c27e5b2878e5da8488cb838dfeff3f270/resources/semver_options.edn#L30">will</a> <a href=
+                "https://blosavio.github.io/fastester/semver_performance.html">sort</a> simple sematic versions of the form <code>int.int.int</code> provided
+                they do not have trailing modifiers such as <code>‑SNAPSHOT</code>, <code>‑RC</code>, etc.
+              </p>
+              <p>
+                <a href="https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution</a>.
+              </p>
+            </div>
           </td>
         </tr>
       </table>
@@ -1184,7 +1194,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 October 15.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 October 25.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>

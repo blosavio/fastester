@@ -1,11 +1,11 @@
-{:title "`sem-ver-compare` example"
+{:title "Sorting semantic versions with `clojure.core/compare`"
 
- :responsible {:name "Abraham Lincoln"
+ :responsible {:name "Brad Losavio"
                :email "blosavio@sagevisuals.com"}
 
- :copyright-holder "Abraham Lincoln"
+ :copyright-holder "Brad Losavio"
 
- :fastester-UUID #uuid "32bcc839-d3cc-49a7-9c69-2fbf43f59a0d"
+ :fastester-UUID #uuid "6521c57a-63be-472f-a21d-9579980a156b"
 
  :preferred-version-info :lein
 
@@ -31,11 +31,15 @@
 
  :tidy-html? true
 
- :preamble [:p "Example benchmarks to verify `sem-ver-compare`."]
+ :preamble [:p "Example benchmarks to demonstrate `clojure.core/compare`."]
 
  :comments
  {"A sham group"
-  [:p "Example comments for `sem-ver-compare` demo. Results are meaningless."]}
+  [:p "Example comments for `clojure.core/compare` demo. Results are
+ meaningless. See "
+   [:a {:href "https://github.com/blosavio/fastester/blob/02b31d2c27e5b2878e5da8488cb838dfeff3f270/resources/semver_options.edn#L30"}
+    "options"]
+   " for example usage."]}
 
  :chart-settings
  {"(fn [x] (inc x))"

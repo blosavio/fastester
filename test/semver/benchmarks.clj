@@ -1,5 +1,5 @@
 (ns semver.benchmarks
-  "Quick benchmarks to verify sorting with `sem-ver-compare`."
+  "Quick benchmarks to verify sorting with `clojure.core/compare`."
   (:require
    [fastester.define :refer [defbench]]
    [fastester.display :refer [generate-documents]]

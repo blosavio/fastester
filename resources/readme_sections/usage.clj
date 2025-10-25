@@ -204,18 +204,7 @@
    [:div "..."]
    [:p "A hiccup/"
     [:span.small-caps "html"]
-    " block inserted at the top of the results document."])
-
-  (opts-table-row
-   :sort-comparator
-   'clojure.core/compare
-   [:p "Comparator used for sorting versions in the performance document chart
- legends and table rows. Comparator must accept two strings representing
- version entries extracted from either a Leiningen 'project.clj' or a
- 'pom.xml'. "
-    [:a {:href "https://clojure.org/guides/comparators#_mistakes_to_avoid"}
-     "Write custom comparators with caution"]
-    "."])]
+    " block inserted at the top of the results document."])]
 
  [:p "The following options have no defaults."]
 
@@ -265,7 +254,37 @@
     ", consults 'pom.xml'. If both files exist, a preference must be declared.
  If only one file exists, "
     [:code ":preferred‑version‑info"]
-    " may be omitted."])]
+    " may be omitted."])
+
+  (opts-table-row
+   :sort-comparator
+   'clojure.core/compare
+   [:div
+    [:p "Comparator used for sorting versions in the performance document chart
+ legends and table rows. Comparator must accept two strings representing
+ version entries extracted from either a Leiningen 'project.clj' or a
+ 'pom.xml'."]
+
+    [:p [:code "clojure.core/compare"]
+     " "
+     [:a {:href "https://github.com/blosavio/fastester/blob/02b31d2c27e5b2878e5da8488cb838dfeff3f270/resources/semver_options.edn#L30"}
+      "will"]
+     " "
+     [:a {:href "https://blosavio.github.io/fastester/semver_performance.html"}
+      "sort"]
+     " simple sematic versions of
+ the form "
+     [:code "int.int.int"] " provided they do not have trailing modifiers such
+ as "
+     [:code "‑SNAPSHOT"]
+     ", "
+     [:code "‑RC"]
+     ", etc."]
+
+    [:p [:a {:href "https://clojure.org/guides/comparators#_mistakes_to_avoid"}
+         "Write custom comparators with caution"]
+     "."]
+    ])]
 
  [:h3#write-benchmarks "2. Write benchmarks"]
 

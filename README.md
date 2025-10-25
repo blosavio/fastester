@@ -23,11 +23,11 @@
       <h3>
         Leiningen/Boot
       </h3>
-      <pre><code>[com.sagevisuals/fastester &quot;0&quot;]</code></pre>
+      <pre><code>[com.sagevisuals/fastester &quot;1-SNAPSHOT0&quot;]</code></pre>
       <h3>
         Clojure CLI/deps.edn
       </h3>
-      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;0&quot;}</code></pre>
+      <pre><code>com.sagevisuals/fastester {:mvn/version &quot;1-SNAPSHOT0&quot;}</code></pre>
       <h3 id="declare-compiler">
         JVM options
       </h3>
@@ -503,21 +503,6 @@
             </p>
           </td>
         </tr>
-        <tr>
-          <td>
-            <code>:sort-comparator</code>
-          </td>
-          <td>
-            <code>clojure.core/compare</code>
-          </td>
-          <td>
-            <p>
-              Comparator used for sorting versions in the performance document chart &nbsp;legends and table rows. Comparator must accept two strings
-              representing &nbsp;version entries extracted from either a Leiningen &apos;project.clj&apos; or a &nbsp;&apos;pom.xml&apos;. <a href=
-              "https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution</a>.
-            </p>
-          </td>
-        </tr>
       </table>
       <p>
         The following options have no defaults.
@@ -600,6 +585,31 @@
               &apos;pom.xml&apos;. If both files exist, a preference must be declared. &nbsp;If only one file exists, <code>:preferred‑version‑info</code> may
               be omitted.
             </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>:sort-comparator</code>
+          </td>
+          <td>
+            <code>clojure.core/compare</code>
+          </td>
+          <td>
+            <div>
+              <p>
+                Comparator used for sorting versions in the performance document chart &nbsp;legends and table rows. Comparator must accept two strings
+                representing &nbsp;version entries extracted from either a Leiningen &apos;project.clj&apos; or a &nbsp;&apos;pom.xml&apos;.
+              </p>
+              <p>
+                <code>clojure.core/compare</code> <a href=
+                "https://github.com/blosavio/fastester/blob/02b31d2c27e5b2878e5da8488cb838dfeff3f270/resources/semver_options.edn#L30">will</a> <a href=
+                "https://blosavio.github.io/fastester/semver_performance.html">sort</a> simple sematic versions of &nbsp;the form <code>int.int.int</code>
+                provided they do not have trailing modifiers such &nbsp;as <code>‑SNAPSHOT</code>, <code>‑RC</code>, etc.
+              </p>
+              <p>
+                <a href="https://clojure.org/guides/comparators#_mistakes_to_avoid">Write custom comparators with caution</a>.
+              </p>
+            </div>
           </td>
         </tr>
       </table>
@@ -1188,7 +1198,7 @@
     <p></p>
     <p id="page-footer">
       Copyright © 2024–2025 Brad Losavio.<br>
-      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 October 15.<span id="uuid"><br>
+      Compiled by <a href="https://github.com/blosavio/readmoi">ReadMoi</a> on 2025 October 25.<span id="uuid"><br>
       a19c373d-6b51-428e-a99f-a8e89a37b60c</span>
     </p>
   </body>
