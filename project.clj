@@ -7,14 +7,14 @@
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.12.1"]
                  [com.hypirion/clj-xchart "0.2.0"]
-                 [com.sagevisuals/readmoi "6-SNAPSHOT1"]
+                 [com.sagevisuals/readmoi "6"]
                  [criterium "0.4.6"]
                  [hiccup "2.0.0-RC3"]]
   :repl-options {:init-ns fastester.core}
   :main fastester.core
   :aot [fastester.core]
   :plugins []
-  :profiles {:dev {:dependencies [[com.sagevisuals/chlog "2"]]
+  :profiles {:dev {:dependencies [[com.sagevisuals/chlog "5"]]
                    :plugins [[dev.weavejester/lein-cljfmt "0.12.0"]
                              [lein-codox "0.10.8"]]}
              :repl {}
